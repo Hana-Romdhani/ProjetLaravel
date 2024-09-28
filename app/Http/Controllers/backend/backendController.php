@@ -14,7 +14,7 @@ class backendController extends Controller
      */
     public function index()
     {
-        return view(view: 'backend.pages.dashboredAdmin');
+        return view(view: 'backend.layouts.layoutdashbored');
     }
     /**
      * Show the form for creating a new resource.

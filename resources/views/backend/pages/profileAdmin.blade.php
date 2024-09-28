@@ -1,7 +1,7 @@
-@extends('dashbored.layoutdashbored')
+@extends('backend.layouts.layoutdashbored')
 @section('contentadmin')
 <section class="container-fluid p-4">
-  
+
 
 
         <div class="col-lg-36 col-md-46 col-46">

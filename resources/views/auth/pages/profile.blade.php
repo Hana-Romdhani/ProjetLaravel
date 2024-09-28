@@ -1,4 +1,4 @@
-@extends('landingPage.layout')
+@extends('auth.layouts.layoutauth')
 @section('contentlandinpage')
 
 <section class="pt-5 pb-5">

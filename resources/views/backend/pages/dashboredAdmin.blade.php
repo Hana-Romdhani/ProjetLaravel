@@ -1,4 +1,4 @@
-@extends('dashbored.layoutdashbored')
+@extends('backend.layouts.layoutdashbored')
 @section('contentadmin')
 <div class="row gy-4 mb-4">
 

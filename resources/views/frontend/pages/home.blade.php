@@ -1,4 +1,4 @@
-@extends('landingPage.layout')
+@extends('frontend.layouts.layoutfrontend')
 @section(section: 'contentlandinpage')
 <main>
     <section class="bg-light">

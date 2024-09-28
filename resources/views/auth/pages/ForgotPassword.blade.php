@@ -1,4 +1,4 @@
-@extends('auth.layout')
+@extends('auth.layouts.layoutauth')
 @section('content')
 <section class="container d-flex flex-column vh-100">
     <div class="row align-items-center justify-content-center g-0 h-lg-100 py-8">

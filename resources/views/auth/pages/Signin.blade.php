@@ -1,4 +1,4 @@
-@extends('auth.layout')
+@extends('auth.layouts.layoutauth')
 @section('content')
 
         <section class="container d-flex flex-column vh-100">
@@ -102,6 +102,6 @@
                 </div>
             </div>
         </section>
-       
+
 
  @endsection

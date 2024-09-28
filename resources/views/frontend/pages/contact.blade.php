@@ -1,4 +1,4 @@
-@extends('landingPage.layout')
+@extends('frontend.layouts.layoutfrontend')
 @section('contentlandinpage')
 <section class="py-8 bg-light border-bottom border-gray-800">
             <div class="container">

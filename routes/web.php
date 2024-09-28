@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\backend\backendController;
+use App\Http\Controllers\frontend\frontendController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,43 +16,38 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-//admin home
+// home part
 Route::prefix('/')->group(function () {
-    Route::get('/', function () {
-        return view('landingPage.home');
-    });
+    Route::get('/',  [frontendController::class, 'index']);
     Route::get('/contact', function () {
-        return view('landingPage.contact');
+        return view('frontend.pages.contact');
     });
-
-
 });
 
 //admin part
 Route::prefix('/admin')->group(function () {
-    Route::get('/', function () {
-        return view('dashbored.dashbored');
-    });
+    Route::get('/',  [backendController::class, 'index']);
+
     Route::get('/edit-profile', function () {
-        return view('dashbored.profileadmin');
+        return view('backend.pages.profileAdmin');
     });
 
 });
 //auth part
 Route::prefix('auth')->group(function () {
     Route::get('/signin', function () {
-        return view('auth.Signin');
+        return view('auth.pages.Signin');
     });
 
     Route::get('/signup', function () {
-        return view('auth.Signup');
+        return view('auth.pages.Signup');
     });
 
     Route::get('/forgot-password', function () {
-        return view('auth.ForgotPassword');
+        return view('auth.pages.ForgotPassword');
     });
     Route::get('/edit-profile', function () {
-        return view('auth.profile');
+        return view('auth.pages.profile');
     });
 });
 

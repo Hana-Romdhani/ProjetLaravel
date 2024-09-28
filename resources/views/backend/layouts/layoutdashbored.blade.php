@@ -11,18 +11,21 @@
     <meta name="author" content="Codescandy" />
 
     <!-- Favicon icon-->
-    <link rel="shortcut icon" type="image/x-icon" href="../../assets/images/brand/icons8-protea-flower-64.jpg" />
+    <link rel="shortcut icon" type="image/x-icon" href="/assets/images/brand/icons8-protea-flower-64.jpg" />
 
     <!-- darkmode js -->
-    <script src="../../assets/js/vendors/darkMode.js"></script>
+    <script src="/assets/js/vendors/darkMode.js"></script>
 
     <!-- Libs CSS -->
-    <link href="../../assets/fonts/feather/feather.css" rel="stylesheet" />
-    <link href="../../assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
-    <link href="../../assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet" />
+    <link href="/assets/fonts/feather/feather.css" rel="stylesheet" />
+    <link href="/assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link href="/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet" />
+
+
+
 
     <!-- Theme CSS -->
-    <link rel="stylesheet" href="../../assets/css/theme.min.css">
+    <link rel="stylesheet" href="/assets/css/theme.min.css">
 
     <link rel="canonical" href="admin-dashboard.html" />
     <title>Dashboard</title>
@@ -44,7 +47,7 @@
                 <a class="navbar-brand" href="../../index.html">
                 <div class="col-xl-3 col-lg-8 col-md-6 col-6">
                     <div class="d-flex align-items-center mb-0">
-                    <img src="../assets/images/brand/logo/icons8-protea-flower-64.png" class="d-inline" alt="logo-icon" />
+                    <img src="/assets/images/brand/logo/icons8-protea-flower-64.png" class="d-inline" alt="logo-icon" />
                     <div class="ms-2">
                         <h1 class="mb-0 fw-bold d-inline">
                             <span class="mb-0 text-secondary">Green</span>

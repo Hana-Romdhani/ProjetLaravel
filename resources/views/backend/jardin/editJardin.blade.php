@@ -59,7 +59,7 @@
                             <div class="invalid-feedback">Please provide a description of the jardin.</div>
                         </div>
                         <!-- Jardin Type -->
-                        <div class="mb-3 col-12 col-md-6">
+                        <!-- <div class="mb-3 col-12 col-md-6">
                             <label class="form-label" for="jardinType">Jardin Type</label>
                             <select class="form-select" id="jardinType" name="jardinType" required>
                                 <option value="">Select Jardin Type</option>
@@ -69,17 +69,8 @@
                             </select>
                             <div class="invalid-feedback">Please choose the jardin type.</div>
                         </div>
-                        <!-- Country -->
-                        <div class="mb-3 col-12 col-md-6">
-                            <label class="form-label" for="editCountry">Country</label>
-                            <select class="form-select" id="editCountry" required>
-                                <option value="">Select Country</option>
-                                <option value="1">Tunisia</option>
-                                <option value="2">France</option>
-                                <option value="3">USA</option>
-                            </select>
-                            <div class="invalid-feedback">Please choose the country where the jardin is located.</div>
-                        </div>
+                        Country -->
+
                         <div class="col-12">
                             <!-- Button -->
                             <button class="btn btn-primary" type="submit">Update Jardin</button>

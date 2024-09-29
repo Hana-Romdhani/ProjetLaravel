@@ -21,7 +21,8 @@
                     </nav>
                 </div>
                 <div>
-                    <a href="jardin/edit" class="btn btn-primary">Add New Jardin</a>
+                <a href="{{ route('backend.jardin.formJardin') }}" class="btn btn-primary">Add New Jardin</a>
+
                 </div>
             </div>
         </div>
@@ -38,7 +39,6 @@
                             <li class="nav-item">
                                 <a class="nav-link active" id="courses-tab" data-bs-toggle="pill" href="#courses" role="tab" aria-controls="courses" aria-selected="true">All</a>
                             </li>
-
                         </ul>
                     </div>
                 </div>
@@ -46,7 +46,7 @@
                     <!-- Form -->
                     <form class="d-flex align-items-center col-12 col-md-12 col-lg-12">
                         <span class="position-absolute ps-3 search-icon"><i class="fe fe-search"></i></span>
-                        <input type="search" class="form-control ps-6" placeholder="Search Course" />
+                        <input type="search" class="form-control ps-6" placeholder="Search Jardin" />
                     </form>
                 </div>
                 <div>
@@ -58,41 +58,43 @@
                                 <table class="table mb-0 text-nowrap table-centered table-hover">
                                     <thead class="table-light">
                                         <tr>
-                                            <th>Jardins</th>
-                                            <th>propriétaire</th>
-                                            <th>STATUS</th>
-                                            <th>ACTION</th>
+                                            <th>Jardin Name</th>
+                                            <th>Description</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
                                             <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @foreach ($jardins as $jardin)
                                         <tr>
                                             <td>
-                                                <a href="#" class="text-inherit">
-                                                    <div class="d-flex align-items-center gap-3">
-                                                        <div>
-                                                            <img src="../../assets/images/course/course-gatsby.jpg" alt="" class="img-4by3-lg rounded" />
-                                                        </div>
-                                                        <div class="d-flex flex-column gap-1">
-                                                            <h4 class="mb-0 text-primary-hover">Revolutionize how you build the web...</h4>
-                                                            <span>Added on 7 July, 2023</span>
-                                                        </div>
+                                                <div class="d-flex align-items-center gap-3">
+                                                    <div>
+                                                        <!-- If you have an image field -->
+                                                        @if($jardin->image)
+                                                            <img src="{{ asset('storage/' . $jardin->image) }}" alt="" class="img-4by3-lg rounded" />
+                                                        @else
+                                                            <img src="{{ asset('path/to/default/image.jpg') }}" alt="" class="img-4by3-lg rounded" />
+                                                        @endif
                                                     </div>
-                                                </a>
+                                                    <div class="d-flex flex-column gap-1">
+                                                        <h4 class="mb-0 text-primary-hover">{{ $jardin->name }}</h4>
+                                                        <span>Added on {{ $jardin->created_at->format('d M, Y') }}</span>
+                                                    </div>
+                                                </div>
                                             </td>
                                             <td>
-                                                <div class="d-flex align-items-center flex-row gap-2">
-                                                    <img src="../../assets/images/avatar/avatar-7.jpg" alt="" class="rounded-circle avatar-xs" />
-                                                    <h5 class="mb-0">Reva Yokk</h5>
+                                                <div class="d-flex flex-column gap-2">
+                                                    <p>{{ $jardin->description }}</p> <!-- Displaying the description here -->
                                                 </div>
                                             </td>
                                             <td>
                                                 <span class="badge-dot bg-warning me-1 d-inline-block align-middle"></span>
-                                                Pending
+                                                {{ $jardin->status ?? 'Pending' }}
                                             </td>
                                             <td>
-                                                <a href="#" class="btn btn-outline-secondary btn-sm">Reject</a>
-                                                <a href="#" class="btn btn-success btn-sm">Approved</a>
+                                                <a href="" class="btn btn-outline-secondary btn-sm">Edit</a>
                                             </td>
                                             <td>
                                                 <span class="dropdown dropstart">
@@ -100,13 +102,13 @@
                                                         class="btn-icon btn btn-ghost btn-sm rounded-circle"
                                                         href="#"
                                                         role="button"
-                                                        id="courseDropdown1"
+                                                        id="jardinDropdown{{ $jardin->id }}"
                                                         data-bs-toggle="dropdown"
                                                         data-bs-offset="-20,20"
                                                         aria-expanded="false">
                                                         <i class="fe fe-more-vertical"></i>
                                                     </a>
-                                                    <span class="dropdown-menu" aria-labelledby="courseDropdown1">
+                                                    <span class="dropdown-menu" aria-labelledby="jardinDropdown{{ $jardin->id }}">
                                                         <span class="dropdown-header">Settings</span>
                                                         <a class="dropdown-item" href="#">
                                                             <i class="fe fe-x-circle dropdown-item-icon"></i>
@@ -116,13 +118,11 @@
                                                 </span>
                                             </td>
                                         </tr>
-
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-
-
                     </div>
                 </div>
                 <!-- Card Footer -->

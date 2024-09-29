@@ -34,7 +34,9 @@ Route::prefix('/admin')->group(function () {
     });
 
     Route::get('/jardin',  [JardinController::class, 'index']);
-    Route::get('/jardin/edit',  [JardinController::class, 'edit']);
+    Route::get('/jardin/edit',  [JardinController::class, 'store',])->name('backend.jardin.formJardin');
+    // Route::resource('/jardin/edit',  JardinController::class);
+
 
 
 });

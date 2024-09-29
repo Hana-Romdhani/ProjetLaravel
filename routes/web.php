@@ -3,6 +3,7 @@
 use App\Http\Controllers\backend\backendController;
 use App\Http\Controllers\backend\conseilController;
 use App\Http\Controllers\frontend\frontendController;
+use App\Http\Controllers\backend\JardinController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,6 +35,13 @@ Route::prefix('/admin')->group(function () {
     Route::get('/edit-profile', function () {
         return view('backend.pages.profileAdmin');
     });
+
+    Route::get('/jardin',  [JardinController::class, 'index']);
+    Route::get('/jardin/edit',  action: [JardinController::class, 'edit'])->name('backend.jardin.formJardin');
+
+    // Route::resource('/jardin/edit',  JardinController::class);
+
+
 
 });
 //auth part

@@ -15,6 +15,11 @@ return new class extends Migration
     {
         Schema::create('jardins', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('location');
+            $table->text('description')->nullable();
+            $table->integer('size')->nullable();
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

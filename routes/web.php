@@ -49,7 +49,21 @@ Route::prefix('/admin')->group(function () {
     // Handle form submission for updating an existing jardin
     Route::put('/jardin/{jardin}', [JardinController::class, 'update'])->name('jardin.update');
 
+//conseil part
+    Route::middleware('web')->prefix('/conseil')->group(function () {
+        Route::resource('/categorie', ConseilCategorieController::class);
+    });
+//conseil part
+
+// Handle deletion of a jardin
+Route::delete('/jardin/{jardin}', [JardinController::class, 'destroy'])->name('jardin.destroy');
 });
+
+
+
+
+
+
 //auth part
 Route::prefix('auth')->group(function () {
     Route::get('/signin', function () {

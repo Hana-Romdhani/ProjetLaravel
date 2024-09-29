@@ -44,7 +44,7 @@
         <nav class="navbar-vertical navbar">
             <div class="vh-100" data-simplebar>
                 <!-- Brand logo -->
-                <a class="navbar-brand" href="../../index.html">
+                <a class="navbar-brand" href="/">
                 <div class="col-xl-3 col-lg-8 col-md-6 col-6">
                     <div class="d-flex align-items-center mb-0">
                     <img src="/assets/images/brand/logo/icons8-protea-flower-64.png" class="d-inline" alt="logo-icon" />
@@ -66,13 +66,13 @@
                  <ul class="navbar-nav flex-column" id="sideNavbar">
             <!-- Donia (Module de Gestion des Jardins Urbains) -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#navDonia" aria-expanded="false" aria-controls="navDonia">
+                <a class="nav-link collapsed" href={{ route('backend.jardin.jardin') }} data-bs-toggle="collapse" data-bs-target="#navDonia" aria-expanded="false" aria-controls="navDonia">
                     <i class="nav-icon fe fe-globe me-2"></i> Jardins&nbsp;Urbains
                 </a>
                 <div id="navDonia" class="collapse" data-bs-parent="#sideNavbar">
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Jardin</a>
+                            <a class="nav-link" href={{ route('backend.jardin.jardin') }}>Jardin</a>
                         </li>
 
 
@@ -224,7 +224,7 @@
                                                     <div class="col">
                                                         <a class="text-body" href="#">
                                                             <div class="d-flex">
-                                                                <img src="../../assets/images/avatar/avatar-1.jpg" alt="" class="avatar-md rounded-circle" />
+                                                                <img src="../../assets/images/avatar/images.png" alt="" class="avatar-md rounded-circle" />
                                                                 <div class="ms-3">
                                                                     <h5 class="fw-bold mb-1">Kristin Watson:</h5>
                                                                     <p class="mb-3">Krisitn Watsan like your comment on course Javascript Introduction!</p>
@@ -254,7 +254,7 @@
                                                     <div class="col">
                                                         <a class="text-body" href="#">
                                                             <div class="d-flex">
-                                                                <img src="../../assets/images/avatar/avatar-2.jpg" alt="" class="avatar-md rounded-circle" />
+                                                                <img src="../../assets/images/avatar/images.png" alt="" class="avatar-md rounded-circle" />
                                                                 <div class="ms-3">
                                                                     <h5 class="fw-bold mb-1">Brooklyn Simmons</h5>
                                                                     <p class="mb-3">Just launched a new Courses React for Beginner.</p>
@@ -335,14 +335,14 @@
                             <li class="dropdown ms-2">
                                 <a class="rounded-circle" href="#" role="button" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
                                     <div class="avatar avatar-md avatar-indicators avatar-online">
-                                        <img alt="avatar" src="../../assets/images/avatar/avatar-1.jpg" class="rounded-circle" />
+                                        <img alt="avatar" src="../../assets/images/avatar/images.png" class="rounded-circle" />
                                     </div>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUser">
                                     <div class="dropdown-item">
                                         <div class="d-flex">
                                             <div class="avatar avatar-md avatar-indicators avatar-online">
-                                                <img alt="avatar" src="../../assets/images/avatar/avatar-1.jpg" class="rounded-circle" />
+                                                <img alt="avatar" src="../../assets/images/avatar/images.png" class="rounded-circle" />
                                             </div>
                                             <div class="ms-3 lh-1">
                                                 <h5 class="mb-1">Annette Black</h5>

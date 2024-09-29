@@ -3,7 +3,10 @@
 use App\Http\Controllers\backend\backendController;
 use App\Http\Controllers\frontend\frontendController;
 use App\Http\Controllers\backend\JardinController;
+use App\Http\Controllers\backend\RessourcesController;
+
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -47,6 +50,9 @@ Route::prefix('/admin')->group(function () {
 
     // Handle deletion of a jardin
     Route::delete('/jardin/{jardin}', [JardinController::class, 'destroy'])->name('jardin.destroy');
+
+    Route::get('/ressource',  [RessourcesController::class, 'index'])->name('backend.ressource.ressource');
+
 });
 
 

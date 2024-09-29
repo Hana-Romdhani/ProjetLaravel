@@ -14,7 +14,8 @@ class RessourceController extends Controller
      */
     public function index()
     {
-        //
+        $ressources = Ressource::all();
+        return view('frontend.ressource.ressource', compact('ressources'));
     }
 
     /**
@@ -24,7 +25,8 @@ class RessourceController extends Controller
      */
     public function create()
     {
-        //
+        return view('frontend.ressource.formRessource');
+
     }
 
     /**
@@ -35,7 +37,19 @@ class RessourceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nom' => 'required|string|max:255',
+            'quantite' => 'required|numeric',
+            'libelle' => 'required|string',
+        ]);
+
+        Jardin::create([
+            'nom' => $request->nom,
+            'quantite' => $request->quantite,
+            'libelle' => $request->libelle,
+        ]);
+
+        return redirect()->route('frontend.ressource.ressource')->with('success', 'Ressource added successfully!');
     }
 
     /**
@@ -49,15 +63,16 @@ class RessourceController extends Controller
         //
     }
 
+    
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Ressource $ressource)
     {
-        //
+        return view('frontend.ressource.formRessource', compact('ressource'));
     }
 
     /**
@@ -67,9 +82,21 @@ class RessourceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Ressource $ressource)
     {
-        //
+        $request->validate([
+            'nom' => 'required|string|max:255',
+            'quantite' => 'required|numeric',
+            'libelle' => 'required|string',
+        ]);
+
+        $jardin->update([
+            'nom' => $request->nom,
+            'quantite' => $request->quantite,
+            'libelle' => $request->libelle,
+        ]);
+
+        return redirect()->route('frontend.ressource.ressource')->with('success', 'Ressource updated successfully!');
     }
 
     /**
@@ -78,8 +105,9 @@ class RessourceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Ressource $ressource)
     {
-        //
+        $ressource->delete();
+        return redirect()->route('frontend.ressource.ressource')->with('success', 'Ressource deleted successfully!');
     }
 }

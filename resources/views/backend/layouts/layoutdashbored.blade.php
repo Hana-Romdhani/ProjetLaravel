@@ -4,7 +4,7 @@
 <!-- Mirrored from geeksui.codescandy.com/geeks/pages/dashboard/admin-dashboard.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 10:12:37 GMT -->
 
 <head>
-    <link rel="stylesheet" href="../../assets/libs/flatpickr/dist/flatpickr.min.css" />
+    <link rel="stylesheet" href="/assets/libs/flatpickr/dist/flatpickr.min.css" />
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -45,107 +45,107 @@
             <div class="vh-100" data-simplebar>
                 <!-- Brand logo -->
                 <a class="navbar-brand" href="../../index.html">
-                <div class="col-xl-3 col-lg-8 col-md-6 col-6">
-                    <div class="d-flex align-items-center mb-0">
-                    <img src="/assets/images/brand/logo/icons8-protea-flower-64.png" class="d-inline" alt="logo-icon" />
-                    <div class="ms-2">
-                        <h1 class="mb-0 fw-bold d-inline">
-                            <span class="mb-0 text-secondary">Green</span>
-                            <span class="mb-0 text-success">
-                                <span>Link</span>
-                            </span>
-                        </h1>
-                        <small class="fst-italic text-muted d-block">
-                            <i class="bi bi-hash text-success"></i>For a Green Life
-                        </small>
-                    </div>
-                </div>
+                    <div class="col-xl-3 col-lg-8 col-md-6 col-6">
+                        <div class="d-flex align-items-center mb-0">
+                            <img src="/assets/images/brand/logo/icons8-protea-flower-64.png" class="d-inline" alt="logo-icon" />
+                            <div class="ms-2">
+                                <h1 class="mb-0 fw-bold d-inline">
+                                    <span class="mb-0 text-secondary">Green</span>
+                                    <span class="mb-0 text-success">
+                                        <span>Link</span>
+                                    </span>
+                                </h1>
+                                <small class="fst-italic text-muted d-block">
+                                    <i class="bi bi-hash text-success"></i>For a Green Life
+                                </small>
+                            </div>
+                        </div>
                 </a>
                 <!-- Navbar nav -->
-                 <!-- // add ul parte  -->
-                 <ul class="navbar-nav flex-column" id="sideNavbar">
-            <!-- Donia (Module de Gestion des Jardins Urbains) -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#navDonia" aria-expanded="false" aria-controls="navDonia">
-                    <i class="nav-icon fe fe-globe me-2"></i> Jardins&nbsp;Urbains
-                </a>
-                <div id="navDonia" class="collapse" data-bs-parent="#sideNavbar">
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Jardin</a>
-                        </li>
+                <!-- // add ul parte  -->
+                <ul class="navbar-nav flex-column" id="sideNavbar">
+                    <!-- Donia (Module de Gestion des Jardins Urbains) -->
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#navDonia" aria-expanded="false" aria-controls="navDonia">
+                            <i class="nav-icon fe fe-globe me-2"></i> Jardins&nbsp;Urbains
+                        </a>
+                        <div id="navDonia" class="collapse" data-bs-parent="#sideNavbar">
+                            <ul class="nav flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Jardin</a>
+                                </li>
 
 
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Plantation</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Plantation</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
 
-            <!-- Kinza (Module de Gestion des Ressources) -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#navKinza" aria-expanded="false" aria-controls="navKinza">
-                    <i class="nav-icon fe fe-box me-2"></i>
-                    Ressources
-                </a>
-                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#navKinza" aria-expanded="false" aria-controls="navKinza">
-                    <i class="nav-icon fe fe-box me-2"></i>
-                    Plante
-                </a>
-                <div id="navKinza" class="collapse" data-bs-parent="#sideNavbar">
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Ressource</a>
-                        </li>
+                    <!-- Kinza (Module de Gestion des Ressources) -->
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#navKinza" aria-expanded="false" aria-controls="navKinza">
+                            <i class="nav-icon fe fe-box me-2"></i>
+                            Ressources
+                        </a>
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#navKinza" aria-expanded="false" aria-controls="navKinza">
+                            <i class="nav-icon fe fe-box me-2"></i>
+                            Plante
+                        </a>
+                        <div id="navKinza" class="collapse" data-bs-parent="#sideNavbar">
+                            <ul class="nav flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Ressource</a>
+                                </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Demande&nbsp;Ressource</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Demande&nbsp;Ressource</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
 
-            <!-- Hana (Module de Conseils) -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#navHana" aria-expanded="false" aria-controls="navHana">
-                    <i class="nav-icon fe fe-book-open me-2"></i>
-                    Conseils
-                </a>
-                <div id="navHana" class="collapse" data-bs-parent="#sideNavbar">
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Conseil</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Catégorie&nbsp;Conseil</a>
-                        </li>
+                    <!-- Hana (Module de Conseils) -->
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#navHana" aria-expanded="false" aria-controls="navHana">
+                            <i class="nav-icon fe fe-book-open me-2"></i>
+                            Conseils
+                        </a>
+                        <div id="navHana" class="collapse" data-bs-parent="#sideNavbar">
+                            <ul class="nav flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Conseil</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Catégorie&nbsp;Conseil</a>
+                                </li>
 
-                    </ul>
-                </div>
-            </li>
+                            </ul>
+                        </div>
+                    </li>
 
-            <!-- Manar (Module de Gestion des Événements) -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#navManar" aria-expanded="false" aria-controls="navManar">
-                    <i class="nav-icon fe fe-calendar me-2"></i>
-                    Événements
-                </a>
-                <div id="navManar" class="collapse" data-bs-parent="#sideNavbar">
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Événement</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Classification</a>
-                        </li>
+                    <!-- Manar (Module de Gestion des Événements) -->
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#navManar" aria-expanded="false" aria-controls="navManar">
+                            <i class="nav-icon fe fe-calendar me-2"></i>
+                            Événements
+                        </a>
+                        <div id="navManar" class="collapse" data-bs-parent="#sideNavbar">
+                            <ul class="nav flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Événement</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Classification</a>
+                                </li>
 
-                    </ul>
-                </div>
-            </li>
+                            </ul>
+                        </div>
+                    </li>
 
 
-        </ul>
+                </ul>
             </div>
         </nav>
 
@@ -224,7 +224,7 @@
                                                     <div class="col">
                                                         <a class="text-body" href="#">
                                                             <div class="d-flex">
-                                                                <img src="../../assets/images/avatar/avatar-1.jpg" alt="" class="avatar-md rounded-circle" />
+                                                                <img src="/assets/images/avatar/avatar-1.jpg" alt="" class="avatar-md rounded-circle" />
                                                                 <div class="ms-3">
                                                                     <h5 class="fw-bold mb-1">Kristin Watson:</h5>
                                                                     <p class="mb-3">Krisitn Watsan like your comment on course Javascript Introduction!</p>
@@ -254,7 +254,7 @@
                                                     <div class="col">
                                                         <a class="text-body" href="#">
                                                             <div class="d-flex">
-                                                                <img src="../../assets/images/avatar/avatar-2.jpg" alt="" class="avatar-md rounded-circle" />
+                                                                <img src="/assets/images/avatar/avatar-2.jpg" alt="" class="avatar-md rounded-circle" />
                                                                 <div class="ms-3">
                                                                     <h5 class="fw-bold mb-1">Brooklyn Simmons</h5>
                                                                     <p class="mb-3">Just launched a new Courses React for Beginner.</p>
@@ -279,7 +279,7 @@
                                                     <div class="col">
                                                         <a class="text-body" href="#">
                                                             <div class="d-flex">
-                                                                <img src="../../assets/images/avatar/avatar-3.jpg" alt="" class="avatar-md rounded-circle" />
+                                                                <img src="/assets/images/avatar/avatar-3.jpg" alt="" class="avatar-md rounded-circle" />
                                                                 <div class="ms-3">
                                                                     <h5 class="fw-bold mb-1">Jenny Wilson</h5>
                                                                     <p class="mb-3">Krisitn Watsan like your comment on course Javascript Introduction!</p>
@@ -304,7 +304,7 @@
                                                     <div class="col">
                                                         <a class="text-body" href="#">
                                                             <div class="d-flex">
-                                                                <img src="../../assets/images/avatar/avatar-4.jpg" alt="" class="avatar-md rounded-circle" />
+                                                                <img src="/assets/images/avatar/avatar-4.jpg" alt="" class="avatar-md rounded-circle" />
                                                                 <div class="ms-3">
                                                                     <h5 class="fw-bold mb-1">Sina Ray</h5>
                                                                     <p class="mb-3">You earn new certificate for complete the Javascript Beginner course.</p>
@@ -420,44 +420,44 @@
             </div>
 
             <section class="container-fluid p-4">
-            <div class="row">
-            <div class="col-lg-12 col-md-12 col-12">
-              <div class="border-bottom pb-3 mb-3 d-flex flex-column flex-lg-row gap-3 justify-content-between align-items-lg-center">
-                <div>
-                  <h1 class="mb-0 h2 fw-bold">Dashboard</h1>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-12">
+                        <div class="border-bottom pb-3 mb-3 d-flex flex-column flex-lg-row gap-3 justify-content-between align-items-lg-center">
+                            <div>
+                                <h1 class="mb-0 h2 fw-bold">Dashboard</h1>
+                            </div>
+                            <div class="d-flex gap-3">
+                                <div class="input-group">
+                                    <input class="form-control flatpickr" type="text" placeholder="Select Date" aria-describedby="basic-addon2" />
+
+                                    <span class="input-group-text" id="basic-addon2"><i class="fe fe-calendar"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="d-flex gap-3">
-                  <div class="input-group">
-                    <input class="form-control flatpickr" type="text" placeholder="Select Date" aria-describedby="basic-addon2" />
+    @yield('contentadmin')
 
-                    <span class="input-group-text" id="basic-addon2"><i class="fe fe-calendar"></i></span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-            @yield('contentadmin')
-
-</section>
+    </section>
 
 
-        </main>
+    </main>
     </div>
 
     <!-- Script -->
 
     <!-- Libs JS -->
-    <script src="../../assets/libs/%40popperjs/core/dist/umd/popper.min.js"></script>
-    <script src="../../assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="../../assets/libs/simplebar/dist/simplebar.min.js"></script>
+    <script src="/assets/libs/%40popperjs/core/dist/umd/popper.min.js"></script>
+    <script src="/assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/assets/libs/simplebar/dist/simplebar.min.js"></script>
 
     <!-- Theme JS -->
-    <script src="../../assets/js/theme.min.js"></script>
+    <script src="/assets/js/theme.min.js"></script>
 
-    <script src="../../assets/libs/apexcharts/dist/apexcharts.min.js"></script>
-    <script src="../../assets/js/vendors/chart.js"></script>
-    <script src="../../assets/libs/flatpickr/dist/flatpickr.min.js"></script>
-    <script src="../../assets/js/vendors/flatpickr.js"></script>
+    <script src="/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
+    <script src="/assets/js/vendors/chart.js"></script>
+    <script src="/assets/libs/flatpickr/dist/flatpickr.min.js"></script>
+    <script src="/assets/js/vendors/flatpickr.js"></script>
 </body>
 
 <!-- Mirrored from geeksui.codescandy.com/geeks/pages/dashboard/admin-dashboard.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 10:12:50 GMT -->

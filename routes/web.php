@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\backend\backendController;
+use App\Http\Controllers\backend\conseil\ConseilCategorieController;
 use App\Http\Controllers\frontend\frontendController;
 use App\Http\Controllers\backend\JardinController;
 use Illuminate\Support\Facades\Route;
@@ -37,7 +38,15 @@ Route::prefix('/admin')->group(function () {
     Route::get('/jardin/edit',  action: [JardinController::class, 'edit'])->name('backend.jardin.formJardin');
 
     // Route::resource('/jardin/edit',  JardinController::class);
+    ///Conseil part url
 
+
+    
+    Route::middleware('web')->prefix('/conseil')->group(function () {
+        Route::resource('/categorie', ConseilCategorieController::class);
+    });
+
+    ////
 
 
 });

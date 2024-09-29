@@ -1,7 +1,7 @@
 @extends('backend.layouts.layoutdashbored')
 @section('contentadmin')
 <section class="container-fluid p-4">
-    <div class="row">
+
         <div class="col-lg-12 col-md-12 col-12">
             <!-- Page Header -->
             <div class="border-bottom pb-3 mb-3 d-flex flex-column flex-md-row gap-3 align-items-md-center justify-content-between">
@@ -157,6 +157,5 @@
                 </div>
             </div>
         </div>
-    </div>
 </section>
 @endsection

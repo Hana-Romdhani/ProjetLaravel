@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\backend\backendController;
+use App\Http\Controllers\backend\conseilController;
 use App\Http\Controllers\frontend\frontendController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +28,8 @@ Route::prefix('/')->group(function () {
 //admin part
 Route::prefix('/admin')->group(function () {
     Route::get('/',  [backendController::class, 'index']);
+    Route::get('/conseil',  [conseilController::class, 'index']);
+
 
     Route::get('/edit-profile', function () {
         return view('backend.pages.profileAdmin');

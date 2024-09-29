@@ -5,7 +5,7 @@ namespace App\Http\Controllers\backend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class backendController extends Controller
+class conseilController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +14,10 @@ class backendController extends Controller
      */
     public function index()
     {
-        return view(view: 'backend.layouts.layoutdashbored');
+        return view(view: 'backend.pages.dashboredAdmin');
+
     }
+
     /**
      * Show the form for creating a new resource.
      *

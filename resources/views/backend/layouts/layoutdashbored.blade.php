@@ -134,7 +134,7 @@
                 <div id="navManar" class="collapse" data-bs-parent="#sideNavbar">
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Événement</a>
+                            <a class="nav-link" href="{{ route('backend.evenement.index') }}">Événement</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Classification</a>

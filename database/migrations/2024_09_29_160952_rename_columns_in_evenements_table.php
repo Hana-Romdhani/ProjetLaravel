@@ -13,15 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('evenements', function (Blueprint $table) {
-            $table->id();
-            $table->string('titre');
-            $table->string('lieu');
-            $table->text('description');
-            $table->date('date');
-            $table->string('image')->nullable();
-            $table->timestamps();
-        });
+      
+            DB::statement('ALTER TABLE evenements CHANGE titre title VARCHAR(255)');
+            DB::statement('ALTER TABLE evenements CHANGE lieu location VARCHAR(255)');
+      
     }
 
     /**
@@ -31,6 +26,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('evenements');
+        Schema::table('evenements', function (Blueprint $table) {
+            //
+        });
     }
 };

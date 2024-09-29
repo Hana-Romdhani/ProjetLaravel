@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\backend\backendController;
-use App\Http\Controllers\backend\conseilController;
+use App\Http\Controllers\backend\conseil\ConseilCategorieController;
 use App\Http\Controllers\frontend\frontendController;
 use App\Http\Controllers\backend\JardinController;
 use Illuminate\Support\Facades\Route;
@@ -24,6 +24,9 @@ Route::prefix('/')->group(function () {
     Route::get('/contact', function () {
         return view('frontend.pages.contact');
     });
+    Route::get('/user-workspace', function () {
+        return view('frontend.ressources.RessourcesForm');
+    });
 });
 
 //admin part
@@ -36,14 +39,33 @@ Route::prefix('/admin')->group(function () {
         return view('backend.pages.profileAdmin');
     });
 
-    Route::get('/jardin',  [JardinController::class, 'index']);
-    Route::get('/jardin/edit',  action: [JardinController::class, 'edit'])->name('backend.jardin.formJardin');
+    Route::get('/jardin',  [JardinController::class, 'index'])->name('backend.jardin.jardin');
 
-    // Route::resource('/jardin/edit',  JardinController::class);
+    // Display the form to create a new jardin
+    Route::get('/jardin/create',  [JardinController::class, 'create',])->name('admin.jardin.create');
+    // Handle form submission for creating a new jardin
+    Route::post('/jardin', [JardinController::class, 'store'])->name('backend.jardin.formJardin');
 
+    // Display the form to edit an existing jardin
+    Route::get('/jardin/{jardin}/edit', [JardinController::class, 'edit'])->name('admin.jardin.edit');
+    // Handle form submission for updating an existing jardin
+    Route::put('/jardin/{jardin}', [JardinController::class, 'update'])->name('jardin.update');
 
+//conseil part
+    Route::middleware('web')->prefix('/conseil')->group(function () {
+        Route::resource('/categorie', ConseilCategorieController::class);
+    });
+//conseil part
 
+// Handle deletion of a jardin
+Route::delete('/jardin/{jardin}', [JardinController::class, 'destroy'])->name('jardin.destroy');
 });
+
+
+
+
+
+
 //auth part
 Route::prefix('auth')->group(function () {
     Route::get('/signin', function () {
@@ -61,5 +83,3 @@ Route::prefix('auth')->group(function () {
         return view('auth.pages.profile');
     });
 });
-
-

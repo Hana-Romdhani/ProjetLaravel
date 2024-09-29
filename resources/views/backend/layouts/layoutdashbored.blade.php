@@ -4,7 +4,7 @@
 <!-- Mirrored from geeksui.codescandy.com/geeks/pages/dashboard/admin-dashboard.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 10:12:37 GMT -->
 
 <head>
-    <link rel="stylesheet" href="../../assets/libs/flatpickr/dist/flatpickr.min.css" />
+    <link rel="stylesheet" href="/assets/libs/flatpickr/dist/flatpickr.min.css" />
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -44,7 +44,7 @@
         <nav class="navbar-vertical navbar">
             <div class="vh-100" data-simplebar>
                 <!-- Brand logo -->
-                <a class="navbar-brand" href="../../index.html">
+                <a class="navbar-brand" href="/">
                 <div class="col-xl-3 col-lg-8 col-md-6 col-6">
                     <div class="d-flex align-items-center mb-0">
                     <img src="/assets/images/brand/logo/icons8-protea-flower-64.png" class="d-inline" alt="logo-icon" />
@@ -62,18 +62,18 @@
                 </div>
                 </a>
                 <!-- Navbar nav -->
-                <!-- // add ul parte  -->
-                <ul class="navbar-nav flex-column" id="sideNavbar">
-                    <!-- Donia (Module de Gestion des Jardins Urbains) -->
-                    <li class="nav-item">
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#navDonia" aria-expanded="false" aria-controls="navDonia">
-                            <i class="nav-icon fe fe-globe me-2"></i> Jardins&nbsp;Urbains
-                        </a>
-                        <div id="navDonia" class="collapse" data-bs-parent="#sideNavbar">
-                            <ul class="nav flex-column">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Jardin</a>
-                                </li>
+                 <!-- // add ul parte  -->
+                 <ul class="navbar-nav flex-column" id="sideNavbar">
+            <!-- Donia (Module de Gestion des Jardins Urbains) -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href={{ route('backend.jardin.jardin') }} data-bs-toggle="collapse" data-bs-target="#navDonia" aria-expanded="false" aria-controls="navDonia">
+                    <i class="nav-icon fe fe-globe me-2"></i> Jardins&nbsp;Urbains
+                </a>
+                <div id="navDonia" class="collapse" data-bs-parent="#sideNavbar">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href={{ route('backend.jardin.jardin') }}>Jardin</a>
+                        </li>
 
 
                                 <li class="nav-item">
@@ -224,7 +224,7 @@
                                                     <div class="col">
                                                         <a class="text-body" href="#">
                                                             <div class="d-flex">
-                                                                <img src="../../assets/images/avatar/avatar-1.jpg" alt="" class="avatar-md rounded-circle" />
+                                                                <img src="/assets/images/avatar/avatar-1.jpg" alt="" class="avatar-md rounded-circle" />
                                                                 <div class="ms-3">
                                                                     <h5 class="fw-bold mb-1">Kristin Watson:</h5>
                                                                     <p class="mb-3">Krisitn Watsan like your comment on course Javascript Introduction!</p>
@@ -254,7 +254,7 @@
                                                     <div class="col">
                                                         <a class="text-body" href="#">
                                                             <div class="d-flex">
-                                                                <img src="../../assets/images/avatar/avatar-2.jpg" alt="" class="avatar-md rounded-circle" />
+                                                                <img src="/assets/images/avatar/avatar-2.jpg" alt="" class="avatar-md rounded-circle" />
                                                                 <div class="ms-3">
                                                                     <h5 class="fw-bold mb-1">Brooklyn Simmons</h5>
                                                                     <p class="mb-3">Just launched a new Courses React for Beginner.</p>
@@ -279,7 +279,7 @@
                                                     <div class="col">
                                                         <a class="text-body" href="#">
                                                             <div class="d-flex">
-                                                                <img src="../../assets/images/avatar/avatar-3.jpg" alt="" class="avatar-md rounded-circle" />
+                                                                <img src="/assets/images/avatar/avatar-3.jpg" alt="" class="avatar-md rounded-circle" />
                                                                 <div class="ms-3">
                                                                     <h5 class="fw-bold mb-1">Jenny Wilson</h5>
                                                                     <p class="mb-3">Krisitn Watsan like your comment on course Javascript Introduction!</p>
@@ -304,7 +304,7 @@
                                                     <div class="col">
                                                         <a class="text-body" href="#">
                                                             <div class="d-flex">
-                                                                <img src="../../assets/images/avatar/avatar-4.jpg" alt="" class="avatar-md rounded-circle" />
+                                                                <img src="/assets/images/avatar/avatar-4.jpg" alt="" class="avatar-md rounded-circle" />
                                                                 <div class="ms-3">
                                                                     <h5 class="fw-bold mb-1">Sina Ray</h5>
                                                                     <p class="mb-3">You earn new certificate for complete the Javascript Beginner course.</p>
@@ -335,14 +335,14 @@
                             <li class="dropdown ms-2">
                                 <a class="rounded-circle" href="#" role="button" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
                                     <div class="avatar avatar-md avatar-indicators avatar-online">
-                                        <img alt="avatar" src="../../assets/images/avatar/avatar-1.jpg" class="rounded-circle" />
+                                        <img alt="avatar" src="../../assets/images/avatar/images.png" class="rounded-circle" />
                                     </div>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUser">
                                     <div class="dropdown-item">
                                         <div class="d-flex">
                                             <div class="avatar avatar-md avatar-indicators avatar-online">
-                                                <img alt="avatar" src="../../assets/images/avatar/avatar-1.jpg" class="rounded-circle" />
+                                                <img alt="avatar" src="../../assets/images/avatar/images.png" class="rounded-circle" />
                                             </div>
                                             <div class="ms-3 lh-1">
                                                 <h5 class="mb-1">Annette Black</h5>
@@ -436,28 +436,28 @@
                         </div>
                     </div>
                 </div>
-                @yield('contentadmin')
+    @yield('contentadmin')
 
-            </section>
+    </section>
 
 
-        </main>
+    </main>
     </div>
 
     <!-- Script -->
 
     <!-- Libs JS -->
-    <script src="../../assets/libs/%40popperjs/core/dist/umd/popper.min.js"></script>
-    <script src="../../assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="../../assets/libs/simplebar/dist/simplebar.min.js"></script>
+    <script src="/assets/libs/%40popperjs/core/dist/umd/popper.min.js"></script>
+    <script src="/assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/assets/libs/simplebar/dist/simplebar.min.js"></script>
 
     <!-- Theme JS -->
-    <script src="../../assets/js/theme.min.js"></script>
+    <script src="/assets/js/theme.min.js"></script>
 
-    <script src="../../assets/libs/apexcharts/dist/apexcharts.min.js"></script>
-    <script src="../../assets/js/vendors/chart.js"></script>
-    <script src="../../assets/libs/flatpickr/dist/flatpickr.min.js"></script>
-    <script src="../../assets/js/vendors/flatpickr.js"></script>
+    <script src="/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
+    <script src="/assets/js/vendors/chart.js"></script>
+    <script src="/assets/libs/flatpickr/dist/flatpickr.min.js"></script>
+    <script src="/assets/js/vendors/flatpickr.js"></script>
 </body>
 
 <!-- Mirrored from geeksui.codescandy.com/geeks/pages/dashboard/admin-dashboard.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 10:12:50 GMT -->

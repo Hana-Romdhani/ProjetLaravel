@@ -23,6 +23,9 @@ Route::prefix('/')->group(function () {
     Route::get('/contact', function () {
         return view('frontend.pages.contact');
     });
+    Route::get('/user-workspace', function () {
+        return view('frontend.ressources.RessourcesForm');
+    });
 });
 
 //admin part

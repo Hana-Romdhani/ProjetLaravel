@@ -21,7 +21,7 @@
                     </nav>
                 </div>
                 <div>
-                <a href="{{ route('backend.jardin.formJardin') }}" class="btn btn-primary">Add New Jardin</a>
+                    <a href="{{ route('admin.jardin.create') }}" class="btn btn-primary">Add New Jardin</a>
 
                 </div>
             </div>
@@ -73,9 +73,9 @@
                                                     <div>
                                                         <!-- If you have an image field -->
                                                         @if($jardin->image)
-                                                            <img src="{{ asset('storage/' . $jardin->image) }}" alt="" class="img-4by3-lg rounded" />
+                                                        <img src="{{ asset('storage/' . $jardin->image) }}" alt="" class="img-4by3-lg rounded" />
                                                         @else
-                                                            <img src="{{ asset('path/to/default/image.jpg') }}" alt="" class="img-4by3-lg rounded" />
+                                                        <img src="{{ asset('path/to/default/image.jpg') }}" alt="" class="img-4by3-lg rounded" />
                                                         @endif
                                                     </div>
                                                     <div class="d-flex flex-column gap-1">
@@ -94,7 +94,7 @@
                                                 {{ $jardin->status ?? 'Pending' }}
                                             </td>
                                             <td>
-                                                <a href="" class="btn btn-outline-secondary btn-sm">Edit</a>
+                                                <a href="{{ route('admin.jardin.edit', $jardin->id) }}" class="btn btn-outline-secondary btn-sm">Edit</a>
                                             </td>
                                             <td>
                                                 <span class="dropdown dropstart">
@@ -110,10 +110,15 @@
                                                     </a>
                                                     <span class="dropdown-menu" aria-labelledby="jardinDropdown{{ $jardin->id }}">
                                                         <span class="dropdown-header">Settings</span>
-                                                        <a class="dropdown-item" href="#">
-                                                            <i class="fe fe-x-circle dropdown-item-icon"></i>
-                                                            Reject with Feedback
-                                                        </a>
+                                                        <form action="{{ route('jardin.destroy', $jardin->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this jardin?');">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="dropdown-item">
+                                                                <i class="fe fe-x-circle dropdown-item-icon"></i>
+                                                                Delete
+                                                            </button>
+                                                        </form>
+
                                                     </span>
                                                 </span>
                                             </td>

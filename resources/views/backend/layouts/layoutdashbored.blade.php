@@ -44,36 +44,36 @@
         <nav class="navbar-vertical navbar">
             <div class="vh-100" data-simplebar>
                 <!-- Brand logo -->
-                <a class="navbar-brand" href="../../index.html">
-                    <div class="col-xl-3 col-lg-8 col-md-6 col-6">
-                        <div class="d-flex align-items-center mb-0">
-                            <img src="/assets/images/brand/logo/icons8-protea-flower-64.png" class="d-inline" alt="logo-icon" />
-                            <div class="ms-2">
-                                <h1 class="mb-0 fw-bold d-inline">
-                                    <span class="mb-0 text-secondary">Green</span>
-                                    <span class="mb-0 text-success">
-                                        <span>Link</span>
-                                    </span>
-                                </h1>
-                                <small class="fst-italic text-muted d-block">
-                                    <i class="bi bi-hash text-success"></i>For a Green Life
-                                </small>
-                            </div>
-                        </div>
+                <a class="navbar-brand" href="/">
+                <div class="col-xl-3 col-lg-8 col-md-6 col-6">
+                    <div class="d-flex align-items-center mb-0">
+                    <img src="/assets/images/brand/logo/icons8-protea-flower-64.png" class="d-inline" alt="logo-icon" />
+                    <div class="ms-2">
+                        <h1 class="mb-0 fw-bold d-inline">
+                            <span class="mb-0 text-secondary">Green</span>
+                            <span class="mb-0 text-success">
+                                <span>Link</span>
+                            </span>
+                        </h1>
+                        <small class="fst-italic text-muted d-block">
+                            <i class="bi bi-hash text-success"></i>For a Green Life
+                        </small>
+                    </div>
+                </div>
                 </a>
                 <!-- Navbar nav -->
-                <!-- // add ul parte  -->
-                <ul class="navbar-nav flex-column" id="sideNavbar">
-                    <!-- Donia (Module de Gestion des Jardins Urbains) -->
-                    <li class="nav-item">
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#navDonia" aria-expanded="false" aria-controls="navDonia">
-                            <i class="nav-icon fe fe-globe me-2"></i> Jardins&nbsp;Urbains
-                        </a>
-                        <div id="navDonia" class="collapse" data-bs-parent="#sideNavbar">
-                            <ul class="nav flex-column">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Jardin</a>
-                                </li>
+                 <!-- // add ul parte  -->
+                 <ul class="navbar-nav flex-column" id="sideNavbar">
+            <!-- Donia (Module de Gestion des Jardins Urbains) -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href={{ route('backend.jardin.jardin') }} data-bs-toggle="collapse" data-bs-target="#navDonia" aria-expanded="false" aria-controls="navDonia">
+                    <i class="nav-icon fe fe-globe me-2"></i> Jardins&nbsp;Urbains
+                </a>
+                <div id="navDonia" class="collapse" data-bs-parent="#sideNavbar">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href={{ route('backend.jardin.jardin') }}>Jardin</a>
+                        </li>
 
 
                                 <li class="nav-item">
@@ -335,14 +335,14 @@
                             <li class="dropdown ms-2">
                                 <a class="rounded-circle" href="#" role="button" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
                                     <div class="avatar avatar-md avatar-indicators avatar-online">
-                                        <img alt="avatar" src="../../assets/images/avatar/avatar-1.jpg" class="rounded-circle" />
+                                        <img alt="avatar" src="../../assets/images/avatar/images.png" class="rounded-circle" />
                                     </div>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUser">
                                     <div class="dropdown-item">
                                         <div class="d-flex">
                                             <div class="avatar avatar-md avatar-indicators avatar-online">
-                                                <img alt="avatar" src="../../assets/images/avatar/avatar-1.jpg" class="rounded-circle" />
+                                                <img alt="avatar" src="../../assets/images/avatar/images.png" class="rounded-circle" />
                                             </div>
                                             <div class="ms-3 lh-1">
                                                 <h5 class="mb-1">Annette Black</h5>

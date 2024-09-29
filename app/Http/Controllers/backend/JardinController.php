@@ -4,46 +4,73 @@ namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
 use App\Models\Jardin;
-
 
 class JardinController extends Controller
 {
+    // List all jardins
     public function index()
     {
         $jardins = Jardin::all();
-        return view('backend.jardin.jardin', compact('jardins')); // Passing 'jardins' to the correct blade file
+        return view('backend.jardin.jardin', compact('jardins'));
     }
 
-    public function show($id)
-    {
-        $jardin = Jardin::findOrFail($id);
-        return view('jardin.show', compact('jardin')); // Create a view to display a single Jardin
-    }
-
-
-    public function edit()
-    {
-        return view('backend.jardin.formJardin');
-    }
+    // Show form to create a new jardin
     public function create()
     {
         return view('backend.jardin.formJardin');
     }
 
+    // Store a new jardin
     public function store(Request $request)
     {
-        // Validate the request data
         $request->validate([
             'name' => 'required|string|max:255',
             'location' => 'required|string|max:255',
-            // Add more fields as per your needs
+            'size' => 'required|numeric',
+            'description' => 'required|string',
         ]);
 
-        // Create a new Jardin instance and save to the database
-        Jardin::create($request->post());
+        Jardin::create([
+            'name' => $request->name,
+            'location' => $request->location,
+            'size' => $request->size,
+            'description' => $request->description,
+        ]);
 
-        return redirect()->route('backend.jardin.jardin')->with('success', 'Jardin created successfully.');
+        return redirect()->route('backend.jardin.jardin')->with('success', 'Jardin added successfully!');
+    }
+
+    // Show form to edit an existing jardin
+    public function edit(Jardin $jardin)
+    {
+        return view('backend.jardin.formJardin', compact('jardin'));
+    }
+
+    // Update an existing jardin
+    public function update(Request $request, Jardin $jardin)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'location' => 'required|string|max:255',
+            'size' => 'required|numeric',
+            'description' => 'required|string',
+        ]);
+
+        $jardin->update([
+            'name' => $request->name,
+            'location' => $request->location,
+            'size' => $request->size,
+            'description' => $request->description,
+        ]);
+
+        return redirect()->route('backend.jardin.jardin')->with('success', 'Jardin updated successfully!');
+    }
+
+    // Delete an existing jardin
+    public function destroy(Jardin $jardin)
+    {
+        $jardin->delete();
+        return redirect()->route('backend.jardin.jardin')->with('success', 'Jardin deleted successfully!');
     }
 }

@@ -33,13 +33,23 @@ Route::prefix('/admin')->group(function () {
         return view('backend.pages.profileAdmin');
     });
 
-    Route::get('/jardin',  [JardinController::class, 'index']);
-    Route::get('/jardin/edit',  [JardinController::class, 'store',])->name('backend.jardin.formJardin');
-    // Route::resource('/jardin/edit',  JardinController::class);
+    Route::get('/jardin',  [JardinController::class, 'index'])->name('backend.jardin.jardin');
 
+    // Display the form to create a new jardin
+    Route::get('/jardin/create',  [JardinController::class, 'create',])->name('admin.jardin.create');
+    // Handle form submission for creating a new jardin
+    Route::post('/jardin', [JardinController::class, 'store'])->name('backend.jardin.formJardin');
 
+    // Display the form to edit an existing jardin
+    Route::get('/jardin/{jardin}/edit', [JardinController::class, 'edit'])->name('admin.jardin.edit');
+    // Handle form submission for updating an existing jardin
+    Route::put('/jardin/{jardin}', [JardinController::class, 'update'])->name('jardin.update');
 
+    // Handle deletion of a jardin
+    Route::delete('/jardin/{jardin}', [JardinController::class, 'destroy'])->name('jardin.destroy');
 });
+
+
 //auth part
 Route::prefix('auth')->group(function () {
     Route::get('/signin', function () {
@@ -57,5 +67,3 @@ Route::prefix('auth')->group(function () {
         return view('auth.pages.profile');
     });
 });
-
-

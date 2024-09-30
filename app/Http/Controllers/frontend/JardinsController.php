@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\landingpage;
+namespace App\Http\Controllers\frontend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Jardin;
 
-class JardinController extends Controller
+class JardinsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +15,8 @@ class JardinController extends Controller
      */
     public function index()
     {
-        //
+        $jardins = Jardin::all();
+        return view('frontend.jardin.jardin', compact('jardins'));
     }
 
     /**

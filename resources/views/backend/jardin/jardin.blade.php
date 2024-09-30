@@ -59,8 +59,9 @@
                                     <thead class="table-light">
                                         <tr>
                                             <th>Jardin Name</th>
+                                            <th>Localisation</th>
+                                            <th>Surface</th>
                                             <th>Description</th>
-                                            <th>Status</th>
                                             <th>Action</th>
                                             <th></th>
                                         </tr>
@@ -86,42 +87,53 @@
                                             </td>
                                             <td>
                                                 <div class="d-flex flex-column gap-2">
-                                                    <p>{{ $jardin->description }}</p> <!-- Displaying the description here -->
+                                                    <p>{{ $jardin->location }}</p> <!-- Displaying the description here -->
                                                 </div>
                                             </td>
                                             <td>
-                                                <span class="badge-dot bg-warning me-1 d-inline-block align-middle"></span>
-                                                {{ $jardin->status ?? 'Pending' }}
+                                                <div class="d-flex flex-column gap-2">
+                                                    <p>{{ $jardin->size }}</p> <!-- Displaying the description here -->
+                                                </div>
                                             </td>
+                                            <td>
+                                                <div class="d-flex flex-column gap-2">
+                                                    <p>{{ $jardin->description }}</p> <!-- Displaying the description here -->
+                                                </div>
+                                            </td>
+                                            <div>
                                             <td>
                                                 <a href="{{ route('admin.jardin.edit', $jardin->id) }}" class="btn btn-outline-secondary btn-sm">Edit</a>
                                             </td>
+                                           
+                                            
                                             <td>
-                                                <span class="dropdown dropstart">
-                                                    <a
-                                                        class="btn-icon btn btn-ghost btn-sm rounded-circle"
-                                                        href="#"
-                                                        role="button"
-                                                        id="jardinDropdown{{ $jardin->id }}"
-                                                        data-bs-toggle="dropdown"
-                                                        data-bs-offset="-20,20"
-                                                        aria-expanded="false">
-                                                        <i class="fe fe-more-vertical"></i>
-                                                    </a>
-                                                    <span class="dropdown-menu" aria-labelledby="jardinDropdown{{ $jardin->id }}">
-                                                        <span class="dropdown-header">Settings</span>
-                                                        <form action="{{ route('jardin.destroy', $jardin->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this jardin?');">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="dropdown-item">
-                                                                <i class="fe fe-x-circle dropdown-item-icon"></i>
-                                                                Delete
-                                                            </button>
-                                                        </form>
+            <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal{{ $jardin->id }}">
+                Delete
+            </button>
 
-                                                    </span>
-                                                </span>
-                                            </td>
+
+            <div class="modal fade" id="confirmDeleteModal{{ $jardin->id }}" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="confirmDeleteModalLabel">Confirm Deletion</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to delete this jardin?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <form action="{{ route('jardin.destroy', $jardin->id) }}" method="POST" class="d-inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </td>
                                         </tr>
                                         @endforeach
                                     </tbody>
@@ -130,6 +142,7 @@
                         </div>
                     </div>
                 </div>
+</div>
                 <!-- Card Footer -->
                 <div class="card-footer">
                     <nav>

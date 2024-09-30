@@ -3,6 +3,8 @@
 use App\Http\Controllers\backend\backendController;
 use App\Http\Controllers\frontend\frontendController;
 use App\Http\Controllers\backend\JardinController;
+use App\Http\Controllers\frontend\JardinsController;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,6 +25,9 @@ Route::prefix('/')->group(function () {
     Route::get('/contact', function () {
         return view('frontend.pages.contact');
     });
+    Route::get('/jardins',  [JardinsController::class, 'index'])->name('frontend.jardin.jardin');
+
+
 });
 
 //admin part
@@ -47,6 +52,7 @@ Route::prefix('/admin')->group(function () {
 
     // Handle deletion of a jardin
     Route::delete('/jardin/{jardin}', [JardinController::class, 'destroy'])->name('jardin.destroy');
+    
 });
 
 

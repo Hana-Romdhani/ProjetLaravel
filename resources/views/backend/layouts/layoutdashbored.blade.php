@@ -45,35 +45,35 @@
             <div class="vh-100" data-simplebar>
                 <!-- Brand logo -->
                 <a class="navbar-brand" href="/">
-                <div class="col-xl-3 col-lg-8 col-md-6 col-6">
-                    <div class="d-flex align-items-center mb-0">
-                    <img src="/assets/images/brand/logo/icons8-protea-flower-64.png" class="d-inline" alt="logo-icon" />
-                    <div class="ms-2">
-                        <h1 class="mb-0 fw-bold d-inline">
-                            <span class="mb-0 text-secondary">Green</span>
-                            <span class="mb-0 text-success">
-                                <span>Link</span>
-                            </span>
-                        </h1>
-                        <small class="fst-italic text-muted d-block">
-                            <i class="bi bi-hash text-success"></i>For a Green Life
-                        </small>
-                    </div>
-                </div>
+                    <div class="col-xl-3 col-lg-8 col-md-6 col-6">
+                        <div class="d-flex align-items-center mb-0">
+                            <img src="/assets/images/brand/logo/icons8-protea-flower-64.png" class="d-inline" alt="logo-icon" />
+                            <div class="ms-2">
+                                <h1 class="mb-0 fw-bold d-inline">
+                                    <span class="mb-0 text-secondary">Green</span>
+                                    <span class="mb-0 text-success">
+                                        <span>Link</span>
+                                    </span>
+                                </h1>
+                                <small class="fst-italic text-muted d-block">
+                                    <i class="bi bi-hash text-success"></i>For a Green Life
+                                </small>
+                            </div>
+                        </div>
                 </a>
                 <!-- Navbar nav -->
-                 <!-- // add ul parte  -->
-                 <ul class="navbar-nav flex-column" id="sideNavbar">
-            <!-- Donia (Module de Gestion des Jardins Urbains) -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href={{ route('backend.jardin.jardin') }} data-bs-toggle="collapse" data-bs-target="#navDonia" aria-expanded="false" aria-controls="navDonia">
-                    <i class="nav-icon fe fe-globe me-2"></i> Jardins&nbsp;Urbains
-                </a>
-                <div id="navDonia" class="collapse" data-bs-parent="#sideNavbar">
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link" href={{ route('backend.jardin.jardin') }}>Jardin</a>
-                        </li>
+                <!-- // add ul parte  -->
+                <ul class="navbar-nav flex-column" id="sideNavbar">
+                    <!-- Donia (Module de Gestion des Jardins Urbains) -->
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href={{ route('backend.jardin.jardin') }} data-bs-toggle="collapse" data-bs-target="#navDonia" aria-expanded="false" aria-controls="navDonia">
+                            <i class="nav-icon fe fe-globe me-2"></i> Jardins&nbsp;Urbains
+                        </a>
+                        <div id="navDonia" class="collapse" data-bs-parent="#sideNavbar">
+                            <ul class="nav flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link" href={{ route('backend.jardin.jardin') }}>Jardin</a>
+                                </li>
 
 
                                 <li class="nav-item">
@@ -83,15 +83,32 @@
                         </div>
                     </li>
 
+                    <!-- Bilel (Module de Gestion palntes) -->
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#navBilel" aria-expanded="false" aria-controls="navBilel">
+                            <i class="nav-icon fe fe-feather me-2"></i>
+                            Plante
+
+                        </a>
+                        <div id="navBilel" class="collapse" data-bs-parent="#sideNavbar">
+                            <ul class="nav flex-column">
+                                <li class="nav-item">
+                                <a class="nav-link" href={{ route('backend.plant.index') }}>Plantes</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Catégorie&nbsp;Plante</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+
                     <!-- Kinza (Module de Gestion des Ressources) -->
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#navKinza" aria-expanded="false" aria-controls="navKinza">
                             <i class="nav-icon fe fe-box me-2"></i>
                             Ressources
-                        </a>
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#navKinza" aria-expanded="false" aria-controls="navKinza">
-                            <i class="nav-icon fe fe-box me-2"></i>
-                            Plante
                         </a>
                         <div id="navKinza" class="collapse" data-bs-parent="#sideNavbar">
                             <ul class="nav flex-column">
@@ -436,12 +453,12 @@
                         </div>
                     </div>
                 </div>
-    @yield('contentadmin')
+                @yield('contentadmin')
 
-    </section>
+            </section>
 
 
-    </main>
+        </main>
     </div>
 
     <!-- Script -->

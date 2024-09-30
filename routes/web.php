@@ -4,7 +4,10 @@ use App\Http\Controllers\backend\backendController;
 use App\Http\Controllers\backend\conseil\ConseilCategorieController;
 use App\Http\Controllers\frontend\frontendController;
 use App\Http\Controllers\backend\JardinController;
+use App\Http\Controllers\frontend\PlantFrontController;
+use App\Http\Controllers\backend\PlantController;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -18,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-// home part
+// ******************************** Home **********************************
 Route::prefix('/')->group(function () {
     Route::get('/',  [frontendController::class, 'index']);
     Route::get('/contact', function () {
@@ -27,14 +30,23 @@ Route::prefix('/')->group(function () {
     Route::get('/user-workspace', function () {
         return view('frontend.ressources.RessourcesForm');
     });
+    // ********************************plants**********************************
+    // Route::get('/plantsss', [plantFrontController::class, 'index'])->name('frontend.plant.index');
+    Route::get('/plants',  [PlantFrontController::class, 'index']);
+
 });
 
 //admin part
 Route::prefix('/admin')->group(function () {
+
     Route::get('/',  [backendController::class, 'index']);
+
     Route::get('/edit-profile', function () {
         return view('backend.pages.profileAdmin');
     });
+
+    // ********************************jardin**********************************
+
     Route::get('/jardin',  [JardinController::class, 'index'])->name('backend.jardin.jardin');
 
     // Display the form to create a new jardin
@@ -47,16 +59,34 @@ Route::prefix('/admin')->group(function () {
     // Handle form submission for updating an existing jardin
     Route::put('/jardin/{jardin}', [JardinController::class, 'update'])->name('jardin.update');
 
+    // Handle deletion of a jardin
+    Route::delete('/jardin/{jardin}', [JardinController::class, 'destroy'])->name('jardin.destroy');
+
+    // ********************************conseil**********************************
     //conseil part
     Route::middleware('web')->prefix('/conseil')->group(function () {
         Route::resource('/categorie', ConseilCategorieController::class);
     });
     //conseil part
 
-    // Handle deletion of a jardin
-    Route::delete('/jardin/{jardin}', [JardinController::class, 'destroy'])->name('jardin.destroy');
+    // ********************************plants**********************************
+    // Display a list of plants
+    Route::get('/plant', [PlantController::class, 'index'])->name('backend.plant.index');
 
+    // Display the form to create a new plant
+    Route::get('/plant/create', [PlantController::class, 'create'])->name('backend.plant.create');
 
+    // Store the new plant
+    Route::post('/plant', [PlantController::class, 'store'])->name('backend.plant.store');
+
+    // Display the form to edit an existing plant
+    Route::get('/plant/{plante}/edit', [PlantController::class, 'edit'])->name('backend.plant.edit');
+
+    // Update the existing plant
+    Route::put('/plant/{plante}', [PlantController::class, 'update'])->name('backend.plant.update');
+
+    // Delete the plant
+    Route::delete('/plant/{plante}', [PlantController::class, 'destroy'])->name('backend.plant.destroy');
 });
 
 

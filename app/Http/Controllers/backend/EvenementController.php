@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use App\Models\Evenement;
+use Illuminate\Support\Facades\Storage;
 
 class EvenementController extends Controller
 {
@@ -47,9 +48,18 @@ class EvenementController extends Controller
             'title' => 'required|string|max:255',
             'location' => 'required|string|max:255',
             'description' => 'required|string',
-            'date' => 'required'
-            // Add more fields as per your needs
+            'date' => 'required',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Ajoutez la validation pour l'image
         ]);
+
+        // Créez un nouveau Jardin instance et sauvegardez dans la base de données
+        $data = $request->except('image');
+        
+        // Si une image est téléchargée, stockez-la et ajoutez son chemin au tableau de données
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('images/evenements', 'public'); // Spécifiez le chemin où l'image sera stockée
+        }
+
 
         // Create a new Jardin instance and save to the database
         Evenement::create($request->post());
@@ -97,14 +107,30 @@ class EvenementController extends Controller
         'description' => 'required|string',
         'location' => 'required|string|max:255',
         'date' => 'required|date',
+        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Ajoutez la validation pour l'image
     ]);
 
     // Récupérer l'événement à mettre à jour
     $evenement = Evenement::findOrFail($id);
+    
+    // Sauvegarder l'ancienne image si elle existe
+    $oldImage = $evenement->image;
+
     $evenement->title = $request->title;
     $evenement->description = $request->description;
     $evenement->location = $request->location;
     $evenement->date = $request->date;
+
+    // Vérifiez si une nouvelle image a été téléchargée
+    if ($request->hasFile('image')) {
+        // Supprimez l'ancienne image si elle existe
+        if ($oldImage) {
+            Storage::disk('public')->delete($oldImage);
+        }
+
+        // Stockez la nouvelle image et mettez à jour le chemin
+        $evenement->image = $request->file('image')->store('images/evenements', 'public');
+    }
     $evenement->save(); // Sauvegarder les changements
 
     // Rediriger avec un message de succès
@@ -120,6 +146,10 @@ class EvenementController extends Controller
     public function destroy($id)
     {
         $evenement = Evenement::findOrFail($id); // Récupérer l'événement par ID
+        // Supprimer l'image associée si elle existe
+        if ($evenement->image) {
+            Storage::disk('public')->delete($evenement->image);
+        }
         $evenement->delete(); // Supprimer l'événement
     
         return redirect()->route('backend.evenement.index');

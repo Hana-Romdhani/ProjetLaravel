@@ -21,7 +21,7 @@
                     </nav>
                 </div>
                 <div>
-                <a href="{{ route('backend.evenement.create') }}" class="btn btn-primary">Add New Event</a>
+                    <a href="{{ route('backend.evenement.create') }}" class="btn btn-primary">Add New Event</a>
 
                 </div>
             </div>
@@ -62,8 +62,9 @@
                                             <th>Location</th>
                                             <th>Description</th>
                                             <th>Date</th>
+
                                             <th>Action</th>
-                                            <th></th>
+
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -74,9 +75,9 @@
                                                     <div>
                                                         <!-- If you have an image field -->
                                                         @if($evenement->image)
-                                                            <img src="{{ asset('storage/' . $evenement->image) }}" alt="" class="img-4by3-lg rounded" />
+                                                        <img src="{{ asset('storage/' . $evenement->image) }}" alt="" class="img-4by3-lg rounded" />
                                                         @else
-                                                            <img src="{{ asset('path/to/default/image.jpg') }}" alt="" class="img-4by3-lg rounded" />
+                                                        <img src="{{ asset('path/to/default/image.jpg') }}" alt="" class="img-4by3-lg rounded" />
                                                         @endif
                                                     </div>
                                                     <div class="d-flex flex-column gap-1">
@@ -95,116 +96,107 @@
                                                     <p>{{ $evenement->description }}</p> <!-- Displaying the description here -->
                                                 </div>
                                             </td>
-                                            
+
                                             <td>
                                                 <div class="d-flex flex-column gap-2">
                                                     <p>{{ $evenement->date }}</p> <!-- Displaying the description here -->
                                                 </div>
                                             </td>
-                                            <!-- <td>
-                                                <span class="badge-dot bg-warning me-1 d-inline-block align-middle"></span>
-                                                {{ $jardin->status ?? 'Pending' }}
-                                            </td> -->
+
+                                    
+                                            
                                             <td>
-    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#editEventModal{{ $evenement->id }}">
-        Edit
-    </button>
+                                                <div class="d-flex justify-content-center gap-2">
+                                                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#editEventModal{{ $evenement->id }}">
+                                                        Edit
+                                                    </button>
 
-    <!-- Modal pour le formulaire d'édition -->
-<div class="modal fade" id="editEventModal{{ $evenement->id }}" tabindex="-1" aria-labelledby="editEventModalLabel{{ $evenement->id }}" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editEventModalLabel{{ $evenement->id }}">Edit Event</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <!-- Use the correct route for updating -->
-                <form action="{{ route('backend.evenement.update', $evenement->id) }}" method="POST">
-                    @csrf
-                    @method('PUT') <!-- Indicating that this is a PUT request -->
-                    
-                    <!-- Event Title Field -->
-                    <div class="mb-3">
-                        <label for="title" class="form-label">Title</label>
-                        <input type="text" class="form-control" name="title" value="{{ $evenement->title }}" required>
-                    </div>
-
-                    <!-- Event Location Field -->
-                    <div class="mb-3">
-                        <label for="location" class="form-label">Location</label>
-                        <input type="text" class="form-control" name="location" value="{{ $evenement->location }}" required>
-                    </div>
-
-                    <!-- Event Description Field -->
-                    <div class="mb-3">
-                        <label for="description" class="form-label">Description</label>
-                        <textarea class="form-control" name="description" rows="3" required>{{ $evenement->description }}</textarea>
-                    </div>
-
-                    <!-- Event Date Field -->
-                    <div class="mb-3">
-                        <label for="date" class="form-label">Date</label>
-                        <input type="date" class="form-control" name="date" value="{{ $evenement->date }}" required>
-                    </div>
-
-                    <!-- Submit Button -->
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>       <td>
-            <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal{{ $evenement->id }}">
-                Delete
-            </button>
-
-            <div class="modal fade" id="confirmDeleteModal{{ $evenement->id }}" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="confirmDeleteModalLabel">Confirm Deletion</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            Are you sure you want to delete this event?
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <form action="{{ route('backend.evenement.destroy', $evenement->id) }}" method="POST" class="d-inline">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </td>
-                                            <td>
-                                                <span class="dropdown dropstart">
-                                                    <a
-                                                        class="btn-icon btn btn-ghost btn-sm rounded-circle"
-                                                        href="#"
-                                                        role="button"
-                                                        id="jardinDropdown{{ $evenement->id }}"
-                                                        data-bs-toggle="dropdown"
-                                                        data-bs-offset="-20,20"
-                                                        aria-expanded="false">
-                                                        <i class="fe fe-more-vertical"></i>
-                                                    </a>
-                                                    <span class="dropdown-menu" aria-labelledby="jardinDropdown{{ $evenement->id }}">
-                                                        <span class="dropdown-header">Settings</span>
-                                                        <a class="dropdown-item" href="#">
-                                                            <i class="fe fe-x-circle dropdown-item-icon"></i>
-                                                            Reject with Feedback
-                                                        </a>
-                                                    </span>
-                                                </span>
+                                                    <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal{{ $evenement->id }}">
+                                                        Delete
+                                                    </button>
+                                                </div>
                                             </td>
+                                            <!-- Modal pour le formulaire d'édition -->
+                                            <div class="modal fade" id="editEventModal{{ $evenement->id }}" tabindex="-1" aria-labelledby="editEventModalLabel{{ $evenement->id }}" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="editEventModalLabel{{ $evenement->id }}">Edit Event</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <!-- Use the correct route for updating -->
+                                                            <form action="{{ route('backend.evenement.update', $evenement->id) }}" method="POST" enctype="multipart/form-data">
+                                                                @csrf
+                                                                @method('PUT') <!-- Indicating that this is a PUT request -->
+
+                                                                <!-- Event Title Field -->
+                                                                <div class="mb-3">
+                                                                    <label for="title" class="form-label">Title</label>
+                                                                    <input type="text" class="form-control" name="title" value="{{ $evenement->title }}" required>
+                                                                </div>
+
+                                                                <!-- Event Location Field -->
+                                                                <div class="mb-3">
+                                                                    <label for="location" class="form-label">Location</label>
+                                                                    <input type="text" class="form-control" name="location" value="{{ $evenement->location }}" required>
+                                                                </div>
+
+                                                                <!-- Event Description Field -->
+                                                                <div class="mb-3">
+                                                                    <label for="description" class="form-label">Description</label>
+                                                                    <textarea class="form-control" name="description" rows="3" required>{{ $evenement->description }}</textarea>
+                                                                </div>
+
+                                                                <!-- Event Date Field -->
+                                                                <div class="mb-3">
+                                                                    <label for="date" class="form-label">Date</label>
+                                                                    <input type="date" class="form-control" name="date" value="{{ $evenement->date }}" required>
+                                                                </div>
+                                                                <!-- Event Image Field -->
+                                                                <div class="mb-3">
+                                                                    <label for="image" class="form-label">Image</label>
+                                                                    <input type="file" class="form-control" name="image" accept="image/*">
+                                                                    <small class="form-text text-muted">Leave blank if you don't want to change the image.</small>
+                                                                </div>
+
+
+                                                                <!-- Submit Button -->
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <td>
+                                               
+
+                                                <div class="modal fade" id="confirmDeleteModal{{ $evenement->id }}" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="confirmDeleteModalLabel">Confirm Deletion</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                Are you sure you want to delete this event?
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                                <form action="{{ route('backend.evenement.destroy', $evenement->id) }}" method="POST" class="d-inline">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                </td>
                                         </tr>
                                         @endforeach
                                     </tbody>
@@ -260,7 +252,7 @@
     }
     // Vérifie si une session de succès existe et déclenche l'alerte
     @if(session('success'))
-        showAlert();  // Appelle la fonction si la session contient 'success'
+    showAlert(); // Appelle la fonction si la session contient 'success'
     @endif
 </script>
 @endsection

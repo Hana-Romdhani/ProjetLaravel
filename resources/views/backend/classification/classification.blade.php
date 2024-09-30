@@ -6,7 +6,7 @@
             <!-- Page Header -->
             <div class="border-bottom pb-3 mb-3 d-flex flex-column flex-md-row gap-3 align-items-md-center justify-content-between">
                 <div class="d-flex flex-column gap-1">
-                    <h1 class="mb-0 h2 fw-bold">Events</h1>
+                    <h1 class="mb-0 h2 fw-bold">Classifications</h1>
                     <!-- Breadcrumb -->
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
@@ -21,7 +21,7 @@
                     </nav>
                 </div>
                 <div>
-                <a href="{{ route('backend.evenement.create') }}" class="btn btn-primary">Add New Event</a>
+                <a href="{{ route('backend.classification.create') }}" class="btn btn-primary">Add New Classification</a>
 
                 </div>
             </div>
@@ -46,7 +46,7 @@
                     <!-- Form -->
                     <form class="d-flex align-items-center col-12 col-md-12 col-lg-12">
                         <span class="position-absolute ps-3 search-icon"><i class="fe fe-search"></i></span>
-                        <input type="search" class="form-control ps-6" placeholder="Search Event" />
+                        <input type="search" class="form-control ps-6" placeholder="Search Classification" />
                     </form>
                 </div>
                 <div>
@@ -58,95 +58,66 @@
                                 <table class="table mb-0 text-nowrap table-centered table-hover">
                                     <thead class="table-light">
                                         <tr>
-                                            <th>Title</th>
-                                            <th>Location</th>
-                                            <th>Description</th>
-                                            <th>Date</th>
+                                            <th>Name</th>
+                                           
                                             <th>Action</th>
                                             <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($evenements as $evenement)
+                                        @foreach ($classifications as $classification)
                                         <tr>
                                             <td>
                                                 <div class="d-flex align-items-center gap-3">
                                                     <div>
                                                         <!-- If you have an image field -->
-                                                        @if($evenement->image)
+                                                        @if($classification->image)
                                                             <img src="{{ asset('storage/' . $evenement->image) }}" alt="" class="img-4by3-lg rounded" />
                                                         @else
                                                             <img src="{{ asset('path/to/default/image.jpg') }}" alt="" class="img-4by3-lg rounded" />
                                                         @endif
                                                     </div>
                                                     <div class="d-flex flex-column gap-1">
-                                                        <h4 class="mb-0 text-primary-hover">{{ $evenement->title }}</h4>
-                                                        <span>Added on {{ $evenement->created_at->format('d M, Y') }}</span>
+                                                        <h4 class="mb-0 text-primary-hover">{{ $classification->name }}</h4>
+                                                        <span>Added on {{ $classification->created_at->format('d M, Y') }}</span>
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td>
-                                                <div class="d-flex flex-column gap-2">
-                                                    <p>{{ $evenement->location }}</p> <!-- Displaying the description here -->
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="d-flex flex-column gap-2">
-                                                    <p>{{ $evenement->description }}</p> <!-- Displaying the description here -->
-                                                </div>
-                                            </td>
+                                           
                                             
-                                            <td>
-                                                <div class="d-flex flex-column gap-2">
-                                                    <p>{{ $evenement->date }}</p> <!-- Displaying the description here -->
-                                                </div>
-                                            </td>
+                                           
                                             <!-- <td>
                                                 <span class="badge-dot bg-warning me-1 d-inline-block align-middle"></span>
                                                 {{ $jardin->status ?? 'Pending' }}
                                             </td> -->
                                             <td>
-    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#editEventModal{{ $evenement->id }}">
+    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#editEventModal{{ $classification->id }}">
         Edit
     </button>
 
     <!-- Modal pour le formulaire d'édition -->
-<div class="modal fade" id="editEventModal{{ $evenement->id }}" tabindex="-1" aria-labelledby="editEventModalLabel{{ $evenement->id }}" aria-hidden="true">
+<div class="modal fade" id="editEventModal{{ $classification->id }}" tabindex="-1" aria-labelledby="editEventModalLabel{{ $classification->id }}" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editEventModalLabel{{ $evenement->id }}">Edit Event</h5>
+                <h5 class="modal-title" id="editEventModalLabel{{ $classification->id }}">Edit Classification</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <!-- Use the correct route for updating -->
-                <form action="{{ route('backend.evenement.update', $evenement->id) }}" method="POST">
+                <form action="{{ route('backend.classification.update', $classification->id) }}" method="POST">
                     @csrf
                     @method('PUT') <!-- Indicating that this is a PUT request -->
                     
                     <!-- Event Title Field -->
                     <div class="mb-3">
-                        <label for="title" class="form-label">Title</label>
-                        <input type="text" class="form-control" name="title" value="{{ $evenement->title }}" required>
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" name="name" value="{{ $classification->name }}" required>
                     </div>
 
-                    <!-- Event Location Field -->
-                    <div class="mb-3">
-                        <label for="location" class="form-label">Location</label>
-                        <input type="text" class="form-control" name="location" value="{{ $evenement->location }}" required>
-                    </div>
+                 
 
-                    <!-- Event Description Field -->
-                    <div class="mb-3">
-                        <label for="description" class="form-label">Description</label>
-                        <textarea class="form-control" name="description" rows="3" required>{{ $evenement->description }}</textarea>
-                    </div>
-
-                    <!-- Event Date Field -->
-                    <div class="mb-3">
-                        <label for="date" class="form-label">Date</label>
-                        <input type="date" class="form-control" name="date" value="{{ $evenement->date }}" required>
-                    </div>
+                
 
                     <!-- Submit Button -->
                     <div class="modal-footer">
@@ -158,11 +129,11 @@
         </div>
     </div>
 </div>       <td>
-            <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal{{ $evenement->id }}">
+            <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal{{ $classification->id }}">
                 Delete
             </button>
 
-            <div class="modal fade" id="confirmDeleteModal{{ $evenement->id }}" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+            <div class="modal fade" id="confirmDeleteModal{{ $classification->id }}" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -170,11 +141,11 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            Are you sure you want to delete this event?
+                            Are you sure you want to delete this classification?
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <form action="{{ route('backend.evenement.destroy', $evenement->id) }}" method="POST" class="d-inline">
+                            <form action="{{ route('backend.classification.destroy', $classification->id) }}" method="POST" class="d-inline">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger">Delete</button>
@@ -190,13 +161,13 @@
                                                         class="btn-icon btn btn-ghost btn-sm rounded-circle"
                                                         href="#"
                                                         role="button"
-                                                        id="jardinDropdown{{ $evenement->id }}"
+                                                        id="jardinDropdown{{ $classification->id }}"
                                                         data-bs-toggle="dropdown"
                                                         data-bs-offset="-20,20"
                                                         aria-expanded="false">
                                                         <i class="fe fe-more-vertical"></i>
                                                     </a>
-                                                    <span class="dropdown-menu" aria-labelledby="jardinDropdown{{ $evenement->id }}">
+                                                    <span class="dropdown-menu" aria-labelledby="jardinDropdown{{ $classification->id }}">
                                                         <span class="dropdown-header">Settings</span>
                                                         <a class="dropdown-item" href="#">
                                                             <i class="fe fe-x-circle dropdown-item-icon"></i>

@@ -122,6 +122,6 @@ class EvenementController extends Controller
         $evenement = Evenement::findOrFail($id); // Récupérer l'événement par ID
         $evenement->delete(); // Supprimer l'événement
     
-        return redirect()->route('backend.evenement.index')->with('success', 'Event deleted successfully.');
+        return redirect()->route('backend.evenement.index');
     }
 }

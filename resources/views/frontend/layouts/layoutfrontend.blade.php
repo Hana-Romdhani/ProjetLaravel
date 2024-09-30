@@ -138,11 +138,12 @@
 
                 <!-- Module de Gestion des Événements -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarEvenements" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Événements</a>
-                    <ul class="dropdown-menu dropdown-menu-arrow" aria-labelledby="navbarEvenements">
-                        <li><a class="dropdown-item" href="#">Événement</a></li>
+                    <!-- <a class="nav-link dropdown-toggle" href="{{ route('frontend.evenement.index') }}" id="navbarEvenements" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Events</a> -->
+                    <li><a class="dropdown-item" href="{{ route('frontend.evenement.index') }}" id="navbarEvenements" aria-haspopup="true" aria-expanded="false">Events</a></li>
+                    <!-- <ul class="dropdown-menu dropdown-menu-arrow" aria-labelledby="navbarEvenements">
+                        <li><a class="dropdown-item" href="{{ route('frontend.evenement.index') }}">Events</a></li>
                         <li><a class="dropdown-item" href="#">Classification</a></li>
-                    </ul>
+                    </ul> -->
                 </li>
 
                 <!-- Module Catalogue des Plantes -->

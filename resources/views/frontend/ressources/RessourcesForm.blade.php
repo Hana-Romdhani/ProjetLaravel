@@ -4,16 +4,21 @@
     <!-- Card header -->
     <div class="card-header">
         <h3 class="mb-0">{{ isset($ressource) ? 'Update Ressource' : 'Create Ressource' }}</h3>
-       
     </div>
 
     <!-- Card body -->
     <div class="card-body">
-        <form action="{{  isset($ressource) ? route('ressource.update', $ressource->id) : route('frontend.ressources.RessourcesForm') }}" method="POST" class="row gx-3 needs-validation" novalidate>
-        @csrf
-        @if(isset($ressource))
-        @method('PUT')
-        @endif
+        <form action="{{  isset($ressource) ? route('ressource.update', $ressource->id) : route('frontend.ressources.RessourcesForm') }}" 
+              method="POST" 
+              class="row gx-3 needs-validation" 
+              enctype="multipart/form-data"  <!-- Important for file uploads -->
+              novalidate>
+              
+            @csrf
+            @if(isset($ressource))
+                @method('PUT')
+            @endif
+
             <!-- Nom -->
             <div class="mb-3 col-12">
                 <label class="form-label" for="nom">Nom</label>
@@ -33,6 +38,13 @@
                 <label class="form-label" for="libelle">Libellé</label>
                 <input type="text" id="libelle" name="libelle" class="form-control" placeholder="Libellé"  value="{{ $ressource->libelle ?? '' }}" required />
                 <div class="invalid-feedback">Please enter a label for the resource.</div>
+            </div>
+
+            <!-- Image Upload -->
+            <div class="mb-3 col-12">
+                <label class="form-label" for="image">Image</label>
+                <input type="file" id="image" name="image" class="form-control" {{ isset($ressource) ? '' : 'required' }} />
+                <div class="invalid-feedback">Please upload an image for the resource.</div>
             </div>
 
             <div class="col-12">

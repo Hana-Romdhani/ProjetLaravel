@@ -40,6 +40,8 @@ Route::prefix('/')->group(function () {
 
     // });
     Route::get('/ressourceUser',  [RessourceController::class, 'index'])->name('frontend.ressources.Ressources');
+    Route::get('/ressourcesList',  [RessourceController::class, 'show'])->name('frontend.ressources.RessourcesList');
+
 
 });
 

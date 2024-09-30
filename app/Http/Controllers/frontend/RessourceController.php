@@ -16,7 +16,7 @@ class RessourceController extends Controller
     public function index()
     {
         $ressources = Ressource::all();
-        return view('frontend.ressources.RessourcesForm', compact('ressources'));
+        return view('frontend.ressources.Ressources', compact('ressources'));
     }
 
     /**
@@ -50,7 +50,7 @@ class RessourceController extends Controller
             'libelle' => $request->libelle,
         ]);
 
-        return redirect()->route('frontend.ressources.RessourcesForm')->with('success', 'Ressource added successfully!');
+        return redirect()->route('frontend.ressources.Ressources')->with('success', 'Ressource added successfully!');
     }
 
     /**
@@ -97,7 +97,7 @@ class RessourceController extends Controller
             'libelle' => $request->libelle,
         ]);
 
-        return redirect()->route('frontend.ressources.RessourcesForm')->with('success', 'Ressource updated successfully!');
+        return redirect()->route('frontend.ressources.Ressources')->with('success', 'Ressource updated successfully!');
     }
 
     /**
@@ -109,6 +109,6 @@ class RessourceController extends Controller
     public function destroy(Ressource $ressource)
     {
         $ressource->delete();
-        return redirect()->route('frontend.ressource.ressource')->with('success', 'Ressource deleted successfully!');
+        return redirect()->route('frontend.ressources.Ressources')->with('success', 'Ressource deleted successfully!');
     }
 }

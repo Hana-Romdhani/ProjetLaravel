@@ -2,8 +2,7 @@
 @section('contentadmin')
 <section class="container-fluid p-4">
 
-    <!-- If you want to differentiate between create and update, you can use isset($jardin) to conditionally set the route and method -->
-    <form action="{{ isset($jardin) ? route('jardin.update', $jardin->id) : route('backend.jardin.formJardin') }}" method="POST">
+    <form action="{{ isset($jardin) ? route('jardin.update', $jardin->id) : route('backend.jardin.formJardin') }}" method="POST" enctype="multipart/form-data">
         @csrf
         @if(isset($jardin))
         @method('PUT')
@@ -35,6 +34,16 @@
             <label class="form-label" for="jardinDescription">Description</label>
             <textarea id="jardinDescription" name="description" class="form-control" rows="4" required>{{ $jardin->description ?? '' }}</textarea>
             <div class="invalid-feedback">Please provide a description of the jardin.</div>
+        </div>
+
+        <!-- Jardin Image -->
+        <div class="mb-3 col-12">
+            <label class="form-label" for="jardinImage">Image</label>
+            <input type="file" id="jardinImage" name="image" class="form-control" accept="image/*" {{ isset($jardin) ? '' : 'required' }} />
+            <div class="invalid-feedback">Please upload an image for the jardin.</div>
+            @if(isset($jardin) && $jardin->image)
+                <img src="{{ asset('storage/' . $jardin->image) }}" alt="{{ $jardin->name }}" class="img-thumbnail mt-2" style="max-height: 150px;">
+            @endif
         </div>
 
         <!-- Submit Button -->

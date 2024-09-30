@@ -22,7 +22,11 @@
                     <div class="img-overlay">
                         <div class="img-color">
                             <!-- Display jardin image -->
-                            <img src="../assets/images/portfolio/portfolio-square-3.jpg" alt="portfolio" class="img-fluid w-100">
+                            @if($jardin->image)
+                                                        <img src="{{ asset('storage/' . $jardin->image) }}" alt="" class="img-fluid w-100" />
+                                                        @else
+                                                        <img src="{{ asset('path/to/default/image.jpg') }}" alt="" class="img-fluid w-100"/>
+                                                        @endif
                             <!-- Caption -->
                             <div class="caption">
                                 <a href="#" class="btn btn-white">View Details</a>

@@ -22,7 +22,7 @@
                     <div class="img-overlay">
                         <div class="img-color">
                             <!-- Display jardin image -->
-                            @if($jardin->image)
+                                                      @if($jardin->image)
                                                         <img src="{{ asset('storage/' . $jardin->image) }}" alt="" class="img-fluid w-100" />
                                                         @else
                                                         <img src="{{ asset('path/to/default/image.jpg') }}" alt="" class="img-fluid w-100"/>

@@ -61,7 +61,7 @@
                                             <th>Jardin Name</th>
                                             <th>Localisation</th>
                                             <th>Surface</th>
-                                            <th>Description</th>
+                                            
                                             <th>Action</th>
                                             <th></th>
                                         </tr>
@@ -95,11 +95,7 @@
                                                     <p>{{ $jardin->size }}</p> <!-- Displaying the description here -->
                                                 </div>
                                             </td>
-                                            <td>
-                                                <div class="d-flex flex-column gap-2">
-                                                    <p>{{ $jardin->description }}</p> <!-- Displaying the description here -->
-                                                </div>
-                                            </td>
+                                     
                                             <div>
                                             <td>
                                                 <a href="{{ route('admin.jardin.edit', $jardin->id) }}" class="btn btn-outline-secondary btn-sm">Edit</a>

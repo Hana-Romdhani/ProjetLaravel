@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\landingpage;
+namespace App\Http\Controllers\frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Ressource;
 use Illuminate\Http\Request;
 
 class RessourceController extends Controller
@@ -15,7 +16,7 @@ class RessourceController extends Controller
     public function index()
     {
         $ressources = Ressource::all();
-        return view('frontend.ressource.ressource', compact('ressources'));
+        return view('frontend.ressources.RessourcesForm', compact('ressources'));
     }
 
     /**
@@ -25,7 +26,7 @@ class RessourceController extends Controller
      */
     public function create()
     {
-        return view('frontend.ressource.formRessource');
+        return view('frontend.ressources.RessourcesForm');
 
     }
 
@@ -43,13 +44,13 @@ class RessourceController extends Controller
             'libelle' => 'required|string',
         ]);
 
-        Jardin::create([
+        Ressource::create([
             'nom' => $request->nom,
             'quantite' => $request->quantite,
             'libelle' => $request->libelle,
         ]);
 
-        return redirect()->route('frontend.ressource.ressource')->with('success', 'Ressource added successfully!');
+        return redirect()->route('frontend.ressources.RessourcesForm')->with('success', 'Ressource added successfully!');
     }
 
     /**
@@ -72,7 +73,7 @@ class RessourceController extends Controller
      */
     public function edit(Ressource $ressource)
     {
-        return view('frontend.ressource.formRessource', compact('ressource'));
+        return view('frontend.ressources.RessourcesForm', compact('ressource'));
     }
 
     /**
@@ -90,13 +91,13 @@ class RessourceController extends Controller
             'libelle' => 'required|string',
         ]);
 
-        $jardin->update([
+        $ressource->update([
             'nom' => $request->nom,
             'quantite' => $request->quantite,
             'libelle' => $request->libelle,
         ]);
 
-        return redirect()->route('frontend.ressource.ressource')->with('success', 'Ressource updated successfully!');
+        return redirect()->route('frontend.ressources.RessourcesForm')->with('success', 'Ressource updated successfully!');
     }
 
     /**

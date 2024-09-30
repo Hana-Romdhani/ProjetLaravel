@@ -85,18 +85,15 @@
 
             <!-- Kinza (Module de Gestion des Ressources) -->
             <li class="nav-item">
+            
                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#navKinza" aria-expanded="false" aria-controls="navKinza">
                     <i class="nav-icon fe fe-box me-2"></i>
                     Ressources
                 </a>
-                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#navKinza" aria-expanded="false" aria-controls="navKinza">
-                    <i class="nav-icon fe fe-box me-2"></i>
-                    Plante
-                </a>
                 <div id="navKinza" class="collapse" data-bs-parent="#sideNavbar">
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Ressource</a>
+                            <a class="nav-link" href={{ route('backend.ressource.ressource') }}>Ressource</a>
                         </li>
 
                         <li class="nav-item">

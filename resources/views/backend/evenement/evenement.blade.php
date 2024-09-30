@@ -72,14 +72,12 @@
                                         <tr>
                                             <td>
                                                 <div class="d-flex align-items-center gap-3">
-                                                    <div>
-                                                        <!-- If you have an image field -->
-                                                        @if($evenement->image)
-                                                        <img src="{{ asset('storage/' . $evenement->image) }}" alt="" class="img-4by3-lg rounded" />
-                                                        @else
-                                                        <img src="{{ asset('path/to/default/image.jpg') }}" alt="" class="img-4by3-lg rounded" />
-                                                        @endif
-                                                    </div>
+                                                <div>
+            <!-- Si vous avez un champ d'image -->
+            @if($evenement->image)
+            <img src="{{ asset('storage/' . $evenement->image) }}" alt="" class="img-4by3-lg rounded" />
+            @endif
+        </div>
                                                     <div class="d-flex flex-column gap-1">
                                                         <h4 class="mb-0 text-primary-hover">{{ $evenement->title }}</h4>
                                                         <span>Added on {{ $evenement->created_at->format('d M, Y') }}</span>

@@ -62,7 +62,8 @@ class EvenementController extends Controller
 
 
         // Create a new Jardin instance and save to the database
-        Evenement::create($request->post());
+        //Evenement::create($request->post())
+        Evenement::create($data);
 
         return redirect()->route('backend.evenement.index')->with('success', 'Event created successfully.');
     }

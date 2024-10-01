@@ -1,5 +1,6 @@
 @extends('backend.layouts.layoutdashbored')
 @section('contentadmin')
+
 <section class="container-fluid p-4">
     <div class="col-lg-12 col-md-12 col-12">
         <!-- Page Header -->
@@ -20,12 +21,10 @@
                 </nav>
             </div>
             <div>
-                <a href="{{ route('categorie.create') }}" class="btn btn-primary">Add New Jardin</a>
+                <a href="{{ route('conseil-categorie.create') }}" class="btn btn-primary">Add New Jardin</a>
 
             </div>
         </div>
-
-
 
         <div class="row">
             <div class="col-lg-12 col-md-12 col-12">
@@ -41,6 +40,19 @@
                 </div>
                 @else
                 <!-- Card -->
+                <div class="card-body d-flex flex-column gap-4">
+                    <div class="d-flex flex-column gap-2">
+                        <div class="d-flex align-items-center">
+                            <img src="/assets/images/conseil/worldg.png" alt="Image de la carte" class="img-fluid w-15 me-4">
+                            <p class="mb-0">
+                                Veuillez fournir un aperçu succinct de la catégorie que vous mettez à jour pour les conseils.<br>
+                                Décrivez son objectif ainsi que le type de conseils ou d'orientations associés à cette catégorie.<br>
+                              Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque quia error et voluptate dolor ipsa deserunt ipsam! Ipsam nihil esse, quo illo dolorum id magnam magni dolor, ab repellat quam.
+                            </p>
+
+                        </div>
+                    </div>
+                </div>
                 <div class="card rounded-3">
                     <!-- Card header -->
                     <div class="card-header p-0">
@@ -52,21 +64,24 @@
                                 </li>
                             </ul>
                         </div>
+
                     </div>
                     <div class="p-4 row">
-                        <!-- Form -->
-                        <form class="d-flex align-items-center col-12 col-md-12 col-lg-12">
+                        <form class="d-flex align-items-center col-12 col-md-12 col-lg-12" action="{{ route('conseil-categorie.index') }}" method="GET">
                             <span class="position-absolute ps-3 search-icon"><i class="fe fe-search"></i></span>
-                            <input type="search" class="form-control ps-6" placeholder="Search Jardin" />
+                            <input type="search" name="name" id="searchInput" class="form-control ps-6" placeholder="Search category by name" value="{{ request()->get('name') }}" />
+                            <button type="submit" class="btn btn-primary ms-2">Search</button>
                         </form>
+
                     </div>
+
                     <div>
                         <!-- Table -->
                         <div class="tab-content" id="tabContent">
                             <!--Tab pane -->
                             <div class="tab-pane fade show active" id="courses" role="tabpanel" aria-labelledby="courses-tab">
                                 <div class="table-responsive border-0 overflow-y-hidden">
-                                    <table class="table mb-0 text-nowrap table-centered table-hover">
+                                    <table class="table mb-0 text-nowrap table-centered table-hover" id="categoryTable">
                                         <thead class="table-light">
                                             <tr>
                                                 <th>Name</th>
@@ -90,12 +105,12 @@
                                                 </td>
                                                 <td>
                                                     <a href="" class="btn btn-outline-success btn-sm d-inline-block me-2">Conseil Details</a>
-                                                    <form action="{{ route('categorie.destroy',$categorie_conseil->id) }}" method="Post" class="d-inline-block">
+                                                    <form action="{{ route('conseil-categorie.destroy',$categorie_conseil->id) }}" method="Post" class="d-inline-block">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
                                                     </form>
-                                                    <a href="{{ route('categorie.edit',  parameters: $categorie_conseil->id) }}" class="btn btn-outline-secondary btn-sm ms-2">Edit</a>
+                                                    <a href="{{ route('conseil-categorie.edit',  parameters: $categorie_conseil->id) }}" class="btn btn-outline-secondary btn-sm ms-2">Edit</a>
                                                 </td>
                                             </tr>
                                             @endforeach
@@ -108,32 +123,41 @@
                     <!-- Card Footer -->
                     <div class="d-flex justify-content-center">
                         <nav>
-                            {{ $categorie_conseils->links('pagination::bootstrap-4') }}
+                            {{ $categorie_conseils->appends(request()->query())->links('pagination::bootstrap-4') }}
                         </nav>
                     </div>
                 </div>
-
-
                 @endif
             </div>
-
         </div>
     </div>
     <script>
-        // Wait for the document to be fully loaded
         document.addEventListener("DOMContentLoaded", function() {
-            // Get the success alert element
+            const searchInput = document.getElementById('searchInput');
+            const table = document.getElementById('categoryTable');
+            const rows = table.getElementsByTagName('tr');
             const successAlert = document.getElementById('success-alert');
             if (successAlert) {
-                // Set a timeout to hide the success alert after 3 seconds (3000 milliseconds)
                 setTimeout(function() {
                     successAlert.style.display = 'none';
-                }, 3000);
+                }, 2000);
             }
+            searchInput.addEventListener('keyup', function() {
+                const filter = searchInput.value.toLowerCase();
+                for (let i = 1; i < rows.length; i++) {
+                    const td = rows[i].getElementsByTagName('td')[0];
+                    if (td) {
+                        const textValue = td.textContent || td.innerText;
+                        if (textValue.toLowerCase().indexOf(filter) > -1) {
+                            rows[i].style.display = "";
+                        } else {
+                            rows[i].style.display = "none";
+                        }
+                    }
+                }
+            });
         });
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </section>
-
-
-
 @endsection

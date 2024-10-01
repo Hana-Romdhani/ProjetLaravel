@@ -15,7 +15,13 @@ return new class extends Migration
     {
         Schema::create('conseils', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('titre');
+            $table->string(column: 'question');
+            $table->string(column: 'contenus');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('category_id');
+            $table->string('image_url')->nullable();
+            $table->string('video_url')->nullable();
             $table->timestamps();
         });
     }

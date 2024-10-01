@@ -4,6 +4,7 @@
 <!-- Mirrored from geeksui.codescandy.com/geeks/pages/dashboard/admin-dashboard.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 10:12:37 GMT -->
 
 <head>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="/assets/libs/flatpickr/dist/flatpickr.min.css" />
     <!-- Required meta tags -->
     <meta charset="utf-8" />

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\backend\backendController;
 use App\Http\Controllers\backend\conseil\ConseilCategorieController;
+use App\Http\Controllers\backend\conseil\ConseilController;
 use App\Http\Controllers\frontend\frontendController;
 use App\Http\Controllers\backend\JardinController;
 use Illuminate\Support\Facades\Route;
@@ -50,8 +51,9 @@ Route::prefix('/admin')->group(function () {
     Route::put('/jardin/{jardin}', [JardinController::class, 'update'])->name('jardin.update');
 
 //conseil part
-    Route::middleware('web')->prefix('/conseil')->group(function () {
-        Route::resource('/categorie', ConseilCategorieController::class);
+    Route::middleware('web')->prefix('/')->group(function () {
+        Route::resource('/conseil-categorie', ConseilCategorieController::class);
+        Route::resource('/conseil', ConseilController::class);
     });
 //conseil part
 

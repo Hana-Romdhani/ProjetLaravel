@@ -13,11 +13,21 @@ class ConseilCategorieController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $categorie_conseils = CategorieConseil::paginate(2);
-        return view ('backend.conseil.categories.index', compact('categorie_conseils'));
+
+        $search = $request->get('name');
+
+        if ($search) {
+            $categorie_conseils = CategorieConseil::where('name', 'like', '%' . $search . '%')->paginate(2);
+            $categorie_conseils->appends(['name' => $search]);
+        } else {
+            $categorie_conseils = CategorieConseil::paginate(2);
+        }
+
+        return view('backend.conseil.categories.index', compact('categorie_conseils'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -38,14 +48,27 @@ class ConseilCategorieController extends Controller
       // Store a newly created resource in storage
       public function store(Request $request)
       {
+          // Validate the request
           $request->validate([
-              'name' => 'required|string|max:255',
+              'name' => [
+                  'required',                 // Field must be present and not empty
+                  'string',                   // Field must be a string
+                  'max:255',                  // Field must not exceed 255 characters
+                  'regex:/^[a-zA-Z\s]+$/',    // Field must contain only letters and spaces
+                  'unique:categorie_conseils,name',  // Field must be unique in the 'categorie_conseils' table
+              ],
           ]);
 
-          CategorieConseil::create($request->post());
+          // Create the new category
+          $categorie = CategorieConseil::create($request->post());
 
-          return redirect()->route('categorie.index')->with('success', 'Category created successfully.');
-        }
+          // Check if creation was successful
+          if ($categorie) {
+              return redirect()->route('conseil-categorie.index')->with('success', 'Category created successfully.');
+          } else {
+              return redirect()->route('conseil-categorie.create')->with('error', 'Failed to create the category. Please try again.');
+          }
+      }
 
 
 
@@ -81,16 +104,34 @@ class ConseilCategorieController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // Validate the incoming request data
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => [
+                'required',                 // Field must be present and not empty
+                'string',                   // Field must be a string
+                'max:255',                  // Field must not exceed 255 characters
+                'regex:/^[a-zA-Z\s]+$/',    // Field must contain only letters and spaces
+                'unique:categorie_conseils,name',  // Field must be unique in the 'categorie_conseils' table
+            ],
         ]);
 
+        // Find the category or fail if not found
         $categorie_conseil = CategorieConseil::findOrFail($id);
-        $categorie_conseil->update($request->all());
 
-        return redirect()->route('categorie.index')->with('success', 'Category updated successfully.');
+        // Update the category
+        $success = $categorie_conseil->update($request->all());
 
+        // Check if the update was successful
+        if ($success) {
+            return redirect()->route('conseil-categorie.index')->with('success', 'Category updated successfully.');
+        } else {
+            // If the update failed, redirect back to the edit form with the input
+            return redirect()->route('conseil-categorie.edit', $id)
+                             ->withInput() // retain the input values
+                             ->with('error', 'Failed to update the category. Please try again.');
+        }
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -103,6 +144,6 @@ class ConseilCategorieController extends Controller
         $categorie_conseil = CategorieConseil::findOrFail($id);
         $categorie_conseil->delete();
 
-        return redirect()->route('categorie.index')->with('success', 'Category deleted successfully.');
+        return redirect()->route('conseil-categorie.index')->with('success', 'Category deleted successfully.');
     }
 }

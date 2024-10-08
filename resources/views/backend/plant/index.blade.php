@@ -37,7 +37,7 @@
                                 <tr>
                                     <th>Nom de la Plante</th>
                                     <th>Type</th>
-                                    <th>Taille (m²)</th>
+                                    <th>origine</th>
                                     <th>Description</th>
                                     <th>Actions</th>
                                 </tr>
@@ -47,7 +47,8 @@
                                 <tr>
                                     <td>{{ $plant->nom }}</td> <!-- Changed from $plant->name -->
                                     <td>{{ $plant->type }}</td>
-                                    <td>{{ $plant->taille }} m²</td> <!-- If you have a taille field, change $plant->size to $plant->taille -->
+                                    <!-- <td>{{ $plant->taille }} m²</td> If you have a taille field, change $plant->size to $plant->taille -->
+                                    <td>{{ $plant-> origine}} </td>
                                     <td>{{ \Illuminate\Support\Str::limit($plant->description, 50) }}</td>
                                     <td>
                                         <!-- Action buttons: Edit and Delete -->

@@ -6,6 +6,8 @@ use App\Http\Controllers\frontend\frontendController;
 use App\Http\Controllers\backend\JardinController;
 use App\Http\Controllers\frontend\PlantFrontController;
 use App\Http\Controllers\backend\PlantController;
+use App\Http\Controllers\backend\CategoryPlanteController;
+use App\Models\CategoriePlante;
 use Illuminate\Support\Facades\Route;
 
 
@@ -33,7 +35,6 @@ Route::prefix('/')->group(function () {
     // ********************************plants**********************************
     // Route::get('/plantsss', [plantFrontController::class, 'index'])->name('frontend.plant.index');
     Route::get('/plants',  [PlantFrontController::class, 'index']);
-
 });
 
 //admin part
@@ -87,6 +88,25 @@ Route::prefix('/admin')->group(function () {
 
     // Delete the plant
     Route::delete('/plant/{plante}', [PlantController::class, 'destroy'])->name('backend.plant.destroy');
+
+    // ********************************categoriesPlante **********************************
+    // Display a list of categories
+    Route::get('/category', [CategoryPlanteController::class, 'index'])->name('backend.categoriePlante.index');
+
+    // Display the form to create a new category
+    Route::get('/category/create', [CategoryPlanteController::class, 'create'])->name('backend.categoriePlante.create');
+
+    // Store the new category
+    Route::post('/category', [CategoryPlanteController::class, 'store'])->name('backend.categoriePlante.store');
+
+    // Display the form to edit an existing category
+    Route::get('/category/{category}/edit', [CategoryPlanteController::class, 'edit'])->name('backend.categoriePlante.edit');
+
+    // Update the existing category
+    Route::put('/category/{category}', [CategoryPlanteController::class, 'update'])->name('backend.categoriePlante.update');
+
+    // Delete the category
+    Route::delete('/category/{category}', [CategoryPlanteController::class, 'destroy'])->name('backend.categoriePlante.destroy');
 });
 
 

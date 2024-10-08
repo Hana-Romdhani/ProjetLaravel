@@ -97,7 +97,7 @@
                                 </li>
 
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">Catégorie&nbsp;Plante</a>
+                                    <a class="nav-link" href={{ route('backend.categoriePlante.index') }}>Catégorie&nbsp;Plante</a>
                                 </li>
                             </ul>
                         </div>

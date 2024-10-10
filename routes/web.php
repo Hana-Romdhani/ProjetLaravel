@@ -8,15 +8,13 @@ use App\Http\Controllers\backend\JardinController;
 use App\Http\Controllers\backend\EvenementController;
 use App\Http\Controllers\backend\ClassificationController;
 use App\Http\Controllers\frontend\EvenementFrontController;
-
-
 use App\Http\Controllers\frontend\PlantFrontController;
 use App\Http\Controllers\backend\PlantController;
 use App\Http\Controllers\backend\CategoryPlanteController;
 use App\Models\CategoriePlante;
 use App\Http\Controllers\backend\RessourcesController;
 use App\Http\Controllers\frontend\RessourceController;
-
+use App\Http\Controllers\frontend\JardinsController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -40,7 +38,6 @@ Route::prefix('/')->group(function () {
     });
     Route::get('/user-workspace', function () {
         return view('frontend.ressources.RessourcesForm');
-
     });
     // ********************************plants**********************************
     // Route::get('/plantsss', [plantFrontController::class, 'index'])->name('frontend.plant.index');
@@ -51,12 +48,10 @@ Route::prefix('/')->group(function () {
     Route::delete('/ressource/{ressource}', [RessourceController::class, 'destroy'])->name('Ressources.destroy');
     // Route::get('/ressourceUser', function () {
     //     return view('frontend.ressources.Ressources');
-
     // });
     Route::get('/ressourceUser',  [RessourceController::class, 'index'])->name('frontend.ressources.Ressources');
     Route::get('/ressourcesList',  [RessourceController::class, 'show'])->name('frontend.ressources.RessourcesList');
-
-
+    Route::get('/jardins',  [JardinsController::class, 'index'])->name('frontend.jardin.jardin');
 });
 
 //admin part
@@ -134,16 +129,12 @@ Route::prefix('front')->group(function () {
     Route::delete('/jardin/{jardin}', [JardinController::class, 'destroy'])->name('jardin.destroy');
 
     // ********************************conseil**********************************
-
-
-
     // ********************************plants**********************************
     // Display a list of plants
     Route::get('/plant', [PlantController::class, 'index'])->name('backend.plant.index');
 
     // Display the form to create a new plant
     Route::get('/plant/create', [PlantController::class, 'create'])->name('backend.plant.create');
-
     // Store the new plant
     Route::post('/plant', [PlantController::class, 'store'])->name('backend.plant.store');
 
@@ -189,8 +180,8 @@ Route::prefix('front')->group(function () {
 
 
 
-});
 
+});
 
 
 

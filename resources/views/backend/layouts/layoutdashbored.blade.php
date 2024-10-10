@@ -126,20 +126,20 @@
                         </div>
                     </li>
 
-                    <!-- Manar (Module de Gestion des Événements) -->
-                    <li class="nav-item">
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#navManar" aria-expanded="false" aria-controls="navManar">
-                            <i class="nav-icon fe fe-calendar me-2"></i>
-                            Événements
-                        </a>
-                        <div id="navManar" class="collapse" data-bs-parent="#sideNavbar">
-                            <ul class="nav flex-column">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Événement</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Classification</a>
-                                </li>
+            <!-- Manar (Module de Gestion des Événements) -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#navManar" aria-expanded="false" aria-controls="navManar">
+                    <i class="nav-icon fe fe-calendar me-2"></i>
+                    Événements
+                </a>
+                <div id="navManar" class="collapse" data-bs-parent="#sideNavbar">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('backend.evenement.index') }}">Événement</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('backend.classification.index') }}">Classification</a>
+                        </li>
 
                             </ul>
                         </div>

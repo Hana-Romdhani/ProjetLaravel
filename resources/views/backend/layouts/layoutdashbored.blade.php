@@ -5,12 +5,7 @@
 
 <head>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <<<<<<< HEAD
-        <link rel="stylesheet" href="/assets/libs/flatpickr/dist/flatpickr.min.css" />
-    =======
-
-    <link rel="stylesheet" href="../../assets/libs/flatpickr/dist/flatpickr.min.css" />
-    >>>>>>> origin/GestionEvenements
+    <link rel="stylesheet" href="/assets/libs/flatpickr/dist/flatpickr.min.css" />
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />

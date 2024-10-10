@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('titre');
             $table->string(column: 'question');
             $table->string(column: 'contenus');
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('category_id');
+            $table->integer('user_id');
+            $table->integer('category_id');
             $table->string('image_url')->nullable();
             $table->string('video_url')->nullable();
             $table->timestamps();

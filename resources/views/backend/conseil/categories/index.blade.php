@@ -21,7 +21,7 @@
                 </nav>
             </div>
             <div>
-                <a href="{{ route('conseil-categorie.create') }}" class="btn btn-primary">Add New Jardin</a>
+                <a href="{{ route('conseil-categorie.create') }}" class="btn btn-primary">Add New categorie </a>
 
             </div>
         </div>

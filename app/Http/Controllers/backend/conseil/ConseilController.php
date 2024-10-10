@@ -47,31 +47,45 @@ class ConseilController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
+        // Validation des données d'entrée
+        $request->validate( [
+            'titre' => 'required|string|max:255',
             'questions.*' => 'required|string',
             'contents.*' => 'required|string',
             'user_id' => 'required',
             'category_id' => 'required',
-            'image_url' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'video_url' => 'nullable|url',
+            'image_url' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validation de l'image
         ]);
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
+        // if ($validator->fails()) {
+        //     return redirect()->back()->withErrors($validator)->withInput();
+        // }
 
-        $imagePath = null;
+        // Récupérer les données du formulaire
+        $data = $request->except('image_url'); // Exclure 'image_url' car nous allons le gérer séparément
+
+        // Gérer le téléchargement de l'image si elle est présente
         if ($request->hasFile('image_url')) {
-            $imagePath = $request->file('image_url')->store('images', 'public/images/conseil/imgupload'); // Stocker dans le répertoire public/images
+            // Récupérer le fichier de l'image
+            $image = $request->file('image_url');
+
+            // Définir un nom unique pour l'image
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+
+            // Déplacer l'image vers le dossier de stockage
+            $image->move(public_path('images'), $imageName);
+
+            // Ajouter l'URL de l'image aux données à sauvegarder
+            $data['image_url'] = 'images/' . $imageName;
         }
 
-        $conseilData = $request->post();
-        $conseilData['image_url'] = $imagePath;
+        // Créer une nouvelle instance de Conseil et sauvegarder dans la base de données
+        Conseils::create($data);
 
-        Conseils::create($conseilData);
-        return redirect()->route('conseils.index')->with('success', 'Conseil created successfully.');
+        return redirect()->route('conseil.index')->with('success', 'Conseil created successfully.');
     }
+
+
 
     /**
      * Display the specified resource.
@@ -106,39 +120,46 @@ class ConseilController extends Controller
      */
     public function update(Request $request, $id)
     {
-
-        $validator = Validator::make($request->all(), [
+        // Validation rules
+        $request->validate( [
             'titre' => 'required|string|max:255',
             'question' => 'required|string',
-            'contenus' => 'required|string',
-            'user_id' => 'required|exists:users,id',
-            'category_id' => 'required|exists:categories,id',
-            'image_url' => 'nullable|url',
-            'video_url' => 'nullable|url',
+            'contenus' => 'required|string|max:1000',
+            'user_id' => 'required',
+            'category_id' => 'required',
+            'image_url' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validate image
         ]);
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+        // Handle validation failures
+        // if ($validator->fails()) {
+        //     return redirect()->back()->withErrors($validator)->withInput();
+        // }
+
+        // Retrieve the advice item to update
+        $conseil = Conseils::findOrFail($id);
+
+        // Get data to update
+        $conseilData = $request->only(['titre', 'question', 'contenus', 'user_id', 'category_id']);
+
+        // Handle file upload if an image is provided
+        if ($request->hasFile('image_url')) {
+            // Delete the old image if it exists (optional)
+            if ($conseil->image_url) {
+                Storage::delete($conseil->image_url); // Use appropriate path based on your storage
+            }
+
+            // Store the new image
+            $path = $request->file('image_url')->store('images', 'public'); // Store in 'storage/app/public/images'
+            $conseilData['image_url'] = $path;
         }
 
-         $conseil = Conseils::findOrFail($id);
+
+        $conseil->update($conseilData);
+
+        return redirect()->route('conseil.index')->with('success', 'Conseil mis à jour avec succès.');
+    }
 
 
-         $imagePath = $conseil->image_url;
-         if ($request->hasFile('image_url')) {
-             if ($imagePath) {
-                 Storage::disk('public/images/conseil/imgupload')->delete($imagePath);
-             }
-             $imagePath = $request->file('image_url')->store('images', 'public/images/conseil/imgupload');
-         }
-
-         $conseilData = $request->all();
-         $conseilData['image_url'] = $imagePath;
-
-         $conseil->update($conseilData);
-         return redirect()->route('conseils.index')->with('success', 'Conseil updated successfully.');
-
-       }
 
     /**
      * Remove the specified resource from storage.
@@ -150,6 +171,6 @@ class ConseilController extends Controller
     {
         $conseil = Conseils::findOrFail($id);
         $conseil->delete();
-        return redirect()->route('conseils.index')->with('success', 'Conseil deleted successfully.');
+        return redirect()->route('conseil.index')->with('success', 'Conseil deleted successfully.');
     }
 }

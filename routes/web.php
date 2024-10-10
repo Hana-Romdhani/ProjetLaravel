@@ -14,6 +14,9 @@ use App\Http\Controllers\frontend\PlantFrontController;
 use App\Http\Controllers\backend\PlantController;
 use App\Http\Controllers\backend\CategoryPlanteController;
 use App\Models\CategoriePlante;
+use App\Http\Controllers\backend\RessourcesController;
+use App\Http\Controllers\frontend\RessourceController;
+
 use Illuminate\Support\Facades\Route;
 
 
@@ -37,10 +40,23 @@ Route::prefix('/')->group(function () {
     });
     Route::get('/user-workspace', function () {
         return view('frontend.ressources.RessourcesForm');
+
     });
     // ********************************plants**********************************
     // Route::get('/plantsss', [plantFrontController::class, 'index'])->name('frontend.plant.index');
     Route::get('/plants',  [PlantFrontController::class, 'index']);
+    Route::get('/ressource/create',  [RessourceController::class, 'create',])->name('frontend.ressources.RessourcesForm.create');
+    Route::get('/ressource/{ressource}/edit', [RessourceController::class, 'edit'])->name('frontend.ressources.RessourcesForm.edit');
+    Route::put('/ressource/{ressource}', [RessourceController::class, 'update'])->name('ressource.update');
+    Route::delete('/ressource/{ressource}', [RessourceController::class, 'destroy'])->name('Ressources.destroy');
+    // Route::get('/ressourceUser', function () {
+    //     return view('frontend.ressources.Ressources');
+
+    // });
+    Route::get('/ressourceUser',  [RessourceController::class, 'index'])->name('frontend.ressources.Ressources');
+    Route::get('/ressourcesList',  [RessourceController::class, 'show'])->name('frontend.ressources.RessourcesList');
+
+
 });
 
 //admin part
@@ -158,6 +174,21 @@ Route::prefix('front')->group(function () {
 
     // Delete the category
     Route::delete('/category/{category}', [CategoryPlanteController::class, 'destroy'])->name('backend.categoriePlante.destroy');
+
+
+    Route::get('/ressource',  [RessourcesController::class, 'index'])->name('backend.ressource.ressource');
+
+    // Handle form submission for creating a new jardin
+    Route::post('/ressource', [RessourceController::class, 'store'])->name('frontend.ressources.RessourcesForm');
+    // Route::get('/ressource',  [RessourceController::class, 'index'])->name('frontend.ressources.RessourcesForm');
+
+
+    // Route::get('/ressource/{ressource}/edit', [RessourceController::class, 'edit'])->name('admin.ressource.edit');
+
+    // Route::put('/ressource/{ressource}', [RessourceController::class, 'update'])->name('RessourcesForm.update');
+
+
+
 });
 
 

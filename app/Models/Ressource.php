@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Ressource extends Model
 {
     use HasFactory;
+
+        // Define which attributes can be mass assigned
+        protected $fillable = ['nom', 'libelle', 'quantite','image'];
+
 }

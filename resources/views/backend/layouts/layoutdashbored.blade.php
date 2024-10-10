@@ -4,8 +4,13 @@
 <!-- Mirrored from geeksui.codescandy.com/geeks/pages/dashboard/admin-dashboard.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 10:12:37 GMT -->
 
 <head>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="/assets/libs/flatpickr/dist/flatpickr.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <<<<<<< HEAD
+        <link rel="stylesheet" href="/assets/libs/flatpickr/dist/flatpickr.min.css" />
+    =======
+
+    <link rel="stylesheet" href="../../assets/libs/flatpickr/dist/flatpickr.min.css" />
+    >>>>>>> origin/GestionEvenements
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -94,7 +99,7 @@
                         <div id="navBilel" class="collapse" data-bs-parent="#sideNavbar">
                             <ul class="nav flex-column">
                                 <li class="nav-item">
-                                <a class="nav-link" href={{ route('backend.plant.index') }}>Plantes</a>
+                                    <a class="nav-link" href={{ route('backend.plant.index') }}>Plantes</a>
                                 </li>
 
                                 <li class="nav-item">
@@ -107,6 +112,7 @@
 
                     <!-- Kinza (Module de Gestion des Ressources) -->
                     <li class="nav-item">
+
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#navKinza" aria-expanded="false" aria-controls="navKinza">
                             <i class="nav-icon fe fe-box me-2"></i>
                             Ressources
@@ -114,7 +120,7 @@
                         <div id="navKinza" class="collapse" data-bs-parent="#sideNavbar">
                             <ul class="nav flex-column">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">Ressource</a>
+                                    <a class="nav-link" href={{ route('backend.ressource.ressource') }}>Ressource</a>
                                 </li>
 
                                 <li class="nav-item">
@@ -143,20 +149,22 @@
                         </div>
                     </li>
 
-            <!-- Manar (Module de Gestion des Événements) -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#navManar" aria-expanded="false" aria-controls="navManar">
-                    <i class="nav-icon fe fe-calendar me-2"></i>
-                    Événements
-                </a>
-                <div id="navManar" class="collapse" data-bs-parent="#sideNavbar">
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('backend.evenement.index') }}">Événement</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('backend.classification.index') }}">Classification</a>
-                        </li>
+
+                    <!-- Manar (Module de Gestion des Événements) -->
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#navManar" aria-expanded="false" aria-controls="navManar">
+                            <i class="nav-icon fe fe-calendar me-2"></i>
+                            Événements
+                        </a>
+                        <div id="navManar" class="collapse" data-bs-parent="#sideNavbar">
+                            <ul class="nav flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('backend.evenement.index') }}">Événement</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('backend.classification.index') }}">Classification</a>
+                                </li>
+
 
                             </ul>
                         </div>

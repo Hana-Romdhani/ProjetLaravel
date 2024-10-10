@@ -12,7 +12,7 @@
               method="POST" 
               class="row gx-3 needs-validation" 
               enctype="multipart/form-data"  <!-- Important for file uploads -->
-              novalidate>
+         
               
             @csrf
             @if(isset($ressource))

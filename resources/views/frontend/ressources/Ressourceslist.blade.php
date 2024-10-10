@@ -7,7 +7,7 @@
         <div class="row">
             <div class="offset-md-2 col-md-8 col-12">
                 <div class="mb-8">
-                    <h1 class="display-3 fw-semibold mb-4">Check out some of the ressources we feature.</h1>
+                    <h1 class="display-3 fw-semibold mb-4">Découvrez nos ressources !</h1>
                 </div>
             </div>
         </div>
@@ -42,9 +42,10 @@
                     <div class="mt-4">
                         <!-- Display jardin details -->
                         <div class="d-flex justify-content-between align-items-center">
-                            <h3 class="fw-semibold mb-1">{{ $ressource->nom }}</h3>
+                            <h3 class="fw-semibold mb-1">Nom: {{ $ressource->nom }}</h3>
+                            <span>Quantité: {{ $ressource->quantite }}</span>
                         </div>
-                        <span>{{ $ressource->quantite }}</span>
+                        <p>Libelle: {{ $ressource->libelle }}</p>
                     </div>
                 </div>
                 @endforeach

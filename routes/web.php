@@ -95,7 +95,7 @@ Route::prefix('front')->group(function () {
         return view('frontend.pages.contact');
     });
 
-    Route::get('/evenement', [EvenementFrontController::class, 'index'])->name('frontend.evenement.index');
+    Route::get('/evenement', action: [EvenementFrontController::class, 'index'])->name('frontend.evenement.index');
 });
 
     //Route::get('/evenement/edit',  [EvenementController::class, 'edit'])->name('backend.evenement.formEvenement');

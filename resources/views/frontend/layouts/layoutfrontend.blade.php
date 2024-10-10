@@ -138,7 +138,6 @@
 
                 <!-- Module de Gestion des Événements -->
                 <li class="nav-item dropdown">
-                    <!-- <a class="nav-link dropdown-toggle" href="{{ route('frontend.evenement.index') }}" id="navbarEvenements" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Events</a> -->
                     <li><a class="dropdown-item" href="{{ route('frontend.evenement.index') }}" id="navbarEvenements" aria-haspopup="true" aria-expanded="false">Evénements</a></li>
                     <!-- <ul class="dropdown-menu dropdown-menu-arrow" aria-labelledby="navbarEvenements">
                         <li><a class="dropdown-item" href="{{ route('frontend.evenement.index') }}">Events</a></li>

@@ -1,9 +1,6 @@
 @extends('backend.layouts.layoutdashbored')
 @section('contentadmin')
 <section class="container-fluid p-4">
-
-
-
         <div class="col-lg-36 col-md-46 col-46">
             <!-- Card -->
             <div class="card">
@@ -72,7 +69,7 @@
                             <!-- State -->
                             <div class="mb-3 col-12 col-md-6">
                                 <label class="form-label" for="profileEditState">State</label>
-                                <select class="form-select" data-choices="" id="profileEditState" name="profileEditState" required>
+                                <select class="form-select"  id="profileEditState" name="profileEditState" required>
                                     <option value="">Select State</option>
                                     <option value="1">Gujarat</option>
                                     <option value="2">Rajasthan</option>
@@ -83,7 +80,7 @@
                             <!-- Country -->
                             <div class="mb-3 col-12 col-md-6">
                                 <label class="form-label" for="editCountry">Country</label>
-                                <select class="form-select" data-choices="" id="editCountry" required>
+                                <select class="form-select"  id="editCountry" required>
                                     <option value="">Select Country</option>
                                     <option value="1">India</option>
                                     <option value="2">UK</option>

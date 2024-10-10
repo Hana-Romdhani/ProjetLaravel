@@ -33,11 +33,9 @@ Route::prefix('/')->group(function () {
 //admin part
 Route::prefix('/admin')->group(function () {
     Route::get('/',  [backendController::class, 'index']);
-
     Route::get('/edit-profile', function () {
         return view('backend.pages.profileAdmin');
     });
-
     Route::get('/jardin',  [JardinController::class, 'index'])->name('backend.jardin.jardin');
 
     // Display the form to create a new jardin

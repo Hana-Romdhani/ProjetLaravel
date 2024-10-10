@@ -46,7 +46,7 @@
         <nav class="navbar-vertical navbar">
             <div class="vh-100" data-simplebar>
                 <!-- Brand logo -->
-                <a class="navbar-brand" href="../../index.html">
+                <a class="navbar-brand" href="/">
                 <div class="col-xl-3 col-lg-8 col-md-6 col-6">
                     <div class="d-flex align-items-center mb-0">
                     <img src="/assets/images/brand/logo/icons8-protea-flower-64.png" class="d-inline" alt="logo-icon" />

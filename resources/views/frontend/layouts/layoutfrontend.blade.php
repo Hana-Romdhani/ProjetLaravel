@@ -32,7 +32,7 @@
 
     <nav class="navbar navbar-expand-lg">
         <div class="container px-0">
-            <a class="navbar-brand" href="index.html">
+            <a class="navbar-brand" href="/admin">
                 <div class="d-flex align-items-center mb-0">
                     <img src="../assets/images/brand/logo/icons8-protea-flower-64.png" class="d-inline" alt="logo-icon" />
                     <div class="ms-2">

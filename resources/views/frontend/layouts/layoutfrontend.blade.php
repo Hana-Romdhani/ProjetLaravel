@@ -96,7 +96,7 @@
                         <a href="pages/sign-up.html" class="btn btn-dark d-none d-md-block">Join Now</a>
                     </div>
                 </div>
-                 <div>
+                <div>
                     <button class="navbar-toggler collapsed ms-2" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbar-default" aria-controls="navbar-default" aria-expanded="false"
                         aria-label="Toggle navigation">
@@ -108,49 +108,46 @@
                 </div>
                 <!-- Collapse -->
                 <div class="collapse navbar-collapse" id="navbar-default">
-                <ul class="navbar-nav mt-3 mt-lg-0 mx-xxl-auto">
-                <!-- Module de Gestion des Jardins Urbains -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarJardinUrbain" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Jardins</a>
-                    <ul class="dropdown-menu dropdown-menu-arrow" aria-labelledby="navbarJardinUrbain">
-                        <li><a class="dropdown-item" href={{ route('frontend.jardin.jardin') }}>>Jardin</a></li>
-                        <li><a class="dropdown-item" href="#">Plantation</a></li>
-                    </ul>
-                </li>
+                    <ul class="navbar-nav mt-3 mt-lg-0 mx-xxl-auto">
+                        <!-- Module de Gestion des Jardins Urbains -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarJardinUrbain" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Jardins</a>
+                            <ul class="dropdown-menu dropdown-menu-arrow" aria-labelledby="navbarJardinUrbain">
+                                <li><a class="dropdown-item" href={{ route('frontend.jardin.jardin') }}>>Jardin</a></li>
+                                <li><a class="dropdown-item" href="#">Plantation</a></li>
+                            </ul>
+                        </li>
 
-                <!-- Module de Gestion des Ressources -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarRessources" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Ressources</a>
-                    <ul class="dropdown-menu dropdown-menu-arrow" aria-labelledby="navbarRessources">
-                        <li><a class="dropdown-item" href="#">Ressource</a></li>
-                        <li><a class="dropdown-item" href="#">Demande Ressource</a></li>
-                    </ul>
-                </li>
+                        <!-- Module de Gestion des Ressources -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarRessources" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Ressources</a>
+                            <ul class="dropdown-menu dropdown-menu-arrow" aria-labelledby="navbarRessources">
+                                <li><a class="dropdown-item" href="#">Ressource</a></li>
+                                <li><a class="dropdown-item" href="#">Demande Ressource</a></li>
+                            </ul>
+                        </li>
 
-                <!-- Module de Conseils -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarConseils" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Conseils</a>
-                    <ul class="dropdown-menu dropdown-menu-arrow" aria-labelledby="navbarConseils">
-                        <li><a class="dropdown-item" href="#">Conseil</a></li>
-                        <li><a class="dropdown-item" href="#">Catégorie Conseil</a></li>
-                    </ul>
-                </li>
+                        <!-- Module de Conseils -->
 
-                <!-- Module de Gestion des Événements -->
-                <li class="nav-item dropdown">
-                    <li><a class="dropdown-item" href="{{ route('frontend.evenement.index') }}" id="navbarEvenements" aria-haspopup="true" aria-expanded="false">Evénements</a></li>
-                    <!-- <ul class="dropdown-menu dropdown-menu-arrow" aria-labelledby="navbarEvenements">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('frontend.conseil.index') }}" id="navbarConseils">Conseils</a>
+                        </li>
+
+                        <!-- Module de Gestion des Événements -->
+                        <li class="nav-item dropdown">
+                        <li><a class="dropdown-item" href="{{ route('frontend.evenement.index') }}" id="navbarEvenements" aria-haspopup="true" aria-expanded="false">Evénements</a></li>
+                        <!-- <ul class="dropdown-menu dropdown-menu-arrow" aria-labelledby="navbarEvenements">
                         <li><a class="dropdown-item" href="{{ route('frontend.evenement.index') }}">Events</a></li>
                         <li><a class="dropdown-item" href="#">Classification</a></li>
                     </ul> -->
-                </li>
+                        </li>
 
-                <!-- Module Catalogue des Plantes -->
-                <li class="nav-item">
-                    <a class="nav-link" href="/plants" id="navbarCataloguePlantes" >Catalogue des Plantes</a>
-                </li>
+                        <!-- Module Catalogue des Plantes -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="/plants" id="navbarCataloguePlantes">Catalogue des Plantes</a>
+                        </li>
 
-            </ul>
+                    </ul>
 
                 </div>
             </div>
@@ -219,20 +216,20 @@
             <div class="row gy-6 gy-xl-0 pb-8">
                 <div class="col-xl-3 col-lg-12 col-md-6 col-12">
                     <div class="d-flex flex-column gap-4">
-                    <div class="d-flex align-items-center mb-0">
-                    <img src="../assets/images/brand/logo/icons8-protea-flower-64.png" class="d-inline" alt="logo-icon" />
-                    <div class="ms-2">
-                        <h1 class="mb-0 fw-bold d-inline">
-                            <span class="mb-0 text-secondary">Green</span>
-                            <span class="mb-0 text-success">
-                                <span>Link</span>
-                            </span>
-                        </h1>
-                        <small class="fst-italic text-muted d-block">
-                            <i class="bi bi-hash text-success"></i>For a Green Life
-                        </small>
-                    </div>
-                </div>
+                        <div class="d-flex align-items-center mb-0">
+                            <img src="/assets/images/brand/logo/icons8-protea-flower-64.png" class="d-inline" alt="logo-icon" />
+                            <div class="ms-2">
+                                <h1 class="mb-0 fw-bold d-inline">
+                                    <span class="mb-0 text-secondary">Green</span>
+                                    <span class="mb-0 text-success">
+                                        <span>Link</span>
+                                    </span>
+                                </h1>
+                                <small class="fst-italic text-muted d-block">
+                                    <i class="bi bi-hash text-success"></i>For a Green Life
+                                </small>
+                            </div>
+                        </div>
                         <p class="mb-0">Nascetur nibh feugiat vulputate urna mauris tincidunt porttitor ultricies. Et dis augue praesent congue.</p>
                         <div class="d-flex gap-2">
                             <a href="#langaugeModal" class="btn btn-outline-secondary" data-bs-toggle="modal">

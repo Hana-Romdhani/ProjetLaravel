@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\backend\conseil;
 
 use App\Http\Controllers\Controller;
+use App\Models\CategorieConseil;
 use App\Models\Conseils;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -17,14 +18,17 @@ class ConseilController extends Controller
      */
     public function index(Request $request)
     {
-        $searchTerm = $request->get('titre');
+    $searchTerm = $request->get('search');
 
-
-        $conseils = Conseils::when($searchTerm, function($query, $searchTerm) {
+    $conseils = Conseils::with('category')
+        ->when($searchTerm, function ($query, $searchTerm) {
             return $query->where('titre', 'like', "%{$searchTerm}%");
-        })->paginate(2);
+        })
+        ->paginate(2);
 
-        return view('backend.conseil.index', compact('conseils'));
+    return view('backend.conseil.index', compact('conseils','searchTerm'));
+
+
     }
 
 
@@ -35,8 +39,9 @@ class ConseilController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-        return view('backend.conseil.create'); // Return the view for creating a conseil
+    {  $categories = CategorieConseil::all();
+
+        return view('backend.conseil.create',compact('categories'));
     }
 
     /**
@@ -53,33 +58,23 @@ class ConseilController extends Controller
             'questions.*' => 'required|string',
             'contents.*' => 'required|string',
             'user_id' => 'required',
-            'category_id' => 'required',
-            'image_url' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validation de l'image
+            'category_id' => 'required|exists:categorie_conseils,id',
+            'image_url' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // if ($validator->fails()) {
-        //     return redirect()->back()->withErrors($validator)->withInput();
-        // }
 
-        // Récupérer les données du formulaire
-        $data = $request->except('image_url'); // Exclure 'image_url' car nous allons le gérer séparément
+        $data = $request->except('image_url');
 
-        // Gérer le téléchargement de l'image si elle est présente
         if ($request->hasFile('image_url')) {
-            // Récupérer le fichier de l'image
             $image = $request->file('image_url');
 
-            // Définir un nom unique pour l'image
             $imageName = time() . '.' . $image->getClientOriginalExtension();
 
-            // Déplacer l'image vers le dossier de stockage
             $image->move(public_path('images'), $imageName);
 
-            // Ajouter l'URL de l'image aux données à sauvegarder
             $data['image_url'] = 'images/' . $imageName;
         }
 
-        // Créer une nouvelle instance de Conseil et sauvegarder dans la base de données
         Conseils::create($data);
 
         return redirect()->route('conseil.index')->with('success', 'Conseil created successfully.');
@@ -95,9 +90,28 @@ class ConseilController extends Controller
      */
     public function show($id)
     {
-        $conseil = Conseils::findOrFail($id); // Find the conseil by ID
-        return view('backend.conseil.show', compact('conseil')); // Return the view for displaying a single conseil
+
+    $conseil = Conseils::findOrFail($id);
+
+    return view('backend.conseil.detail', compact('conseil'));
     }
+    public function categoryShow($id)
+    {
+        $categorie_conseil = CategorieConseil::findOrFail($id);
+
+        $search = request()->query('search');
+
+        $conseils = $categorie_conseil->conseils()
+            ->when($search, function ($query, $search) {
+                return $query->where('titre', 'like', '%' . $search . '%');
+            })
+            ->paginate(4);
+
+        return view('backend.conseil.show', compact('categorie_conseil', 'conseils'))
+            ->with('search', $search);
+    }
+
+
 
     /**
      * Show the form for editing the specified resource.
@@ -107,8 +121,11 @@ class ConseilController extends Controller
      */
     public function edit($id)
     {
-        $conseil = Conseils::findOrFail($id); // Find the conseil by ID
-        return view('backend.conseil.edit', compact('conseil')); // Return the view for editing a conseil
+
+
+        $conseil = Conseils::findOrFail($id);
+        $categories = CategorieConseil::all();
+        return view('backend.conseil.edit', compact('conseil', 'categories'));
     }
 
     /**
@@ -126,8 +143,8 @@ class ConseilController extends Controller
             'question' => 'required|string',
             'contenus' => 'required|string|max:1000',
             'user_id' => 'required',
-            'category_id' => 'required',
-            'image_url' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validate image
+            'category_id' => 'required|exists:categorie_conseils,id',
+            'image_url' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         // Handle validation failures
@@ -135,21 +152,17 @@ class ConseilController extends Controller
         //     return redirect()->back()->withErrors($validator)->withInput();
         // }
 
-        // Retrieve the advice item to update
         $conseil = Conseils::findOrFail($id);
 
-        // Get data to update
         $conseilData = $request->only(['titre', 'question', 'contenus', 'user_id', 'category_id']);
 
-        // Handle file upload if an image is provided
         if ($request->hasFile('image_url')) {
-            // Delete the old image if it exists (optional)
             if ($conseil->image_url) {
-                Storage::delete($conseil->image_url); // Use appropriate path based on your storage
+                Storage::delete($conseil->image_url);
             }
 
-            // Store the new image
-            $path = $request->file('image_url')->store('images', 'public'); // Store in 'storage/app/public/images'
+
+            $path = $request->file('image_url')->store('images', 'public');
             $conseilData['image_url'] = $path;
         }
 
@@ -173,4 +186,40 @@ class ConseilController extends Controller
         $conseil->delete();
         return redirect()->route('conseil.index')->with('success', 'Conseil deleted successfully.');
     }
+    public function indexfront(Request $request)
+    {
+        // Fetch categories
+        $categories = CategorieConseil::all();
+
+        // Get the selected category id from the request
+        $selectedCategoryId = $request->input('category');
+
+        // Fetch all advice related to the selected category
+        $adviceList = [];
+        $firstAdvice = null;
+        $firstCategory = null;
+
+        if ($selectedCategoryId) {
+            // Vérifier si la catégorie existe
+            $firstCategory = CategorieConseil::find($selectedCategoryId);
+            if ($firstCategory) {
+                // Récupérer tous les conseils liés à la catégorie
+                $adviceList = Conseils::where('category_id', $selectedCategoryId)->get();
+                $firstAdvice = $adviceList->first(); // Récupérer le premier conseil
+            }
+        }
+
+        // Passer les conseils à la vue
+        return view('frontend.conseil.index', compact('categories', 'adviceList', 'firstAdvice', 'firstCategory'));
+    }
+
+
+    public function showfront($id)
+    {
+
+    $conseil = Conseils::findOrFail($id);
+
+    return view('frontend.conseil.details', compact('conseil'));
+    }
+
 }

@@ -22,7 +22,6 @@
             </div>
             <div>
                 <a href="{{ route('conseil.create') }}" class="btn btn-primary">Add New Conseil</a>
-
             </div>
         </div>
 
@@ -34,22 +33,16 @@
                 </div>
                 @endif
 
-                @if ( $conseils->isEmpty())
-                <div class="alert alert-warning">
-                    <p>No Advice found.</p>
-                </div>
-                @else
                 <!-- Card -->
                 <div class="card-body d-flex flex-column gap-4">
                     <div class="d-flex flex-column gap-2">
                         <div class="d-flex align-items-center">
                             <img src="/assets/images/conseil/3D.jpg" alt="Image de la carte" class="img-fluid w-15 me-4">
                             <p class="mb-0">
-                               Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus, alias. Nihil vero ut voluptates aliquam in necessitatibus aspernatur rerum porro animi ipsum tenetur saepe blanditiis, consequuntur aliquid nostrum sapiente debitis..<br>
-                              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Molestias delectus blanditiis ullam consequuntur eaque eveniet ea accusamus, enim esse excepturi eligendi modi magnam explicabo labore harum dignissimos odit inventore praesentium!<br>
-                              Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque quia error et voluptate dolor ipsa deserunt ipsam! Ipsam nihil esse, quo illo dolorum id magnam magni dolor, ab repellat quam.
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus, alias. Nihil vero ut voluptates aliquam in necessitatibus aspernatur rerum porro animi ipsum tenetur saepe blanditiis, consequuntur aliquid nostrum sapiente debitis..<br>
+                                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Molestias delectus blanditiis ullam consequuntur eaque eveniet ea accusamus, enim esse excepturi eligendi modi magnam explicabo labore harum dignissimos odit inventore praesentium!<br>
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque quia error et voluptate dolor ipsa deserunt ipsam! Ipsam nihil esse, quo illo dolorum id magnam magni dolor, ab repellat quam.
                             </p>
-
                         </div>
                     </div>
                 </div>
@@ -64,18 +57,27 @@
                                 </li>
                             </ul>
                         </div>
-
                     </div>
                     <div class="p-4 row">
-                        <form class="d-flex align-items-center col-12 col-md-12 col-lg-12" action="{{ route('conseil.index') }}" method="GET">
+                        <form class="d-flex align-items-center col-12 col-md-12 col-lg-12" action="{{ route('conseil.index') }}" method="GET" onsubmit="return checkSearchInput()">
                             <span class="position-absolute ps-3 search-icon"><i class="fe fe-search"></i></span>
-                            <input type="search" name="name" id="searchInput" class="form-control ps-6" placeholder="Search category by name" value="{{ request()->get('titre') }}" />
-                            <button type="submit" class="btn btn-primary ms-2">Search</button>
+                            <input type="search" name="name" id="searchInput" class="form-control ps-6" placeholder="Search category by name" value="{{ request('search') }}" />
                         </form>
-
+                    </div>
+                    <div class="p-1 row">
+                        <div class="d-flex justify-content-center">
+                            <nav>
+                                {{ $conseils->appends(request()->query())->links('pagination::bootstrap-4') }}
+                            </nav>
+                        </div>
                     </div>
 
                     <div>
+                        @if ($conseils->isEmpty())
+                        <div class="alert alert-warning">
+                            <p>No Advice found.</p>
+                        </div>
+                        @else
                         <!-- Table -->
                         <div class="tab-content" id="tabContent">
                             <!--Tab pane -->
@@ -98,12 +100,11 @@
                                                     <div class="d-flex flex-column gap-2">
                                                         <p>{{ $conseil->titre }}</p>
                                                     </div>
-
                                                 </td>
 
                                                 <td>
                                                     <div class="d-flex flex-column gap-2">
-                                                        <p>Sol</p>
+                                                        <p>{{ $conseil->category->name ?? 'N/A' }}</p>
                                                     </div>
                                                 </td>
                                                 <td>
@@ -113,20 +114,18 @@
                                                 </td>
                                                 <td>
                                                     <div class="d-flex flex-column gap-2">
-
                                                         <span class="badge bg-success-soft">Approve</span>
-
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <a href="" class="btn btn-outline-success btn-sm d-inline-block me-2">Partager</a>
-                                                    <a href="" class="btn btn-outline-warning btn-sm d-inline-block me-2">View as user</a>
-                                                    <form action="{{ route('conseil.destroy',$conseil->id) }}" method="Post" class="d-inline-block">
+                                                    <a href="{{ route('conseil.show',$conseil->id) }}" class="btn btn-outline-success btn-sm d-inline-block me-2">Partager</a>
+                                                    <form action="{{ route('conseil.destroy', $conseil->id) }}" method="POST" class="d-inline-block">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
                                                     </form>
-                                                    <a href="{{ route('conseil.edit',  parameters: $conseil->id) }}" class="btn btn-outline-secondary btn-sm ms-2">Edit</a>
+                                                    <a href="{{ route('conseil.edit', parameters: $conseil->id) }}" class="btn btn-outline-secondary btn-sm ms-2">Edit</a>
+                                                    <a href="" class="btn btn-outline-success btn-sm d-inline-block me-2">Demande d'approbation</a>
 
                                                 </td>
                                             </tr>
@@ -136,17 +135,11 @@
                                 </div>
                             </div>
                         </div>
+                     @endif <!-- Move the closing endif here -->
                     </div>
                     <!-- Card Footer -->
-                    <div class="d-flex justify-content-center">
-                        <nav>
-                        {{ $conseils->appends(request()->query())->links('pagination::bootstrap-4') }}
-
-
-                        </nav>
-                    </div>
                 </div>
-                @endif
+
             </div>
         </div>
     </div>
@@ -176,6 +169,16 @@
                 }
             });
         });
+
+        function checkSearchInput() {
+            var searchInput = document.getElementById('searchInput').value;
+            if (searchInput.trim() === "") {
+                // Redirect to the category URL without search query
+                window.location.href = "{{ route('conseil-categorie.index') }}";
+                return false; // Prevent form submission
+            }
+            return true; // Allow form submission if input is not empty
+        }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </section>

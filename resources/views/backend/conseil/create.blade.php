@@ -1,7 +1,7 @@
 @extends('backend.layouts.layoutdashbored')
 @section('contentadmin')
 
-<div class="card-body d-flex flex-column gap-4">
+<div class="card-body d-flex flex-column gap-4 center ">
     <div class="d-flex flex-column gap-2">
         <h4 class="mb-0"> Creation de Conseil</h4>
         <div class="d-flex align-items-center">
@@ -16,7 +16,7 @@
     </div>
 </div>
 
-<section class="container-fluid p-4">
+<section class="container-fluid p-4  ">
 
     @if (session('error'))
     <div class="alert alert-danger">
@@ -69,6 +69,7 @@
             @enderror
         </div>
 
+
         <!-- User ID Input -->
         <!-- User ID Input -->
         <div class="mb-3 col-12 col-md-6">
@@ -89,18 +90,22 @@
         <!-- Category ID Input -->
         <!-- Category ID Input -->
         <div class="mb-3 col-12 col-md-6">
-            <label class="form-label" for="category_id">Category ID</label>
-            <input type="number" id="category_id" name="category_id"
-                class="form-control @error('category_id') is-invalid @enderror"
-                value="{{ old('category_id') }}" required
-                min="1"
-                step="1"
-                placeholder="Enter Category ID"> <!-- Placeholder for user guidance -->
+            <label class="form-label" for="category_id">Category</label>
+            <select id="category_id" name="category_id"
+                class="form-control @error('category_id') is-invalid @enderror" required>
+                <option value="">Select Category</option>
+                @foreach ($categories as $category)
+                <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                    {{ $category->name }}
+                </option>
+                @endforeach
+            </select>
 
             @error('category_id')
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
+
 
 
 
@@ -138,4 +143,27 @@
     </form>
 
 </section>
+<!-- Include TinyMCE with your API key -->
+<script src="https://cdn.tiny.cloud/1/{{ env('TINYMC_KEY') }}/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+
+<script>
+  tinymce.init({
+    selector: 'textarea',
+    plugins: [
+
+      'anchor', 'autolink', 'charmap', 'codesample', 'emotissssscons', 'image', 'link', 'lists', 'media', 'searchreplace', 'table', 'visualblocks', 'wordcount',
+      'checklist', 'mediaembed', 'casechange', 'export', 'formatpainter', 'pageembed', 'a11ychecker', 'tinymcespellchecker', 'permanentpen', 'powerpaste', 'advtable', 'advcode', 'editimage', 'advtemplate', 'ai', 'mentions', 'tinycomments', 'tableofcontents', 'footnotes', 'mergetags', 'autocorrect', 'typography', 'inlinecss', 'markdown',
+    ],
+    toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+    tinycomments_mode: 'embedded',
+    tinycomments_author: 'Author name',
+    mergetags_list: [
+      { value: 'First.Name', title: 'First Name' },
+      { value: 'Email', title: 'Email' },
+    ],
+    ai_request: (request, respondWith) => respondWith.string(() => Promise.reject('See docs to implement AI Assistant')),
+  });
+</script>
+
+
 @endsection

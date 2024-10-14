@@ -22,6 +22,7 @@
     <link href="/assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
     <link href="/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet" />
 
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
 
 
 
@@ -133,13 +134,13 @@
                         </a>
                         <div id="navHana" class="collapse" data-bs-parent="#sideNavbar">
                             <ul class="nav flex-column">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Conseil</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Catégorie&nbsp;Conseil</a>
-                                </li>
 
+                                <li class="nav-item">
+                                    <a class="nav-link" href={{ route('conseil-categorie.index') }}>Catégorie&nbsp;Conseil</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href={{ route('conseil.index') }}>Conseil</a>
+                                </li>
                             </ul>
                         </div>
                     </li>
@@ -479,6 +480,7 @@
     <script src="/assets/js/vendors/chart.js"></script>
     <script src="/assets/libs/flatpickr/dist/flatpickr.min.js"></script>
     <script src="/assets/js/vendors/flatpickr.js"></script>
+
 </body>
 
 <!-- Mirrored from geeksui.codescandy.com/geeks/pages/dashboard/admin-dashboard.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 10:12:50 GMT -->

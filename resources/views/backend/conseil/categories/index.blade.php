@@ -22,7 +22,6 @@
             </div>
             <div>
                 <a href="{{ route('conseil-categorie.create') }}" class="btn btn-primary">Add New categorie </a>
-
             </div>
         </div>
 
@@ -34,11 +33,6 @@
                 </div>
                 @endif
 
-                @if ($categorie_conseils->isEmpty())
-                <div class="alert alert-warning">
-                    <p>No categories found.</p>
-                </div>
-                @else
                 <!-- Card -->
                 <div class="card-body d-flex flex-column gap-4">
                     <div class="d-flex flex-column gap-2">
@@ -47,9 +41,8 @@
                             <p class="mb-0">
                                 Veuillez fournir un aperçu succinct de la catégorie que vous mettez à jour pour les conseils.<br>
                                 Décrivez son objectif ainsi que le type de conseils ou d'orientations associés à cette catégorie.<br>
-                              Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque quia error et voluptate dolor ipsa deserunt ipsam! Ipsam nihil esse, quo illo dolorum id magnam magni dolor, ab repellat quam.
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque quia error et voluptate dolor ipsa deserunt ipsam! Ipsam nihil esse, quo illo dolorum id magnam magni dolor, ab repellat quam.
                             </p>
-
                         </div>
                     </div>
                 </div>
@@ -64,18 +57,20 @@
                                 </li>
                             </ul>
                         </div>
-
                     </div>
                     <div class="p-4 row">
-                        <form class="d-flex align-items-center col-12 col-md-12 col-lg-12" action="{{ route('conseil-categorie.index') }}" method="GET">
+                        <form class="d-flex align-items-center col-12 col-md-12 col-lg-12" action="{{ route('conseil-categorie.index') }}" method="GET" onsubmit="return checkSearchInput()">
                             <span class="position-absolute ps-3 search-icon"><i class="fe fe-search"></i></span>
-                            <input type="search" name="name" id="searchInput" class="form-control ps-6" placeholder="Search category by name" value="{{ request()->get('name') }}" />
-                            <button type="submit" class="btn btn-primary ms-2">Search</button>
+                            <input type="search" name="name" id="searchInput" class="form-control ps-6" placeholder="Search category by name" value="{{ request('search') }}" />
                         </form>
-
                     </div>
 
                     <div>
+                        @if ($categorie_conseils->isEmpty())
+                        <div class="alert alert-warning">
+                            <p>No categories found.</p>
+                        </div>
+                        @else
                         <!-- Table -->
                         <div class="tab-content" id="tabContent">
                             <!--Tab pane -->
@@ -90,13 +85,12 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($categorie_conseils as $categorie_conseil)
+                                            @forelse ($categorie_conseils as $categorie_conseil)
                                             <tr>
                                                 <td>
                                                     <div class="d-flex flex-column gap-2">
                                                         <p>{{ $categorie_conseil->name }}</p>
                                                     </div>
-
                                                 </td>
                                                 <td>
                                                     <div class="d-flex flex-column gap-2">
@@ -104,22 +98,30 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <a href="" class="btn btn-outline-success btn-sm d-inline-block me-2">Conseil Details</a>
+                                                    <a href="{{ route('conseil.categoryShow', $categorie_conseil->id) }}" class="btn btn-outline-success btn-sm d-inline-block me-2">
+                                                        Conseil Related
+                                                    </a>
+
                                                     <form action="{{ route('conseil-categorie.destroy',$categorie_conseil->id) }}" method="Post" class="d-inline-block">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
                                                     </form>
-                                                    <a href="{{ route('conseil-categorie.edit',  parameters: $categorie_conseil->id) }}" class="btn btn-outline-secondary btn-sm ms-2">Edit</a>
+                                                    <a href="{{ route('conseil-categorie.edit', parameters: $categorie_conseil->id) }}" class="btn btn-outline-secondary btn-sm ms-2">Edit</a>
+                                                      
                                                 </td>
                                             </tr>
-                                            @endforeach
+                                            @empty
+                                            <p>No conseils found for your search.</p>
+                                            @endforelse
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
+                        @endif
                     </div>
+
                     <!-- Card Footer -->
                     <div class="d-flex justify-content-center">
                         <nav>
@@ -127,10 +129,10 @@
                         </nav>
                     </div>
                 </div>
-                @endif
             </div>
         </div>
     </div>
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const searchInput = document.getElementById('searchInput');
@@ -157,6 +159,16 @@
                 }
             });
         });
+
+        function checkSearchInput() {
+            var searchInput = document.getElementById('searchInput').value;
+            if (searchInput.trim() === "") {
+                // Redirect to the category URL without search query
+                window.location.href = "{{ route('conseil-categorie.index') }}";
+                return false; // Prevent form submission
+            }
+            return true; // Allow form submission if input is not empty
+        }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </section>

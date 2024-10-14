@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('titre');
             $table->string(column: 'question');
-            $table->string(column: 'contenus');
+            $table->longText('contenus'); 
             $table->integer('user_id');
             $table->integer('category_id');
             $table->string('image_url')->nullable();

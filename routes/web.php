@@ -14,6 +14,7 @@ use App\Http\Controllers\backend\CategoryPlanteController;
 use App\Models\CategoriePlante;
 use App\Http\Controllers\backend\RessourcesController;
 use App\Http\Controllers\frontend\RessourceController;
+use App\Http\Controllers\frontend\RessourcesPartageController;
 use App\Http\Controllers\frontend\JardinsController;
 use Illuminate\Support\Facades\Route;
 
@@ -50,6 +51,10 @@ Route::prefix('/')->group(function () {
     //     return view('frontend.ressources.Ressources');
     // });
     Route::get('/ressourceUser',  [RessourceController::class, 'index'])->name('frontend.ressources.Ressources');
+    Route::get('/ressourcesPartage',  [RessourcesPartageController::class, 'index'])->name('frontend.ressources.RessourcesPartage');
+    Route::post('/ressources-partages/{id}/accepter', [RessourcesPartageController::class, 'accepter'])->name('frontend.ressources.RessourcesPartage.accepter');
+    Route::post('/ressources-partages/{id}/refuser', [RessourcesPartageController::class, 'refuser'])->name('frontend.ressources.RessourcesPartage.refuser');
+
     Route::get('/ressourcesList',  [RessourceController::class, 'show'])->name('frontend.ressources.RessourcesList');
     Route::get('/jardins',  [JardinsController::class, 'index'])->name('frontend.jardin.jardin');
 });

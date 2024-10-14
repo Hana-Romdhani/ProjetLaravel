@@ -13,14 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('jardins', function (Blueprint $table) {
-            $table->string('name');
-            $table->string('location');
-            $table->text('description')->nullable();
-            $table->integer('size')->nullable();
-            $table->string('image')->nullable();
+        Schema::create('users', function (Blueprint $table) {
+            $table->id();
+            $table->string('nameUser');
             $table->timestamps();
-            //
         });
     }
 
@@ -31,8 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('jardins', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('users');
     }
 };

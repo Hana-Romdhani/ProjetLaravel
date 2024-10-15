@@ -16,6 +16,8 @@ class RessourceController extends Controller
     public function index()
     {
         $ressources = Ressource::all();
+        $ressources = Ressource::with('user')->get();
+
         return view('frontend.ressources.Ressources', compact('ressources'));
     }
 

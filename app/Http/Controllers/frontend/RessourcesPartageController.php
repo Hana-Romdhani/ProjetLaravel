@@ -49,6 +49,29 @@ public function refuser($id)
 }
 
 
+public function store(Request $request)
+{
+    $validatedData = $request->validate([
+        'user_preteur_id' => 'required|exists:users,id',
+        'ressource_id' => 'required|exists:ressources,id',
+        'quantite' => 'required|integer|min:1',
+        'date_partage' => 'required|date',
+    ]);
+
+    // Créer une nouvelle ressource partagée
+    $ressourcePartage = new RessourcesPartage();
+    $ressourcePartage->user_emprunteur_id = 2; // ID statique de l'emprunteur
+    $ressourcePartage->user_preteur_id = $validatedData['user_preteur_id'];
+    $ressourcePartage->ressource_id = $validatedData['ressource_id'];
+    $ressourcePartage->quantite = $validatedData['quantite'];
+    $ressourcePartage->date_partage = $validatedData['date_partage'];
+    $ressourcePartage->statut = 'en attente'; // Par défaut
+    $ressourcePartage->save();
+
+    return response()->json(['success' => true]);
+}
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -66,10 +89,7 @@ public function refuser($id)
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
-    }
+    
 
     /**
      * Display the specified resource.

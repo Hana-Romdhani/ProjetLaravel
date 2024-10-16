@@ -72,7 +72,7 @@
                 <div class="card">
                     <!-- card body  -->
                     <div class="card-body py-3">
-                        <h4 class="mb-0">Vidéo</h4>
+                        <h4 class="mb-0">Vidéo selon le question : {{ $conseil->question }}  </h4>
 
                         @if($conseil)
                         <iframe width="100%" height="400" src="{{ $conseil->video_url ? 'https://www.youtube.com/embed/' . explode('v=', $conseil->video_url)[1] : '' }}" frameborder="0" allowfullscreen></iframe>

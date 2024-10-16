@@ -1,10 +1,9 @@
 @extends('frontend.layouts.layoutfrontend')
 @section('contentlandinpage')
-<!-- Content -->
 <section class="py-7 py-lg-8">
     <div class="container mb-4">
         <div class="row justify-content-center">
-            <h1>Dévoilez encore plus de réponses en recherchant d'autres questions et en filtrant par catégorie !</h1>
+            <h1>Découvrez davantage de réponses en explorant d'autres questions. Sélectionnez une catégorie pour affiner votre recherche !</h1>
         </div>
     </div>
 
@@ -18,7 +17,7 @@
 
                 <div class="mt-3 mt-lg-0 ms-lg-3 d-flex align-items-center w-75">
 
-                    <form method="GET" action="{{ route('frontend.conseil.index') }}"> <!-- Update with your route -->
+                    <form method="GET" action="{{ route('frontend.conseil.index') }}">
                         <label for="category" class="visually-hidden"></label>
                         <select id="category" name="category" class="form-control ms-3" onchange="this.form.submit()">
                             <option value="" selected disabled>Select Category</option>
@@ -98,12 +97,16 @@
                 <div class="card">
                     <!-- card body  -->
                     <div class="card-body py-3">
-                        <h4 class="mb-0">Vidéo</h4>
-
                         @if($firstAdvice)
-                        <iframe width="100%" height="400" src="{{ $firstAdvice->video_url ? 'https://www.youtube.com/embed/' . explode('v=', $firstAdvice->video_url)[1] : '' }}" frameborder="0" allowfullscreen></iframe>
+                        <h4 class="mb-0">Vidéo selon la question : {{ $firstAdvice->question }} </h4>
+
+                        @if($firstAdvice->video_url)
+                        <iframe width="100%" height="400" src="https://www.youtube.com/embed/{{ explode('v=', $firstAdvice->video_url)[1] }}" frameborder="0" allowfullscreen></iframe>
                         @else
                         <p>Aucune vidéo disponible.</p>
+                        @endif
+                        @else
+                        <p>Aucune donnée disponible pour cette question.</p>
                         @endif
 
 
@@ -117,18 +120,20 @@
 
                         <div class="col-xl-12 col-lg-12 col-md-12 col-12 px-2">
                             <div class="my-8 text-center">
-                                <h2>Autre conseil selon le categorie choisie</h2>
+                                <h2>Autre conseil liee aux catégorie choisie</h2>
                             </div>
                         </div>
                         <div class="col-xl-12 col-lg-12 col-md-12 col-12 px-2">
 
-                            <form class="mt-3 mt-lg-0 ms-lg-3 d-flex align-items-center w-75 gap-4" method="GET" action="{{ route('frontend.conseil.index') }}">
+                            <form id="searchForm" class="mt-3 mt-lg-0 ms-lg-3 d-flex align-items-center w-75 gap-4">
                                 <span class="position-absolute ps-3 search-icon">
                                     <i class="fe fe-search"></i>
                                 </span>
                                 <label for="search" class="visually-hidden"></label>
-                                <input type="search" id="search" name="search" class="form-control ps-6" placeholder="Search by Question" />
+                                <input type="search" id="searchInput" name="search" class="form-control ps-6" placeholder="Search by Question" />
                             </form>
+
+
                         </div>
 
                         <div id="relatedPostCarousel" class="carousel slide  gap-4" data-bs-ride="carousel">
@@ -166,7 +171,6 @@
                                                         <p class="fs-6 mb-0">{{ $advice->created_at->format('F d, Y') }}</p>
                                                     </div>
                                                 </div>
-                                                <!-- Bouton "Voir plus de conseils" à l'intérieur de la boucle -->
                                                 <div class="text-center mt-4">
                                                     <a href="{{ route('frontend.conseil.details', ['id' => $advice->id]) }}" class="btn btn-primary">Voir plus de conseils</a>
                                                 </div>
@@ -194,4 +198,58 @@
     </div>
 
 </section>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('searchInput');
+        const carouselItems = document.querySelectorAll('.carousel-item');
+        const carouselInner = document.querySelector('.carousel-inner');
+        const prevButton = document.querySelector('.carousel-control-prev');
+        const nextButton = document.querySelector('.carousel-control-next');
+
+        const initialActiveIndex = Array.from(carouselItems).findIndex(item => item.classList.contains('active'));
+
+        searchInput.addEventListener('input', function() {
+            const query = searchInput.value.toLowerCase();
+
+            if (query === '') {
+                carouselItems.forEach((item, index) => {
+                    item.style.display = 'block';
+                    item.classList.remove('active');
+                    if (index === initialActiveIndex) {
+                        item.classList.add('active');
+                    }
+                });
+            } else {
+                let anyVisible = false;
+
+                carouselItems.forEach(item => {
+                    const question = item.querySelector('h3').innerText.toLowerCase();
+
+                    if (question.includes(query)) {
+                        item.style.display = 'block';
+                        anyVisible = true;
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+
+                const visibleItems = Array.from(carouselItems).filter(item => item.style.display !== 'none');
+
+                carouselItems.forEach(item => item.classList.remove('active'));
+                if (visibleItems.length > 0) {
+                    visibleItems[0].classList.add('active');
+                }
+
+                if (!anyVisible) {
+                    prevButton.style.display = 'none';
+                    nextButton.style.display = 'none';
+                } else {
+                    prevButton.style.display = 'block';
+                    nextButton.style.display = 'block';
+                }
+            }
+        });
+    });
+</script>
+
 @endsection

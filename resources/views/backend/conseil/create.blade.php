@@ -30,7 +30,7 @@
     </div>
     @endif
 
-    <form action="{{ route('conseil.store') }}" method="POST" enctype="multipart/form-data">
+    <form id="save-content-form" action="{{ route('conseil.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('POST')
 
@@ -40,11 +40,12 @@
             <input type="text" id="categorieconseilname" name="titre"
                 class="form-control @error('titre') is-invalid @enderror"
                 value="{{ old('titre') }}" required>
-
-            @error('titre')
-            <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
+            <!-- Add this div for the error message -->
+            <div class="invalid-feedback">
+        @error('titre') {{ $message }} @enderror
+    </div>
         </div>
+
 
         <!-- Question Input -->
         <div class="mb-3 col-12 col-md-6">
@@ -57,17 +58,16 @@
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
-        <!-- Content Textarea -->
+        <!-- Content Textarea (TinyMCE) -->
+        <!-- Content Textarea (TinyMCE) -->
         <div class="mb-3 col-12 col-md-6">
-            <label class="form-label" for="contenus">Contents</label>
-            <textarea id="contenus" name="contenus" rows="4"
-                class="form-control @error('contenus') is-invalid @enderror"
-                required>{{ old('contenus') }}</textarea>
-
+            <label for="contenus" class="form-label">Contenus</label>
+            <textarea class="form-control @error('contenus') is-invalid @enderror" id="tinymce" name="contenus">{{ old('contenus') }}</textarea>
             @error('contenus')
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
+
 
 
         <!-- User ID Input -->
@@ -79,7 +79,7 @@
                 value="{{ old('user_id') }}" required
                 min="1"
                 step="1"
-                placeholder="Enter User ID"> <!-- Placeholder for user guidance -->
+                placeholder="Enter User ID" /> <!-- Placeholder for user guidance -->
 
             @error('user_id')
             <div class="invalid-feedback">{{ $message }}</div>
@@ -113,7 +113,7 @@
         <div class="mb-3 col-12 col-md-6">
             <label class="form-label" for="image_url">Image URL</label>
             <input type="file" id="image_url" name="image_url"
-                class="form-control @error('image_url') is-invalid @enderror" accept="image/*">
+                class="form-control @error('image_url') is-invalid @enderror" accept="image/*" />
 
             @error('image_url')
             <div class="invalid-feedback">{{ $message }}</div>
@@ -127,11 +127,12 @@
             <label class="form-label" for="video_url">Video URL</label>
             <input type="url" id="video_url" name="video_url"
                 class="form-control @error('video_url') is-invalid @enderror"
-                placeholder="Enter video URL">
+                placeholder="Enter video URL" />
 
             @error('video_url')
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror
+
         </div>
 
 
@@ -143,27 +144,81 @@
     </form>
 
 </section>
-<!-- Include TinyMCE with your API key -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.tiny.cloud/1/{{ env('TINYMC_KEY') }}/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 
-<script>
-  tinymce.init({
-    selector: 'textarea',
-    plugins: [
+<script type="text/javascript">
+    tinymce.init({
+        selector: 'textarea#tinymce',
+        height: 600
+    });
 
-      'anchor', 'autolink', 'charmap', 'codesample', 'emotissssscons', 'image', 'link', 'lists', 'media', 'searchreplace', 'table', 'visualblocks', 'wordcount',
-      'checklist', 'mediaembed', 'casechange', 'export', 'formatpainter', 'pageembed', 'a11ychecker', 'tinymcespellchecker', 'permanentpen', 'powerpaste', 'advtable', 'advcode', 'editimage', 'advtemplate', 'ai', 'mentions', 'tinycomments', 'tableofcontents', 'footnotes', 'mergetags', 'autocorrect', 'typography', 'inlinecss', 'markdown',
-    ],
-    toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
-    tinycomments_mode: 'embedded',
-    tinycomments_author: 'Author name',
-    mergetags_list: [
-      { value: 'First.Name', title: 'First Name' },
-      { value: 'Email', title: 'Email' },
-    ],
-    ai_request: (request, respondWith) => respondWith.string(() => Promise.reject('See docs to implement AI Assistant')),
-  });
+    $(document).ready(function() {
+        var formId = '#save-content-form';
+
+        $(formId).on('submit', function(e) {
+            e.preventDefault(); // Prevent form submission to handle via AJAX
+
+            var data = new FormData(this); // Use FormData to handle file uploads
+
+            // Add TinyMCE content to the form data
+            data.append('contenus', tinyMCE.get('tinymce').getContent());
+
+            // Clear any previous validation errors
+            clearErrors();
+
+            $.ajax({
+                type: 'POST',
+                url: $(formId).attr('action'),
+                data: data,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    // Only redirect if the response is successful (no validation errors)
+                    if (response.success) {
+                        window.location = "{{ route('conseil.index') }}"; // Redirect on success
+                    } else {
+                        // Handle validation errors returned from the server (if any)
+                        if (response.errors) {
+                            displayErrors(response.errors);
+                        }
+                    }
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    if (xhr.status === 422) { // Laravel validation error status code
+                        var errors = xhr.responseJSON.errors;
+                        displayErrors(errors);
+                    } else {
+                        console.error('Error occurred:', xhr, textStatus, errorThrown);
+                    }
+                }
+            });
+        });
+
+        // Function to clear previous validation error messages
+        function clearErrors() {
+    $('.is-invalid').removeClass('is-invalid');
+    $('.invalid-feedback').text('');  // Clear all feedback messages
+}
+
+        // Function to display validation errors
+        function displayErrors(errors) {
+    for (var field in errors) {
+        var errorMessage = errors[field][0];
+        var inputElement = $('[name=' + field + ']');
+
+        // Add 'is-invalid' class to the input field
+        inputElement.addClass('is-invalid');
+
+        // Find the next '.invalid-feedback' element and add the error message
+        inputElement.next('.invalid-feedback').text(errorMessage);
+    }
+}
+
+    });
 </script>
+
+
 
 
 @endsection

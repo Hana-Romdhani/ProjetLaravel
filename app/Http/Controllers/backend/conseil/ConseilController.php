@@ -18,17 +18,15 @@ class ConseilController extends Controller
      */
     public function index(Request $request)
     {
-    $searchTerm = $request->get('search');
+        $searchTerm = $request->get('search');
 
-    $conseils = Conseils::with('category')
-        ->when($searchTerm, function ($query, $searchTerm) {
-            return $query->where('titre', 'like', "%{$searchTerm}%");
-        })
-        ->paginate(2);
+        $conseils = Conseils::with('category')
+            ->when($searchTerm, function ($query, $searchTerm) {
+                return $query->where('titre', 'like', "%{$searchTerm}%");
+            })
+            ->paginate(2);
 
-    return view('backend.conseil.index', compact('conseils','searchTerm'));
-
-
+        return view('backend.conseil.index', compact('conseils', 'searchTerm'));
     }
 
 
@@ -39,9 +37,10 @@ class ConseilController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {  $categories = CategorieConseil::all();
+    {
+        $categories = CategorieConseil::all();
 
-        return view('backend.conseil.create',compact('categories'));
+        return view('backend.conseil.create', compact('categories'));
     }
 
     /**
@@ -50,37 +49,141 @@ class ConseilController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    // public function store(Request $request)
+    // {
+    //     try {
+    //         // Validate input data
+    //         $request->validate([
+    //             'titre' => 'required|string|max:255|unique:conseils,titre', // Make title unique
+    //             'question' => 'required|string|unique:conseils,question',
+    //             'contenus' => 'required|string',
+    //             'user_id' => 'required|integer',
+    //             'category_id' => 'required|exists:categorie_conseils,id',
+    //             'image_url' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Image validation
+    //             'video_url' => 'nullable|url', // Ensure video URL is optional but correctly formatted
+    //         ]);
+
+    //         // Prepare data excluding image
+    //         $data = $request->except('image_url');
+
+    //         // Handle image upload if provided
+    //         if ($request->hasFile('image_url')) {
+    //             $image = $request->file('image_url');
+    //             $imageName = time() . '.' . $image->getClientOriginalExtension();
+    //             $image->move(public_path('images'), $imageName);
+    //             $data['image_url'] = 'images/' . $imageName;
+    //         }
+
+    //         // Ensure the 'contenus' field (from TinyMCE) is stored correctly
+    //         $data['contenus'] = $request->input('contenus');
+
+    //         // Save conseil data in database
+    //         Conseils::create($data);
+
+    //         // Redirect on success
+    //         return redirect()->route('conseil.index')->with('success', 'Conseil created successfully.');
+    //     } catch (\Exception $e) {
+    //         // Handle error and redirect back with error message
+    //         return redirect()->back()->with('error', 'An error occurred while creating the conseil.');
+    //     }
+    // }
+
+
+
+    // public function store(Request $request)
+    // {
+    //     try {
+    //         // Validate input data
+    //         $request->validate([
+    //             'titre' => 'required|string|max:255|unique:conseils,titre', // Make title unique
+    //             'question' => 'required|string|unique:conseils,question',
+    //             'contenus' => 'required|string',
+    //             'user_id' => 'required|integer',
+    //             'category_id' => 'required|exists:categorie_conseils,id',
+    //             'image_url' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Image validation
+    //             'video_url' => 'nullable|url', // Ensure video URL is optional but correctly formatted
+    //         ]);
+
+    //         // Prepare data excluding image
+    //         $data = $request->except('image_url');
+
+    //         // Handle image upload if provided
+    //         if ($request->hasFile('image_url')) {
+    //             $image = $request->file('image_url');
+    //             $imageName = time() . '.' . $image->getClientOriginalExtension();
+    //             $image->move(public_path('images'), $imageName);
+    //             $data['image_url'] = 'images/' . $imageName;
+    //         }
+
+    //         // Ensure the 'contenus' field (from TinyMCE) is stored correctly
+    //         $data['contenus'] = $request->input('contenus');
+
+    //         // Save conseil data in database
+    //         Conseils::create($data);
+
+    //         // Redirect on success
+    //         return redirect()->route('conseil.index')->with('success', 'Conseil created successfully.');
+    //     } catch (\Exception $e) {
+    //         // Handle error and redirect back with error message
+    //         return redirect()->back()->withInput()->withErrors(['error' => 'An error occurred while creating the conseil.']);
+
+    //     }
+    // }
     public function store(Request $request)
     {
-        // Validation des données d'entrée
-        $request->validate( [
-            'titre' => 'required|string|max:255',
-            'questions.*' => 'required|string',
-            'contents.*' => 'required|string',
-            'user_id' => 'required',
-            'category_id' => 'required|exists:categorie_conseils,id',
-            'image_url' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
+        try {
+            // Validate input data with a validator instance
+            $validator = validator::make($request->all(), [
+                'titre' => 'required|string|max:255|unique:conseils,titre', // Make title unique
+                'question' => 'required|string|unique:conseils,question',
+                'contenus' => 'required|string',
+                'user_id' => 'required|integer',
+                'category_id' => 'required|exists:categorie_conseils,id',
+                'image_url' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Image validation
+                'video_url' => 'nullable|url', // Ensure video URL is optional but correctly formatted
+            ]);
+
+            // Check if the validation fails
+            if ($validator->fails()) {
+                return response()->json([
+                    'errors' => $validator->errors(),
+                ], 422); // Return a JSON response with validation errors and status code 422
+            }
+
+            // Prepare data excluding image
+            $data = $request->except('image_url');
+
+            // Handle image upload if provided
+            if ($request->hasFile('image_url')) {
+                $image = $request->file('image_url');
+                $imageName = time() . '.' . $image->getClientOriginalExtension();
+                $image->move(public_path('images'), $imageName);
+                $data['image_url'] = 'images/' . $imageName;
+            }
+
+            // Ensure the 'contenus' field (from TinyMCE) is stored correctly
+            $data['contenus'] = $request->input('contenus');
+
+            // Save conseil data in database
+            Conseils::create($data);
+
+            // Return success response for AJAX
+            return response()->json([
+                'success' => true,
+                'message' => 'Conseil created successfully.'
+            ]);
+            return redirect()->route('conseil.index')->with('success', 'Conseil created successfully.');
 
 
-        $data = $request->except('image_url');
-
-        if ($request->hasFile('image_url')) {
-            $image = $request->file('image_url');
-
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-
-            $image->move(public_path('images'), $imageName);
-
-            $data['image_url'] = 'images/' . $imageName;
+        } catch (\Exception $e) {
+            // Handle general errors
+            return response()->json([
+                'error' => 'An error occurred while creating the conseil.',
+            ], 500);
+            return redirect()->route('conseil.index')->with('success', 'Conseil created successfully.');
+            // Return a JSON response with an error and status code 500
         }
-
-        Conseils::create($data);
-
-        return redirect()->route('conseil.index')->with('success', 'Conseil created successfully.');
     }
-
-
 
     /**
      * Display the specified resource.
@@ -91,9 +194,9 @@ class ConseilController extends Controller
     public function show($id)
     {
 
-    $conseil = Conseils::findOrFail($id);
+        $conseil = Conseils::findOrFail($id);
 
-    return view('backend.conseil.detail', compact('conseil'));
+        return view('backend.conseil.detail', compact('conseil'));
     }
     public function categoryShow($id)
     {
@@ -138,7 +241,7 @@ class ConseilController extends Controller
     public function update(Request $request, $id)
     {
         // Validation rules
-        $request->validate( [
+        $request->validate([
             'titre' => 'required|string|max:255',
             'question' => 'required|string',
             'contenus' => 'required|string|max:1000',
@@ -217,9 +320,8 @@ class ConseilController extends Controller
     public function showfront($id)
     {
 
-    $conseil = Conseils::findOrFail($id);
+        $conseil = Conseils::findOrFail($id);
 
-    return view('frontend.conseil.details', compact('conseil'));
+        return view('frontend.conseil.details', compact('conseil'));
     }
-
 }

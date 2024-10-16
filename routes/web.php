@@ -32,27 +32,36 @@ use App\Http\Controllers\shared\UserController;
 
 // ******************************** User **********************************
 //auth part
+
 Route::prefix('auth')->group(function () {
     Route::get('/signin', function () {
-        return view('auth.pages.Signin');
-    });
+        return view('auth.pages.Signin');  // Your custom sign-in view
+    })->name('login');  // This will use Laravel's built-in login route
 
-    Route::get('/signup', function () {
-        return view('auth.pages.Signup');
-    });
+    // Handle login form submission (POST request)
+    Route::post('/signin', [UserController::class, 'authenticate'])->name('login.store');  // POST route to handle login
+
+
+    Route::get('/register', function () {
+        return view('auth.pages.Signup');  // Your custom sign-up view
+    })->name('register');  // This will use Laravel's built-in register route
+
+    // Handle the registration form submission (POST request)
+    Route::post('/register', [UserController::class, 'store'])->name('register.store'); // POST route to handle registration
+
 
     Route::get('/forgot-password', function () {
-        return view('auth.pages.ForgotPassword');
-    });
+        return view('auth.pages.ForgotPassword');  // Your custom forgot-password view
+    })->name('password.request');  // This will use Laravel's built-in password reset route
+
     Route::get('/edit-profile', function () {
-        return view('auth.pages.profile');
-    });
+        return view('auth.pages.profile');  // Custom profile view
+    })->middleware('auth');  // Protect profile page with 'auth' middleware
 
     Route::resource('users', UserController::class);
 
-    Route::get('register', [UserController::class, 'create'])->name('register');
-    Route::post('register', [UserController::class, 'store'])->name('register.store');
-    Route::get('login', [UserController::class, 'login'])->name('auth.login');  // Assuming you have a login method
+    Route::post('/auth/logout', [UserController::class, 'logout'])->name('logout');
+
 
 });
 
@@ -81,8 +90,12 @@ Route::prefix('/')->group(function () {
     Route::get('/jardins',  [JardinsController::class, 'index'])->name('frontend.jardin.jardin');
 });
 
+    // ***********************************************************************
+    // ********************************admin**********************************
+    // ***********************************************************************
+
 //admin part
-Route::prefix('/admin')->group(function () {
+Route::prefix('/admin')->middleware(['auth'])->group(function () {
 
     Route::get('/',  [backendController::class, 'index']);
 
@@ -208,4 +221,14 @@ Route::prefix('/admin')->group(function () {
 
 
 
+});
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified'
+])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
 });

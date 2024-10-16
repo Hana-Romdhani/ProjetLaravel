@@ -25,12 +25,12 @@
                             <h1 class="mb-0 fw-bold text-center">Sign up</h1>
                             <span>
                                 Already have an account?
-                                <a href="{{ route('auth.login') }}" class="ms-1 float-end">Sign in</a>  <!-- Updated route for login -->
+                                <a href="{{ route('login') }}" class="ms-1 float-end">Sign in</a> <!-- Updated route for login -->
                             </span>
                         </div>
                     </div>
                     <!-- Form -->
-                    <form class="needs-validation" method="POST" action="{{ route('register.store') }}" novalidate> <!-- Updated action route -->
+                    <form class="needs-validation" method="POST" action="{{ route('register') }}" novalidate> <!-- Registration route -->
                         @csrf
                         <!-- Username -->
                         <div class="mb-3">
@@ -65,45 +65,12 @@
                             <input type="password" id="signUpPasswordConfirm" class="form-control" name="password_confirmation" placeholder="**************" required />
                             <div class="invalid-feedback">Please confirm your password.</div>
                         </div>
-                        <!-- Checkbox -->
-                        <div class="mb-3">
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="agreeCheck" required />
-                                <label class="form-check-label" for="agreeCheck">
-                                    <span>
-                                        I agree to the
-                                        <a href="terms-condition-page.html">Terms of Service</a>
-                                        and
-                                        <a href="terms-condition-page.html">Privacy Policy.</a>
-                                    </span>
-                                </label>
-                                <div class="invalid-feedback">You must agree before submitting.</div>
-                            </div>
-                        </div>
-                        <div>
-                            <!-- Button -->
-                            <div class="d-grid">
-                                <button type="submit" class="btn btn-primary">Create Free Account</button>
-                            </div>
-                        </div>
-                        <hr class="my-4" />
-
-                        <div class="mt-4 text-center">
-                            <!-- Social Media Links -->
-                            <a href="#" class="btn-social btn-social-outline btn-facebook">
-                                <!-- Facebook Icon -->
-                            </a>
-                            <a href="#" class="btn-social btn-social-outline btn-twitter">
-                                <!-- Twitter Icon -->
-                            </a>
-                            <a href="#" class="btn-social btn-social-outline btn-linkedin">
-                                <!-- LinkedIn Icon -->
-                            </a>
-                            <a href="#" class="btn-social btn-social-outline btn-github">
-                                <!-- GitHub Icon -->
-                            </a>
+                        <!-- Submit Button -->
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Create Free Account</button>
                         </div>
                     </form>
+
                 </div>
             </div>
         </div>

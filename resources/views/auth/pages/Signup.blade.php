@@ -35,9 +35,9 @@
                         <!-- Username -->
                         <div class="mb-3">
                             <label for="signUpName" class="form-label">User Name</label>
-                            <input type="text" id="signUpName" class="form-control" name="name" placeholder="User Name" value="{{ old('name') }}" required />
+                            <input type="text" id="signUpName" class="form-control" name="nameUser" placeholder="User Name" value="{{ old('nameUser') }}" required />
                             <div class="invalid-feedback">Please enter a valid username.</div>
-                            @error('name')
+                            @error('nameUser')
                             <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\frontend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Evenement;
+use App\Models\Classification;
 
 
 class EvenementFrontController extends Controller
@@ -18,7 +19,8 @@ class EvenementFrontController extends Controller
     {
      
         $evenements = Evenement::all();
-        return view('frontend.evenement.index', compact('evenements'));
+        $classifications = Classification::all();
+        return view('frontend.evenement.index', compact('evenements','classifications'));
 
     }
 

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\backend;
 use App\Http\Controllers\Controller;
-
+use App\Models\Classification;
 use Illuminate\Http\Request;
 use App\Models\Evenement;
 use Illuminate\Support\Facades\Storage;
@@ -14,10 +14,19 @@ class EvenementController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $evenements = Evenement::all();
-        return view('backend.evenement.evenement', compact('evenements')); // Passing 'jardins' to the correct blade file
+       // Récupérer le terme de recherche
+    $search = $request->input('search');
+
+    // Récupérer les événements avec une recherche par titre
+    $evenements = Evenement::when($search, function ($query) use ($search) {
+        return $query->where('title', 'like', '%' . $search . '%');
+    })->paginate(3);
+        $classifications = Classification::all(); // Assurez-vous d'avoir ce code pour récupérer les classifications
+
+    return view('backend.evenement.evenement', compact('evenements', 'classifications'));
+        //return view('backend.evenement.evenement', compact('evenements')); // Passing 'jardins' to the correct blade file
     }
 
     
@@ -28,13 +37,17 @@ class EvenementController extends Controller
      */
     public function create()
     {
-        return view('backend.evenement.formEvenement');
+
+    // Récupérer toutes les classifications pour les afficher dans la liste déroulante
+    $classifications = Classification::all();
+    return view('backend.evenement.formEvenement', compact('classifications'));
+       // return view('backend.evenement.formEvenement');
     }
 
-    public function edit()
-    {
-        return view('backend.evenement.formEvenement');
-    }
+    // public function edit()
+    // {
+    //     return view('backend.evenement.formEvenement');
+    // }
 
     /**
      * Store a newly created resource in storage.
@@ -49,6 +62,7 @@ class EvenementController extends Controller
             'location' => 'required|string|max:255',
             'description' => 'required|string',
             'date' => 'required',
+            'classification_id' => 'required|exists:classifications,id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Ajoutez la validation pour l'image
         ]);
 
@@ -90,7 +104,16 @@ class EvenementController extends Controller
     // {
     //     return view('backend.evenement.formEvenement');
     // }
-
+    public function edit($id)
+    {
+        // Récupérer l'événement spécifique avec son ID
+        $evenement = Evenement::findOrFail($id);
+        // Récupérer les classifications pour la liste déroulante
+        $classifications = Classification::all();
+        
+        // Passer l'événement et les classifications à la vue
+        return view('backend.evenement.formEvenement', compact('evenement', 'classifications'));
+    }
 
 
     /**
@@ -108,6 +131,7 @@ class EvenementController extends Controller
         'description' => 'required|string',
         'location' => 'required|string|max:255',
         'date' => 'required|date',
+        'classification_id' => 'required|exists:classifications,id',
         'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Ajoutez la validation pour l'image
     ]);
 
@@ -121,6 +145,7 @@ class EvenementController extends Controller
     $evenement->description = $request->description;
     $evenement->location = $request->location;
     $evenement->date = $request->date;
+    $evenement->classification_id = $request->classification_id;
 
     // Vérifiez si une nouvelle image a été téléchargée
     if ($request->hasFile('image')) {

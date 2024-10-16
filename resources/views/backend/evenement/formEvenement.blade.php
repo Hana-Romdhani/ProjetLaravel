@@ -47,6 +47,15 @@
             <input type="date" id="jardinSize" name="date" class="form-control" value="{{ $evenement->date ?? '' }}" required />
             <div class="invalid-feedback">Please enter the date of the event.</div>
         </div>
+        <div class="form-group">
+            <label for="classification_id">Classification</label>
+            <select class="form-control" id="classification_id" name="classification_id" required>
+                <option value="">Sélectionnez une classification</option>
+                @foreach ($classifications as $classification)
+                    <option value="{{ $classification->id }}">{{ $classification->name }}</option>
+                @endforeach
+            </select>
+        </div>
 
         <!-- Téléchargement d'image -->
         <div class="mb-3 col-12 col-md-6">

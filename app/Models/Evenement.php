@@ -13,7 +13,12 @@ class Evenement extends Model
         'location',
         'description',
         'date',
-        'image'
+        'image',
+        'classification_id',
     ];
-
+// Relation avec la classification
+public function classification()
+{
+    return $this->belongsTo(Classification::class);
+}
 }

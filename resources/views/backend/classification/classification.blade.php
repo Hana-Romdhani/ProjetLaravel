@@ -14,7 +14,7 @@
                                 <a href="admin-dashboard.html">Dashboard</a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="#">Jardins</a>
+                                <a href="#">Classifications</a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">All</li>
                         </ol>

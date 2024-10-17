@@ -1,10 +1,11 @@
 <?php
 
 namespace App\Http\Controllers\frontend;
-
+use App\Notifications\RessourcePartageAcceptee;
 use App\Http\Controllers\Controller;
 use App\Models\RessourcesPartage;
 use Illuminate\Http\Request;
+use App\Notifications\RessourcePartageRefusee;
 
 class RessourcesPartageController extends Controller
 {
@@ -24,26 +25,36 @@ class RessourcesPartageController extends Controller
     
 
 
+
     public function accepter($id)
 {
-    // Find the resource-sharing request by ID
-    $ressourcePartage = RessourcesPartage::findOrFail($id);
+    // Trouver la demande de partage par ID
+    $ressourcesPartage = RessourcesPartage::findOrFail($id);
 
-    // Update the status to 'accepté'
-    $ressourcePartage->statut = 'accepté';
-    $ressourcePartage->save();
+    // Mettre à jour le statut à 'accepté'
+    $ressourcesPartage->statut = 'accepté';
+    $ressourcesPartage->save();
+
+    // Envoyer un email à l'emprunteur
+    $emprunteur = $ressourcesPartage->emprunteur;
+    $emprunteur->notify(new RessourcePartageAcceptee($ressourcesPartage));
 
     return redirect()->back()->with('success', 'Ressource acceptée avec succès.');
 }
 
+
 public function refuser($id)
 {
-    // Find the resource-sharing request by ID
-    $ressourcePartage = RessourcesPartage::findOrFail($id);
+    // Trouver la demande de partage par ID
+    $ressourcesPartage = RessourcesPartage::findOrFail($id);
 
-    // Update the status to 'refusé'
-    $ressourcePartage->statut = 'refusé';
-    $ressourcePartage->save();
+    // Mettre à jour le statut à 'refusé'
+    $ressourcesPartage->statut = 'refusé';
+    $ressourcesPartage->save();
+
+    // Envoyer un email à l'emprunteur
+    $emprunteur = $ressourcesPartage->emprunteur;
+    $emprunteur->notify(new RessourcePartageRefusee($ressourcesPartage));
 
     return redirect()->back()->with('success', 'Ressource refusée avec succès.');
 }

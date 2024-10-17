@@ -4,6 +4,7 @@ namespace App\Http\Controllers\frontend;
 use App\Notifications\RessourcePartageAcceptee;
 use App\Http\Controllers\Controller;
 use App\Models\RessourcesPartage;
+use App\Models\Ressource; // Assurez-vous d'importer le modèle Ressource
 use Illuminate\Http\Request;
 use App\Notifications\RessourcePartageRefusee;
 
@@ -43,6 +44,38 @@ class RessourcesPartageController extends Controller
 }
 
 
+public function getQuantiteRestante(Request $request, $ressourceId)
+    {
+        try {
+            $datePartage = $request->input('date_partage');
+            $ressource = Ressource::find($ressourceId);
+            
+            if (!$ressource) {
+                return response()->json(['error' => 'Ressource non trouvée'], 404);
+            }
+            
+            // Quantité initiale de la ressource
+            $quantiteInitiale = $ressource->quantite;
+
+            // Quantité déjà réservée à la date donnée et avec statut accepté
+            $quantiteReservee = RessourcesPartage::where('ressource_id', $ressourceId)
+                ->where('date_partage', $datePartage)
+                ->where('statut', 'accepté') // Utilisez les noms d'attributs corrects
+                ->sum('quantite');
+
+            // Calcul de la quantité restante
+            $quantiteRestante = $quantiteInitiale - $quantiteReservee;
+
+            return response()->json([
+                'quantite_restante' => $quantiteRestante > 0 ? $quantiteRestante : 0,
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Erreur dans getQuantiteRestante: ' . $e->getMessage());
+            return response()->json(['error' => 'Erreur serveur'], 500);
+        }
+    }
+
+
 public function refuser($id)
 {
     // Trouver la demande de partage par ID
@@ -62,25 +95,77 @@ public function refuser($id)
 
 public function store(Request $request)
 {
-    $validatedData = $request->validate([
-        'user_preteur_id' => 'required|exists:users,id',
-        'ressource_id' => 'required|exists:ressources,id',
-        'quantite' => 'required|integer|min:1',
-        'date_partage' => 'required|date',
-    ]);
+    try {
+        // Valider les données d'entrée
+        $validatedData = $request->validate([
+            'user_preteur_id' => 'required|exists:users,id',
+            'ressource_id' => 'required|exists:ressources,id',
+            'quantite' => 'required|integer|min:1',
+            'date_partage' => 'required|date',
+        ]);
 
-    // Créer une nouvelle ressource partagée
-    $ressourcePartage = new RessourcesPartage();
-    $ressourcePartage->user_emprunteur_id = 2; // ID statique de l'emprunteur
-    $ressourcePartage->user_preteur_id = $validatedData['user_preteur_id'];
-    $ressourcePartage->ressource_id = $validatedData['ressource_id'];
-    $ressourcePartage->quantite = $validatedData['quantite'];
-    $ressourcePartage->date_partage = $validatedData['date_partage'];
-    $ressourcePartage->statut = 'en attente'; // Par défaut
-    $ressourcePartage->save();
+        // Récupérer la ressource correspondante
+        $ressource = Ressource::findOrFail($validatedData['ressource_id']);
 
-    return response()->json(['success' => true]);
+        // Récupérer la quantité totale de la ressource
+        $quantiteTotale = $ressource->quantite;
+
+        // Calculer la quantité déjà réservée pour cette date spécifique
+        $quantiteReservee = RessourcesPartage::where('ressource_id', $validatedData['ressource_id'])
+            ->where('date_partage', $validatedData['date_partage'])
+            ->where('statut', 'accepté') // Statut accepté seulement
+            ->sum('quantite');
+
+        // Calculer la quantité restante disponible pour la date spécifiée
+        $quantiteRestante = $quantiteTotale - $quantiteReservee;
+
+        // Vérifier si la quantité restante est suffisante pour cette nouvelle demande
+        if ($quantiteRestante < $validatedData['quantite']) {
+            return response()->json(['error' => 'Quantité insuffisante pour la date spécifiée'], 400);
+        }
+
+        // Créer la ressource partagée
+        $ressourcePartage = new RessourcesPartage();
+        // $ressourcePartage->user_emprunteur_id = auth()->id();  // Utilisateur authentifié
+        $ressourcePartage->user_emprunteur_id = 2;  // Utilisateur authentifié
+        $ressourcePartage->user_preteur_id = $validatedData['user_preteur_id'];
+        $ressourcePartage->ressource_id = $validatedData['ressource_id'];
+        $ressourcePartage->quantite = $validatedData['quantite'];
+        $ressourcePartage->date_partage = $validatedData['date_partage'];
+        $ressourcePartage->statut = 'en attente';  // Statut par défaut
+        $ressourcePartage->save();
+
+        return response()->json(['success' => true]);
+
+    } catch (\Exception $e) {
+        \Log::error('Erreur lors de la création du partage de ressource : ' . $e->getMessage());
+        return response()->json(['error' => 'Erreur serveur', 'message' => $e->getMessage()], 500);
+    }
 }
+
+
+
+// public function store(Request $request)
+// {
+//     $validatedData = $request->validate([
+//         'user_preteur_id' => 'required|exists:users,id',
+//         'ressource_id' => 'required|exists:ressources,id',
+//         'quantite' => 'required|integer|min:1',
+//         'date_partage' => 'required|date',
+//     ]);
+
+//     // Créer une nouvelle ressource partagée
+//     $ressourcePartage = new RessourcesPartage();
+//     $ressourcePartage->user_emprunteur_id = 2; // ID statique de l'emprunteur
+//     $ressourcePartage->user_preteur_id = $validatedData['user_preteur_id'];
+//     $ressourcePartage->ressource_id = $validatedData['ressource_id'];
+//     $ressourcePartage->quantite = $validatedData['quantite'];
+//     $ressourcePartage->date_partage = $validatedData['date_partage'];
+//     $ressourcePartage->statut = 'en attente'; // Par défaut
+//     $ressourcePartage->save();
+
+//     return response()->json(['success' => true]);
+// }
 
 
 

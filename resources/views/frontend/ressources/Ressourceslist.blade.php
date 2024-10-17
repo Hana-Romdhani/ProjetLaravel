@@ -40,7 +40,6 @@
                             </div>
                             <p>Libelle: {{ $ressource->libelle }}</p>
                             <p><span>👤</span> {{ $ressource->user ? $ressource->user->nameUser : 'Unknown' }}</p>
-                            
                         </div>
                     </div>
                 @endforeach
@@ -62,21 +61,28 @@
                     @csrf
                     <input type="hidden" name="ressource_id" id="ressource_id">
                     <input type="hidden" name="user_preteur_id" id="user_preteur_id">
-                    <div class="mb-3">
-                        <label for="quantite" class="form-label">Quantité</label>
-                        <input type="number" class="form-control" name="quantite" id="quantite" required>
-                    </div>
+                    
+                    <!-- Date of Share -->
                     <div class="mb-3">
                         <label for="date_partage" class="form-label">Date de Partage</label>
                         <input type="date" class="form-control" name="date_partage" id="date_partage" required>
                     </div>
+                    
+                    <!-- Available Quantity -->
+                    <div class="mb-3">
+                        <label for="quantite" class="form-label">Quantité Disponible</label>
+                        <select class="form-control" name="quantite" id="quantite" required>
+                            <!-- Options will be filled dynamically -->
+                        </select>
+                    </div>
+                    
                     <button type="submit" class="btn btn-primary">Valider</button>
                 </form>
-
             </div>
         </div>
     </div>
 </div>
+
 <script>
    document.addEventListener('DOMContentLoaded', function () {
     const modal = document.getElementById('demanderRessourceModal');
@@ -86,46 +92,76 @@
         const ressourceId = button.getAttribute('data-ressource-id');
         const ownerId = button.getAttribute('data-owner-id');
 
-        // Log the values for debugging
-        console.log('Ressource ID:', ressourceId);
-        console.log('Owner ID:', ownerId);
+        // Set the hidden input fields
+        document.getElementById('ressource_id').value = ressourceId;
+        document.getElementById('user_preteur_id').value = ownerId;
 
-        // Update the modal's content.
-        const ressourceInput = modal.querySelector('#ressource_id');
-        const ownerInput = modal.querySelector('#user_preteur_id');
-        ressourceInput.value = ressourceId;
-        ownerInput.value = ownerId;
+        // When the user selects a date, fetch the remaining quantity for that date
+        document.getElementById('date_partage').addEventListener('change', function () {
+            const datePartage = this.value;
+
+            // Fetch the remaining quantity via an AJAX call
+            fetch(`/ressources/${ressourceId}/quantite-restante`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ date_partage: datePartage })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const quantiteRestante = data.quantite_restante;
+
+                // Populate the dropdown with available quantities
+                const quantiteSelect = document.getElementById('quantite');
+                quantiteSelect.innerHTML = ''; // Clear previous options
+
+                // Create options based on remaining quantity
+                for (let i = 1; i <= quantiteRestante; i++) {
+                    const option = document.createElement('option');
+                    option.value = i;
+                    option.textContent = i;
+                    quantiteSelect.appendChild(option);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching quantite_restante:', error);
+            });
+        });
     });
 
     // Form submission
     document.getElementById('demanderRessourceForm').addEventListener('submit', function (event) {
-        event.preventDefault();
+    event.preventDefault();
 
-        const formData = new FormData(this);
+    const formData = new FormData(this);
 
-        fetch('/ressources-partages/demande', { // Vérifiez que cela correspond à votre route POST
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}' // Inclure le token CSRF pour Laravel
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-           
-                $('#demanderRessourceModal').modal('hide');
-                // Optionnel : rafraîchir la page ou la liste des ressources
-
-            
-        })
-        .catch(error => {
-            console.error('Erreur:', error);
-        });
+    fetch('/ressources-partages/demande', { 
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            $('#demanderRessourceModal').modal('hide');
+            // Optionnel : rafraîchir la page ou la liste des ressources
+        } else {
+            // Gérer les erreurs côté client ici
+            alert('Erreur : ' + (data.message || 'Un problème est survenu.'));
+        }
+    })
+    .catch(error => {
+        console.error('Erreur:', error);
+        alert('Erreur serveur, veuillez réessayer plus tard.');
     });
+});
+   });
 
-
-    });
 </script>
 
 @endsection

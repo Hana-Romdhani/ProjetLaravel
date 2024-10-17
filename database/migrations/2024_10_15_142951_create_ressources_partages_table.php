@@ -21,6 +21,8 @@ return new class extends Migration
             $table->integer('quantite'); // quantité partagée
             $table->date('date_partage'); // date de partage
             $table->enum('statut', ['en attente', 'accepté', 'refusé'])->default('en attente'); // statut du partage
+            $table->integer('quantite_restante')->default(0); // quantité partagée
+
             $table->timestamps();
         });
     }

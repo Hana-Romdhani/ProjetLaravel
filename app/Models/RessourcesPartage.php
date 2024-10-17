@@ -9,7 +9,7 @@ class RessourcesPartage extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_emprunteur_id', 'user_preteur_id', 'ressource_id', 'quantite', 'date_partage', 'statut'];
+    protected $fillable = ['user_emprunteur_id', 'user_preteur_id', 'ressource_id', 'quantite', 'date_partage', 'statut','quantite_restante'];
 
     // Relation avec User pour l'emprunteur
     public function emprunteur()

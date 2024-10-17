@@ -53,6 +53,7 @@ Route::prefix('/')->group(function () {
     Route::get('/ressourceUser',  [RessourceController::class, 'index'])->name('frontend.ressources.Ressources');
     Route::get('/ressourcesPartage',  [RessourcesPartageController::class, 'index'])->name('frontend.ressources.RessourcesPartage');
     Route::post('/ressources-partages/{id}/accepter', [RessourcesPartageController::class, 'accepter'])->name('frontend.ressources.RessourcesPartage.accepter');
+    Route::post('/ressources/{ressource}/quantite-restante', [RessourcesPartageController::class, 'getQuantiteRestante'])->name('frontend.ressources.RessourcesPartage.getQuantiteRestante');;
     Route::post('/ressources-partages/{id}/refuser', [RessourcesPartageController::class, 'refuser'])->name('frontend.ressources.RessourcesPartage.refuser');
     Route::post('/ressources-partages/demande', [RessourcesPartageController::class, 'store'])->name('frontend.ressources.RessourcesPartage.store');
 

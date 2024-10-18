@@ -427,12 +427,18 @@
                                     <div class="dropdown-divider"></div>
                                     <ul class="list-unstyled">
                                         <li>
-                                            <a class="dropdown-item" href="../../index.html">
+                                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                                @csrf
+                                            </form>
+
+                                            <a class="dropdown-item" href="#"
+                                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                                 <i class="fe fe-power me-2"></i>
                                                 Sign Out
                                             </a>
                                         </li>
                                     </ul>
+
                                 </div>
                             </li>
                         </ul>

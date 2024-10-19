@@ -53,7 +53,7 @@ class RessourcePartageAcceptee extends Notification
                     ->line('L\'utilisateur ' . $userPreteur->nameUser . ' a accepté votre demande pour la ressource ' . $ressource->nom . '.')
                     ->line('Quantité partagée: ' . $this->ressourcePartage->quantite)
                     ->line('Date de partage: ' . $this->ressourcePartage->date_partage)
-                    // ->action('Voir la demande', url('/ressources/partagees/'.$this->ressourcePartage->id))
+                    ->line('Vous pouvez contacter le preteur a travers cette addresse : ' . $userPreteur->email  . '.')
                     ->line('Merci d\'utiliser notre plateforme !');
     }
     /**

@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('image')->nullable();
             
             // Define owner as an unsignedBigInteger and add the foreign key constraint
-            $table->unsignedBigInteger('owner')->default(1);;
+            $table->unsignedBigInteger('owner');
             $table->foreign('owner')->references('id')->on('users')->onDelete('cascade');
             
             $table->timestamps();

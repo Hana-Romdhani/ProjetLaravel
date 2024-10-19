@@ -14,15 +14,36 @@ class RessourcesPartageController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
+     * 
+     
      */
-    public function index()
+
+     public function index()
     {
-        // Charger les ressources partagées avec les relations 'emprunteur' et 'ressource'
-        $ressourcesPartage = RessourcesPartage::with(['emprunteur', 'ressource'])->get();
-    
-        // Retourner la vue avec les ressources partagées
+        // Get the authenticated user's ID
+        $userId = auth()->id();
+
+        // Fetch shared resources where the logged-in user is the 'preteur' (lender)
+        // Sort them by statut: 'en attente' first, then the others
+        $ressourcesPartage = RessourcesPartage::where('user_preteur_id', $userId)
+                                            ->with(['emprunteur', 'ressource'])
+                                            ->orderByRaw("CASE WHEN statut = 'en attente' THEN 1 ELSE 2 END")
+                                            ->paginate(2);
+
+        // Return the view with the filtered and sorted shared resources
         return view('frontend.ressources.RessourcesPartage', compact('ressourcesPartage'));
     }
+
+
+
+    // public function index()
+    // {
+    //     // Charger les ressources partagées avec les relations 'emprunteur' et 'ressource'
+    //     $ressourcesPartage = RessourcesPartage::with(['emprunteur', 'ressource'])->get();
+    
+    //     // Retourner la vue avec les ressources partagées
+    //     return view('frontend.ressources.RessourcesPartage', compact('ressourcesPartage'));
+    // }
     
 
 
@@ -126,8 +147,8 @@ public function store(Request $request)
 
         // Créer la ressource partagée
         $ressourcePartage = new RessourcesPartage();
-        // $ressourcePartage->user_emprunteur_id = auth()->id();  // Utilisateur authentifié
-        $ressourcePartage->user_emprunteur_id = 2;  // Utilisateur authentifié
+        $ressourcePartage->user_emprunteur_id = auth()->id();  // Utilisateur authentifié
+        // $ressourcePartage->user_emprunteur_id = 2;  // Utilisateur authentifié
         $ressourcePartage->user_preteur_id = $validatedData['user_preteur_id'];
         $ressourcePartage->ressource_id = $validatedData['ressource_id'];
         $ressourcePartage->quantite = $validatedData['quantite'];

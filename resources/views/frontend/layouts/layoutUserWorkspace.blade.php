@@ -122,8 +122,10 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarRessources" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Ressources</a>
                     <ul class="dropdown-menu dropdown-menu-arrow" aria-labelledby="navbarRessources">
-                        <li><a class="dropdown-item" href="#">Ressource</a></li>
-                        <li><a class="dropdown-item" href="#">Demande Ressource</a></li>
+                    <li><a class="dropdown-item" href={{ route('frontend.ressources.RessourcesList')}}>Liste des Ressources</a></li>
+                        <li><a class="dropdown-item" href={{ route('frontend.ressources.Ressources')}}>Mes Ressource</a></li>
+                        <li><a class="dropdown-item" href={{ route('frontend.ressources.RessourcesPartage')}}>Mes Demandes de Ressource</a></li>
+
                     </ul>
                 </li>
 
@@ -182,20 +184,10 @@
                                     </div>
                                     <div class="lh-1">
                                         <h2 class="mb-0">
-                                            Stella Flores
-                                            <a href="#" data-bs-toggle="tooltip" data-placement="top" title="Beginner">
-                                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <rect x="3" y="8" width="2" height="6" rx="1" fill="#754FFE"></rect>
-                                                    <rect x="7" y="5" width="2" height="9" rx="1" fill="#DBD8E9"></rect>
-                                                    <rect x="11" y="2" width="2" height="12" rx="1" fill="#DBD8E9"></rect>
-                                                </svg>
-                                            </a>
+                                            {{ auth()->user()->nameUser }} 
                                         </h2>
-                                        <p class="mb-0 d-block">@stellaflores</p>
+                                        <p class="mb-0 d-block">{{ auth()->user()->email }}</p> 
                                     </div>
-                                </div>
-                                <div>
-                                    <a href="profile-edit.html" class="btn btn-primary btn-sm d-none d-md-block">Account Setting</a>
                                 </div>
                             </div>
                         </div>
@@ -228,11 +220,18 @@
                                         </li>
 
                                         <!-- Kinza (Resource Management) -->
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="">
-                                                <i class="fe fe-box nav-icon"></i> My Resources
+                                        <li class="nav-item {{ request()->routeIs('frontend.ressources.Ressources') ? 'active' : '' }}">
+                                            <a class="nav-link" href="{{ route('frontend.ressources.Ressources') }}">
+                                                <i class="fe fe-box nav-icon"></i> Mes Ressources
                                             </a>
                                         </li>
+                                        <!-- Kinza (Resource Management) -->
+                                        <li class="nav-item {{ request()->routeIs('frontend.ressources.RessourcesPartage') ? 'active' : '' }}">
+                                            <a class="nav-link" href="{{ route('frontend.ressources.RessourcesPartage') }}">
+                                                <i class="fe fe-file nav-icon"></i> Mes demandes de Ressources
+                                            </a>
+                                        </li>
+
 
                                         <!-- Hana (Advice Module) -->
                                         <li class="nav-item">
@@ -258,7 +257,7 @@
                                         <span class="navbar-header">Account Settings</span>
                                         <!-- List -->
                                         <ul class="list-unstyled ms-n2 mb-0">
-                                            <li class="nav-item active">
+                                            <li class="nav-item ">
                                                 <a class="nav-link" href="profile-edit.html">
                                                     <i class="fe fe-settings nav-icon"></i> Edit Profile
                                                 </a>

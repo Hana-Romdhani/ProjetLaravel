@@ -3,20 +3,38 @@
 namespace App\Http\Controllers\backend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Ressource;
+use App\Models\RessourcesPartage;
 
-class RessourcesController extends Controller
+class RessourcesPartagesController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        $ressources = Ressource::with('user')->paginate(2);
-        return view('backend.ressource.ressource', compact('ressources'));
-    }
+
+     public function index(Request $request)
+     {
+         $query = RessourcesPartage::query();
+     
+         // Filtre par statut si un statut est sélectionné
+         if ($request->filled('statut')) {
+             $query->where('statut', $request->input('statut'));
+         }
+     
+         // Pagination avec conservation des paramètres de filtre
+         $ressourcespartages = $query->paginate(2)->appends($request->query());
+     
+         return view('backend.ressource.ressourcesPartage', compact('ressourcespartages'));
+     }
+     
+
+
+    // public function index()
+    // {
+    //     $ressourcespartages = RessourcesPartage::paginate(2);
+    //     return view('backend.ressource.ressourcesPartage', compact('ressourcespartages'));
+    // }
 
     /**
      * Show the form for creating a new resource.

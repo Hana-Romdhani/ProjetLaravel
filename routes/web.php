@@ -13,6 +13,7 @@ use App\Http\Controllers\backend\PlantController;
 use App\Http\Controllers\backend\CategoryPlanteController;
 use App\Models\CategoriePlante;
 use App\Http\Controllers\backend\RessourcesController;
+use App\Http\Controllers\backend\RessourcesPartagesController;
 use App\Http\Controllers\frontend\RessourceController;
 use App\Http\Controllers\frontend\RessourcesPartageController;
 use App\Http\Controllers\frontend\JardinsController;
@@ -215,9 +216,11 @@ Route::prefix('/admin')->middleware(['auth'])->group(function () {
 
 
     Route::get('/ressource',  [RessourcesController::class, 'index'])->name('backend.ressource.ressource');
+    Route::get('/ressourcespartage',  [RessourcesPartagesController::class, 'index'])->name('backend.ressource.ressourcesPartage');
 
     // Handle form submission for creating a new jardin
     Route::post('/ressource', [RessourceController::class, 'store'])->name('frontend.ressources.RessourcesForm');
+
     // Route::get('/ressource',  [RessourceController::class, 'index'])->name('frontend.ressources.RessourcesForm');
 
 

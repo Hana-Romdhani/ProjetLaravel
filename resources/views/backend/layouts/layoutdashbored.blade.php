@@ -119,7 +119,7 @@
                                 </li>
 
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">Demande&nbsp;Ressource</a>
+                                    <a class="nav-link" href={{ route('backend.ressource.ressourcesPartage') }}>Demande&nbsp;Ressource</a>
                                 </li>
                             </ul>
                         </div>
@@ -366,9 +366,10 @@
                                                 <img alt="avatar" src="../../assets/images/avatar/images.png" class="rounded-circle" />
                                             </div>
                                             <div class="ms-3 lh-1">
-                                                <h5 class="mb-1">Annette Black</h5>
-                                                <p class="mb-0">annette@geeksui.com</p>
+                                                <h5 class="mb-1">{{ Auth::user()->nameUser }}</h5>
+                                                <p class="mb-0">{{ Auth::user()->email }}</p>
                                             </div>
+
                                         </div>
                                     </div>
                                     <div class="dropdown-divider"></div>

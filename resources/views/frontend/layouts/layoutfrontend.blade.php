@@ -122,8 +122,10 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarRessources" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Ressources</a>
                     <ul class="dropdown-menu dropdown-menu-arrow" aria-labelledby="navbarRessources">
-                        <li><a class="dropdown-item" href="#">Ressource</a></li>
-                        <li><a class="dropdown-item" href="#">Demande Ressource</a></li>
+                    <li><a class="dropdown-item" href={{ route('frontend.ressources.RessourcesList')}}>Liste des Ressources</a></li>
+                        <li><a class="dropdown-item" href={{ route('frontend.ressources.Ressources')}}>Mes Ressource</a></li>
+                        <li><a class="dropdown-item" href={{ route('frontend.ressources.RessourcesPartage')}}>Mes Demandes de Ressource</a></li>
+
                     </ul>
                 </li>
 

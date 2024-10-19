@@ -1,21 +1,12 @@
 @extends('frontend.layouts.layoutUserWorkspace')
 @section('contentlandinpage')
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <div class="row">
         <div class="col-lg-12 col-md-12 col-12">
             <!-- Card -->
             <div class="card rounded-3">
-                <!-- Card header -->
-                <div class="card-header p-0">
-                    <div>
-                        <!-- Nav -->
-                        <ul class="nav nav-lb-tab border-bottom-0" id="tab" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" id="courses-tab" data-bs-toggle="pill" href="#courses" role="tab" aria-controls="courses" aria-selected="true">All</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
                 <div>
                     <!-- Table -->
                     <div class="tab-content" id="tabContent">
@@ -25,8 +16,8 @@
                                 <table class="table mb-0 text-nowrap table-centered table-hover">
                                     <thead class="table-light">
                                         <tr>
-                                            <th> Emprunteur</th>
-                                            <th> Ressource</th>
+                                            <th>Emprunteur</th>
+                                            <th>Ressource</th>
                                             <th>Quantité</th>
                                             <th>Date de Partage</th>
                                             <th>Statut</th>
@@ -42,55 +33,66 @@
                                                 {{ $ressourcePartage->emprunteur->nameUser }}
                                             </td>
 
-                                            <!-- Nom Ressource -->
+                                            <!-- Nom Ressource + Image -->
                                             <td>
-                                                <div class="d-flex align-items-center gap-1">
-                                                     
-                                                <div class="d-flex flex-column gap-1">
-                                                        <h4 class="mb-0 text-primary-hover">{{ $ressourcePartage->ressource ->nom }}</h4>
-                                                    </div>
-                                                    <div>
-                                                        <!-- Si vous avez un champ image dans Ressource -->
-                                                        @if($ressourcePartage->ressource->image)
-                                                        <img src="{{ asset('storage/' . $ressourcePartage->ressource->image) }}" alt="" class="img-4by3-lg rounded" />
-                                                        @else
-                                                        <img src="{{ asset('path/to/default/image.jpg') }}" alt="" class="img-4by3-lg rounded" />
-                                                        @endif
-                                                    </div>
-                                                   
+                                                <div class="d-flex flex-column align-items-center gap-2">
+                                                    <h5 class="mb-1 text-primary">{{ $ressourcePartage->ressource->nom }}</h5>
+
+                                                    <!-- Afficher l'image de la ressource en dessous du nom -->
+                                                    @if($ressourcePartage->ressource->image)
+                                                        <img src="{{ asset('storage/' . $ressourcePartage->ressource->image) }}" alt="{{ $ressourcePartage->ressource->nom }}" class="img-fluid rounded" style="width: 100px; height: 100px;">
+                                                    @else
+                                                        <img src="{{ asset('path/to/default/image.jpg') }}" alt="Default Image" class="img-fluid rounded" style="width: 100px; height: 100px;">
+                                                    @endif
                                                 </div>
                                             </td>                                           
 
                                             <!-- Quantité -->
                                             <td>
                                                 <div class="d-flex flex-column gap-2">
-                                                    <p>{{ $ressourcePartage->quantite }}</p> <!-- Quantité partagée -->
+                                                    <p>{{ $ressourcePartage->quantite }}</p>
                                                 </div>
                                             </td>
-                                             <!-- Date Partage -->
-                                             <td>
-                                                <div class="d-flex flex-column gap-2">
-                                                    <p>{{ $ressourcePartage->date_partage }}</p> <!-- Date Partage -->
-                                                </div>
-                                            </td>
-                                             <!-- Statut -->
-                                             <td>
-                                                <div class="d-flex flex-column gap-2">
-                                                    <p>{{ $ressourcePartage->statut }}</p> <!-- Date Partage -->
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <!-- Inline form for Accepter and Refuser buttons -->
-                                                <form action="{{ route('frontend.ressources.RessourcesPartage.accepter', $ressourcePartage->id) }}" method="POST" class="d-inline-block">
-                                                    @csrf
-                                                    <button type="submit" class="btn btn-outline-secondary btn-sm mx-1">Accepter</button>
-                                                </form>
 
-                                                <form action="{{ route('frontend.ressources.RessourcesPartage.refuser', $ressourcePartage->id) }}" method="POST" class="d-inline-block">
-                                                    @csrf
-                                                    <button type="submit" class="btn btn-outline-secondary btn-sm mx-1">Refuser</button>
-                                                </form>
-                                             </td>
+                                            <!-- Date Partage -->
+                                            <td>
+                                                <div class="d-flex flex-column gap-2">
+                                                    <p>{{ $ressourcePartage->date_partage }}</p>
+                                                </div>
+                                            </td>
+
+                                            <!-- Statut -->
+                                            <td>
+                                                <div class="d-flex flex-column gap-2">
+                                                    <p class="mb-0">
+                                                        @if($ressourcePartage->statut == 'accepté')
+                                                            <span class="text-success"><i class="fas fa-check-circle"></i> Accepté</span>
+                                                        @elseif($ressourcePartage->statut == 'refusé')
+                                                            <span class="text-danger"><i class="fas fa-times-circle"></i> Refusé</span>
+                                                        @elseif($ressourcePartage->statut == 'en attente')
+                                                            <span class="text-warning"><i class="fas fa-hourglass-half"></i> En Attente</span>
+                                                        @endif
+                                                    </p>
+                                                </div>
+                                            </td>
+
+                                            <!-- Actions -->
+                                            <td>
+                                                @if($ressourcePartage->statut === 'en attente')
+                                                    <form action="{{ route('frontend.ressources.RessourcesPartage.accepter', $ressourcePartage->id) }}" method="POST" class="d-inline-block">
+                                                        @csrf
+                                                        <button type="submit" class="btn btn-success btn-sm mx-1">Accepter</button> <!-- Bouton vert -->
+                                                    </form>
+
+                                                    <form action="{{ route('frontend.ressources.RessourcesPartage.refuser', $ressourcePartage->id) }}" method="POST" class="d-inline-block">
+                                                        @csrf
+                                                        <button type="submit" class="btn btn-danger btn-sm mx-1">Refuser</button> <!-- Bouton rouge -->
+                                                    </form>
+                                                @else
+                                                    <button class="btn btn-secondary btn-sm mx-1" disabled>Accepter</button> <!-- Bouton gris désactivé -->
+                                                    <button class="btn btn-secondary btn-sm mx-1" disabled>Refuser</button> <!-- Bouton gris désactivé -->
+                                                @endif
+                                            </td>
 
                                         </tr>
                                         @endforeach
@@ -100,36 +102,18 @@
                         </div>
                     </div>
                 </div>
-                <!-- Card Footer -->
+
+               <!-- Card Footer -->
                 <div class="card-footer">
                     <nav>
                         <ul class="pagination justify-content-center mb-0">
-                            <li class="page-item disabled">
-                                <a class="page-link mx-1 rounded" href="#">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
-                                        <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"></path>
-                                    </svg>
-                                </a>
-                            </li>
-                            <li class="page-item active">
-                                <a class="page-link mx-1 rounded" href="#">1</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link mx-1 rounded" href="#">2</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link mx-1 rounded" href="#">3</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link mx-1 rounded" href="#">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
-                                        <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"></path>
-                                    </svg>
-                                </a>
-                            </li>
+                            <!-- Générer automatiquement les liens de pagination -->
+                            {{ $ressourcesPartage->onEachSide(1)->links('pagination::bootstrap-4') }}
                         </ul>
                     </nav>
                 </div>
+
+
             </div>
         </div>
     </div>

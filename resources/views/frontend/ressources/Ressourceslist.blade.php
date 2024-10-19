@@ -14,32 +14,33 @@
         </div>
         
         <!-- Display list of ressources -->
-        <div class="row g-6">
+        <div class="row row-cols-1 row-cols-md-2 g-4">
             @if($ressources->isEmpty())
                 <p class="text-center">No ressources available at the moment.</p>
             @else
                 @foreach($ressources as $ressource)
-                    <div class="col-md-6 mb-6">
-                        <div class="img-overlay">
-                            <div class="img-color">
+                    <div class="col">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-img-top img-container">
                                 @if($ressource->image)
-                                    <img src="{{ asset('storage/' . $ressource->image) }}" alt="" class="img-fluid w-100" />
+                                    <img src="{{ asset('storage/' . $ressource->image) }}" alt="Image de la ressource" class="img-fluid w-100" />
                                 @else
-                                    <img src="{{ asset('path/to/default/image.jpg') }}" alt="" class="img-fluid w-100"/>
+                                    <img src="{{ asset('path/to/default/image.jpg') }}" alt="Image par défaut" class="img-fluid w-100"/>
                                 @endif
-                                <div class="caption">
-                                <a href="#" class="btn btn-white" data-bs-toggle="modal" data-bs-target="#demanderRessourceModal" data-ressource-id="{{ $ressource->id }}" data-owner-id="{{ $ressource->owner }}">Demander Ressource</a>
+                                <div class="caption-overlay">
+                                    <a href="#" class="btn btn-green" data-bs-toggle="modal" data-bs-target="#demanderRessourceModal" data-ressource-id="{{ $ressource->id }}" data-owner-id="{{ $ressource->owner }}">Demander Ressource</a>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="mt-4">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <h3 class="fw-semibold mb-1">Nom: {{ $ressource->nom }}</h3>
-                                <span>Quantité: {{ $ressource->quantite }}</span>
+                            <div class="card-body">
+                                <h5 class="card-title fw-semibold">Nom: {{ $ressource->nom }}</h5>
+                                <p class="card-text">Libelle: {{ $ressource->libelle }}</p>
+                                <p class="card-text"><span>👤</span> {{ $ressource->user ? $ressource->user->nameUser : 'Unknown' }}</p>
                             </div>
-                            <p>Libelle: {{ $ressource->libelle }}</p>
-                            <p><span>👤</span> {{ $ressource->user ? $ressource->user->nameUser : 'Unknown' }}</p>
+
+                            <div class="card-footer d-flex justify-content-between">
+                                <span class="text-muted">Quantité: {{ $ressource->quantite }}</span>
+                            </div>
                         </div>
                     </div>
                 @endforeach
@@ -47,6 +48,54 @@
         </div>
     </div>
 </section>
+
+<style>
+    .img-container {
+        height: 250px; /* Fixe la hauteur des images */
+        overflow: hidden;
+        position: relative;
+    }
+
+    .img-container img {
+        height: 100%;
+        width: 100%;
+        object-fit: contain; /* Affiche l'image en entier sans la recadrer */
+    }
+
+    .card {
+        border-radius: 10px;
+        transition: transform 0.2s ease-in-out;
+    }
+
+    .card:hover {
+        transform: scale(1.05); /* Effet au survol pour attirer l'attention */
+    }
+
+    .card-title {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .card-text {
+        font-size: 1rem;
+        color: #555;
+    }
+
+    .caption-overlay {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 5px 10px;
+        border-radius: 5px;
+    }
+
+    .card-footer {
+        background-color: #f8f9fa;
+        border-top: 1px solid rgba(0, 0, 0, 0.125);
+    }
+</style>
 
 <!-- Modal -->
 <div class="modal fade" id="demanderRessourceModal" tabindex="-1" aria-labelledby="demanderRessourceModalLabel" aria-hidden="true">

@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('categorie_plantes', function (Blueprint $table) {
             $table->id(); // Primary key: 'id' column
             $table->string('nom')->unique(); // Category name, unique
-            $table->string('slug')->unique(); // URL-friendly name, unique
+            $table->string('slug')->nullable(); // URL-friendly name, unique
             $table->text('description')->nullable(); // Optional description
             $table->string('image_url')->nullable(); // Optional image URL
             $table->foreignId('parent_id')->nullable()->constrained('categorie_plantes')->onDelete('cascade'); // For nested categories

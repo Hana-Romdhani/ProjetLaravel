@@ -13,9 +13,21 @@ use Illuminate\Support\Facades\Mail;  // Importation de Mail
 class PlantationController extends Controller
 {
     // List all plantations
-    public function index()
+    public function index(Request $request)
     {
         $plantations = Plantation::with('user', 'jardin', 'plantes')->get();
+        $search = $request->input('search');
+        $sort = $request->input('sort', 'date_plantation'); // default sort field
+        $order = $request->input('order', 'asc'); // default order
+
+        // Query to fetch plantations with search and sorting
+        $plantations = Plantation::with(['user', 'jardin', 'plantes'])
+            ->when($search, function ($query) use ($search) {
+                return $query->where('nom', 'LIKE', "%{$search}%");
+            })
+            ->orderBy($sort, $order)
+            ->paginate(4); // Adjust the number of items per page as needed
+
         return view('backend.plantation.plantation', compact('plantations'));
     }
 

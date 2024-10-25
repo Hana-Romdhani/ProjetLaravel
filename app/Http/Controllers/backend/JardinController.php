@@ -9,9 +9,24 @@ use App\Models\Jardin;
 class JardinController extends Controller
 {
     // List all jardins
-    public function index()
+    public function index(Request $request)
     {
         $jardins = Jardin::all();
+        $query = Jardin::query();
+
+    // Search functionality
+    if ($request->has('search') && $request->search != '') {
+        $query->where('name', 'like', '%' . $request->search . '%');
+    }
+
+    // Sort functionality
+    if ($request->has('sort') && in_array($request->sort, ['name', 'location', 'size', 'created_at'])) {
+        $query->orderBy($request->sort);
+    }
+
+    // Get the results with pagination
+    $jardins = $query->paginate(4); // Adjust per page as needed
+    
         return view('backend.jardin.jardin', compact('jardins'));
     }
 

@@ -1,4 +1,5 @@
 @extends('backend.layouts.layoutdashbored')
+
 @section('contentadmin')
 <section class="container-fluid p-4">
 
@@ -43,17 +44,26 @@
                 </div>
 
                 <div class="p-4 row">
-                    <!-- Form -->
-                    <form class="d-flex align-items-center col-12 col-md-12 col-lg-12">
+                    <!-- Search and Sort Form -->
+                    <form id="searchForm" class="d-flex align-items-center col-12 col-md-12 col-lg-12">
                         <span class="position-absolute ps-3 search-icon"><i class="fe fe-search"></i></span>
-                        <input type="search" class="form-control ps-6" placeholder="Search Plantation" />
+                        <input type="search" name="search" class="form-control ps-6" placeholder="Search Plantation" value="{{ request('search') }}" />
+                        <select name="sort" class="form-select ms-2">
+                            <option value="date_plantation" {{ request('sort') == 'date_plantation' ? 'selected' : '' }}>Sort by Date</option>
+                            <option value="nom" {{ request('sort') == 'nom' ? 'selected' : '' }}>Sort by Name</option>
+                        </select>
+                        <select name="order" class="form-select ms-2">
+                            <option value="asc" {{ request('order') == 'asc' ? 'selected' : '' }}>Ascending</option>
+                            <option value="desc" {{ request('order') == 'desc' ? 'selected' : '' }}>Descending</option>
+                        </select>
+                        <button type="submit" class="btn btn-primary ms-2">Search</button>
                     </form>
                 </div>
 
                 <div>
                     <!-- Table -->
                     <div class="tab-content" id="tabContent">
-                        <!--Tab pane -->
+                        <!-- Tab pane -->
                         <div class="tab-pane fade show active" id="plantations" role="tabpanel" aria-labelledby="plantations-tab">
                             <div class="table-responsive border-0 overflow-y-hidden">
                                 <table class="table mb-0 text-nowrap table-centered table-hover">
@@ -68,7 +78,7 @@
                                             <th></th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="plantationTableBody">
                                         @foreach ($plantations as $plantation)
                                         <tr>
                                             <td>
@@ -78,8 +88,8 @@
                                                 </div>
                                             </td>
 
-                                            <td>{{ $plantation->user->nameUser }}</td>
-                                            <td>{{ $plantation->jardin->name }}</td>
+                                            <td>{{ $plantation->user->nameUser ?? 'N/A' }}</td>
+                                            <td>{{ $plantation->jardin->name ?? 'N/A' }}</td>
                                             <td>
                                                 @foreach ($plantation->plantes as $plante)
                                                     {{ $plante->nom }}{{ !$loop->last ? ',' : '' }}
@@ -130,15 +140,77 @@
                     </div>
                 </div>
 
-                <!-- Card Footer -->
-                <div class="card-footer">
-                    <nav>
-                        <ul class="pagination justify-content-center mb-0">
-                        </ul>
-                    </nav>
-                </div>
+              <!-- Card Footer -->
+<div class="card-footer">
+    <nav>
+        <ul class="pagination justify-content-center mb-0">
+            @if ($plantations->onFirstPage())
+                <li class="page-item disabled">
+                    <a class="page-link mx-1 rounded" href="#">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"></path>
+                        </svg>
+                    </a>
+                </li>
+            @else
+                <li class="page-item">
+                    <a class="page-link mx-1 rounded" href="{{ $plantations->previousPageUrl() }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"></path>
+                        </svg>
+                    </a>
+                </li>
+            @endif
+
+            @for ($i = 1; $i <= $plantations->lastPage(); $i++)
+                <li class="page-item">
+                    <a class="page-link mx-1 rounded" href="{{ $plantations->url($i) }}">{{ $i }}</a>
+                </li>
+            @endfor
+
+            @if ($plantations->hasMorePages())
+                <li class="page-item">
+                    <a class="page-link mx-1 rounded" href="{{ $plantations->nextPageUrl() }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"></path>
+                        </svg>
+                    </a>
+                </li>
+            @else
+                <li class="page-item disabled">
+                    <a class="page-link mx-1 rounded" href="#">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"></path>
+                        </svg>
+                    </a>
+                </li>
+            @endif
+        </ul>
+    </nav>
+</div>
+
             </div>
         </div>
     </div>
 </section>
+
+<script>
+    // JavaScript for real-time search
+    document.getElementById('searchForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        let formData = new FormData(this);
+        let searchParams = new URLSearchParams(formData);
+
+        fetch('{{ route("backend.plantation.plantation") }}?' + searchParams.toString())
+            .then(response => response.text())
+            .then(html => {
+                // Update the plantation table body
+                document.getElementById('plantationTableBody').innerHTML = new DOMParser().parseFromString(html, 'text/html').getElementById('plantationTableBody').innerHTML;
+                // Update pagination links
+                document.getElementById('paginationLinks').innerHTML = new DOMParser().parseFromString(html, 'text/html').getElementById('paginationLinks').innerHTML;
+            })
+            .catch(error => console.error('Error:', error));
+    });
+</script>
+
 @endsection

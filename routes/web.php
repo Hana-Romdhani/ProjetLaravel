@@ -10,6 +10,7 @@ use App\Http\Controllers\backend\ClassificationController;
 use App\Http\Controllers\frontend\EvenementFrontController;
 use App\Http\Controllers\frontend\PlantFrontController;
 use App\Http\Controllers\backend\PlantController;
+use App\Http\Controllers\backend\PlantationController;
 use App\Http\Controllers\backend\CategoryPlanteController;
 use App\Models\CategoriePlante;
 use App\Http\Controllers\backend\RessourcesController;
@@ -112,19 +113,25 @@ Route::prefix('/admin')->middleware(['auth'])->group(function () {
     // ********************************jardin**********************************
 
     Route::get('/jardin',  [JardinController::class, 'index'])->name('backend.jardin.jardin');
+    Route::get('/plantation',  [PlantationController::class, 'index'])->name('backend.plantation.plantation');
 
     // Display the form to create a new jardin
     Route::get('/jardin/create',  [JardinController::class, 'create',])->name('admin.jardin.create');
+    Route::get('/plantation/create',  [PlantationController::class, 'create',])->name('admin.plantation.create');
     // Handle form submission for creating a new jardin
     Route::post('/jardin', [JardinController::class, 'store'])->name('backend.jardin.formJardin');
+    Route::post('/plantation', [PlantationController::class, 'store'])->name('backend.plantation.formPlantation');
+
     // Route::get('/jardin',  [JardinController::class, 'index']);
     // Route::get('/jardin/edit',  [JardinController::class, 'edit'])->name('backend.jardin.formJardin');
     // Route::resource('/jardin/edit',  JardinController::class);
 
     // Display the form to edit an existing jardin
     Route::get('/jardin/{jardin}/edit', [JardinController::class, 'edit'])->name('admin.jardin.edit');
+    Route::get('/plantation/{plantation}/edit', [PlantationController::class, 'edit'])->name('admin.plantation.edit');
     // Handle form submission for updating an existing jardin
     Route::put('/jardin/{jardin}', [JardinController::class, 'update'])->name('jardin.update');
+    Route::put('/plantation/{plantation}', [PlantationController::class, 'update'])->name('plantation.update');
 
     //conseil part
     Route::middleware('web')->prefix('/')->group(function () {
@@ -173,6 +180,7 @@ Route::prefix('/admin')->middleware(['auth'])->group(function () {
 
     // Handle deletion of a jardin
     Route::delete('/jardin/{jardin}', [JardinController::class, 'destroy'])->name('jardin.destroy');
+    Route::delete('/plantation/{plantation}', [PlantationController::class, 'destroy'])->name('plantation.destroy');
 
     // ********************************conseil**********************************
     // ********************************plants**********************************

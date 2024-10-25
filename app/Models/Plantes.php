@@ -38,4 +38,8 @@ class Plantes extends Model
     {
         return $this->belongsTo(CategoriePlante::class, 'categorie_plante_id');
     }
+
+    public function plantations() {
+        return $this->belongsToMany(Plantation::class, 'plantation_plante'); 
+    }
 }

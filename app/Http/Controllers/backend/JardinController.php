@@ -44,7 +44,7 @@ class JardinController extends Controller
             'location' => $request->location,
             'description' => $request->description,
             'size' => $request->size,
-            'image' => $imagePath, // Save the image path in the database
+            'image' => $imagePath, 
         ]);
     
         return redirect()->route('backend.jardin.jardin')->with('success', 'Jardin added successfully!');
@@ -65,25 +65,19 @@ class JardinController extends Controller
             'location' => 'required|string|max:255',
             'size' => 'required|numeric',
             'description' => 'required|string',
-//             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-//    // Handle the image upload
-//    if ($request->hasFile('image')) {
-//     $imagePath = $request->file('image')->store('images', 'public'); // Store image in 'public/images' directory
-// }
+
 
         $jardin->update([
             'name' => $request->name,
             'location' => $request->location,
             'size' => $request->size,
             'description' => $request->description,
-            // 'image' => $imagePath,
         ]);
 
         return redirect()->route('backend.jardin.jardin')->with('success', 'Jardin updated successfully!');
     }
 
-    // Delete an existing jardin
     public function destroy(Jardin $jardin)
     {
         $jardin->delete();

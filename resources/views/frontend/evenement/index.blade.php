@@ -50,10 +50,20 @@
                         <!-- Display jardin details -->
                         <div class="text-center">
                             <h3 class="fw-semibold mb-1">{{ $evenement->title }}</h3>
-                            <span>{{ $evenement->location }}</span>
-                            <p>{{ $evenement->description }}</p>
-                            <span>{{ $evenement->date }}</span>
-                            <p>{{ $evenement->classification->name }}</p>
+                            <div class="d-flex justify-content-center">
+                                <div class="text-start" style="min-width: 120px;">
+                                    <p><strong>Location:</strong></p>
+                                    <p><strong>Description:</strong></p>
+                                    <p><strong>Date:</strong></p>
+                                    <p><strong>Classification:</strong></p>
+                                </div>
+                                <div class="text-start">
+                                    <p>{{ $evenement->location }}</p>
+                                    <p>{{ $evenement->description }}</p>
+                                    <p>{{ $evenement->date }}</p>
+                                    <p>{{ $evenement->classification->name }}</p>
+                                </div>
+                            </div>
                             
                             </div>
                         

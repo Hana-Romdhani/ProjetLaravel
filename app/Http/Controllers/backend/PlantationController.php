@@ -7,6 +7,8 @@ use App\Models\Plantation;
 use App\Models\Jardin;
 use App\Models\Plantes;
 use App\Models\User;
+use App\Mail\PlantationCreated;  // Importation du Mailable
+use Illuminate\Support\Facades\Mail;  // Importation de Mail
 
 class PlantationController extends Controller
 {
@@ -50,6 +52,12 @@ class PlantationController extends Controller
         // Attach the selected plantes
         $plantation->plantes()->attach($request->plantes);
 
+        // Envoyer l'email à l'éditeur sélectionné
+        $user = User::find($request->user_id);
+        if ($user) {
+            Mail::to($user->email)->send(new PlantationCreated($plantation));
+        }
+
         return redirect()->route('backend.plantation.plantation')->with('success', 'Plantation added successfully!');
     }
 
@@ -92,4 +100,42 @@ class PlantationController extends Controller
         $plantation->delete();
         return redirect()->route('backend.plantation.plantation')->with('success', 'Plantation deleted successfully!');
     }
+
+
+//     public function agenda()
+// {
+//     $user = auth()->user(); // Get the logged-in user
+//     $plantations = Plantation::with('jardin', 'plantes')
+//                              ->where('user_id', $user->id)
+//                              ->orderBy('date_plantation', 'asc')
+//                              ->get();
+
+//     return view('backend.plantation.agenda', compact('plantations'));
+// }
+
+public function agenda()
+{
+    $user = auth()->user();
+
+    if ($user->role !== 'editor') {
+        abort(403, 'Unauthorized action.');
+    }
+
+    $plantations = Plantation::with(['jardin', 'plantes'])
+        ->where('user_id', $user->id)
+        ->get()
+        ->map(function ($plantation) {
+            return [
+                'title' => $plantation->nom . ' - ' . optional($plantation->jardin)->name,
+                'start' => $plantation->date_plantation->format('Y-m-d'),
+                'description' => 'Plants: ' . $plantation->plantes->pluck('nom')->implode(', ')
+            ];
+        });
+
+    // Encode as JSON for direct use in the view
+    $plantationEvents = json_encode($plantations);
+
+    return view('backend.plantation.agenda', compact('plantationEvents'));
+}
+
 }

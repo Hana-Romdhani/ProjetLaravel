@@ -100,6 +100,11 @@ Route::prefix('/')->group(function () {
     // ***********************************************************************
     // ********************************admin**********************************
     // ***********************************************************************
+//jardinier part
+Route::prefix('/jardinier')->middleware(['auth'])->group(function () {
+    Route::get('/agenda', [PlantationController::class, 'agenda'])->middleware('auth')->name('backend.plantation.agenda');
+
+});
 
 //admin part
 Route::prefix('/admin')->middleware(['auth'])->group(function () {

@@ -20,7 +20,6 @@
                         </ol>
                     </nav>
                 </div>
-               
             </div>
         </div>
     </div>
@@ -55,42 +54,46 @@
                                 <table class="table mb-0 text-nowrap table-centered table-hover">
                                     <thead class="table-light">
                                         <tr>
-                                            <th>Nom Ressource </th>
-                                            <th>Libelle</th>
-                                            <th>Quantite</th>
-                                            <th></th>
+                                            <th class="text-center">Nom Ressource</th> <!-- Aligné au centre -->
+                                            <th class="text-center">Libelle</th>       <!-- Aligné au centre -->
+                                            <th class="text-center">Quantite</th>      <!-- Aligné au centre -->
+                                            <th class="text-center">Propriétaire</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($ressources as $ressource)
                                         <tr>
-                                            <td>
+                                            <td class="text-center"> <!-- Aligné au centre -->
                                                 <div class="d-flex align-items-center gap-3">
-                                                    <div>
-                                                        <!-- If you have an image field -->
-                                                        @if($ressource->image)
-                                                        <img src="{{ asset('storage/' . $ressource->image) }}" alt="" class="img-4by3-lg rounded" />
-                                                        @else
-                                                        <img src="{{ asset('path/to/default/image.jpg') }}" alt="" class="img-4by3-lg rounded" />
-                                                        @endif
-                                                    </div>
                                                     <div class="d-flex flex-column gap-1">
                                                         <h4 class="mb-0 text-primary-hover">{{ $ressource->nom }}</h4>
+                                                        <div>
+                                                            @if($ressource->image)
+                                                                <img src="{{ asset('storage/' . $ressource->image) }}" alt="" class="img-4by3-lg rounded" />
+                                                            @else
+                                                                <img src="{{ asset('path/to/default/image.jpg') }}" alt="" class="img-4by3-lg rounded" />
+                                                            @endif
+                                                        </div>
                                                         <span>Added on {{ $ressource->created_at->format('d M, Y') }}</span>
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td>
+                                            <td class="text-center"> <!-- Aligné au centre -->
                                                 <div class="d-flex flex-column gap-2">
-                                                    <p>{{ $ressource->libelle }}</p> <!-- Displaying the description here -->
+                                                    {!! implode('<br>', array_map('trim', str_split(strip_tags($ressource->libelle), 90))) !!}
+                                                </div>
+                                            </td>
+                                            <td class="text-center"> <!-- Aligné au centre -->
+                                                <div class="d-flex flex-column gap-2">
+                                                    <p>{{ $ressource->quantite }}</p>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="d-flex flex-column gap-2">
-                                                    <p>{{ $ressource->quantite }}</p> <!-- Displaying the description here -->
+                                                    <!-- Afficher le nameUser du propriétaire -->
+                                                    <span>{{ $ressource->user ? $ressource->user->nameUser : 'N/A' }}</span>
                                                 </div>
                                             </td>
-                                          
                                         </tr>
                                         @endforeach
                                     </tbody>
@@ -100,35 +103,14 @@
                     </div>
                 </div>
                 <!-- Card Footer -->
-                <div class="card-footer">
-                    <nav>
-                        <ul class="pagination justify-content-center mb-0">
-                            <li class="page-item disabled">
-                                <a class="page-link mx-1 rounded" href="#">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
-                                        <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"></path>
-                                    </svg>
-                                </a>
-                            </li>
-                            <li class="page-item active">
-                                <a class="page-link mx-1 rounded" href="#">1</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link mx-1 rounded" href="#">2</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link mx-1 rounded" href="#">3</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link mx-1 rounded" href="#">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
-                                        <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"></path>
-                                    </svg>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
+                    <div class="card-footer">
+                        <nav>
+                            <ul class="pagination justify-content-center mb-0">
+                                <!-- Générer automatiquement les liens de pagination -->
+                                {{ $ressources->onEachSide(1)->links('pagination::bootstrap-4') }}
+                            </ul>
+                        </nav>
+                    </div>
             </div>
         </div>
     </div>

@@ -14,7 +14,7 @@ class RessourcesController extends Controller
      */
     public function index()
     {
-        $ressources = Ressource::all();
+        $ressources = Ressource::with('user')->paginate(2);
         return view('backend.ressource.ressource', compact('ressources'));
     }
 

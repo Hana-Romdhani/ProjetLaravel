@@ -14,9 +14,12 @@ use App\Http\Controllers\backend\PlantController;
 use App\Http\Controllers\backend\CategoryPlanteController;
 use App\Models\CategoriePlante;
 use App\Http\Controllers\backend\RessourcesController;
+use App\Http\Controllers\backend\RessourcesPartagesController;
 use App\Http\Controllers\frontend\RessourceController;
+use App\Http\Controllers\frontend\RessourcesPartageController;
 use App\Http\Controllers\frontend\JardinsController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\shared\UserController;
 
 
 /*
@@ -29,6 +32,39 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+// ******************************** User **********************************
+//auth part
+Route::prefix('auth')->group(function () {
+    Route::get('/signin', function () {
+        return view('auth.pages.Signin');  // Your custom sign-in view
+    })->name('login');  // This will use Laravel's built-in login route
+
+    // Handle login form submission (POST request)
+    Route::post('/signin', [UserController::class, 'authenticate'])->name('login.store');  // POST route to handle login
+
+
+    Route::get('/register', function () {
+        return view('auth.pages.Signup');  // Your custom sign-up view
+    })->name('register');  // This will use Laravel's built-in register route
+
+    // Handle the registration form submission (POST request)
+    Route::post('/register', [UserController::class, 'store'])->name('register.store'); // POST route to handle registration
+
+
+    Route::get('/forgot-password', function () {
+        return view('auth.pages.ForgotPassword');  // Your custom forgot-password view
+    })->name('password.request');  // This will use Laravel's built-in password reset route
+
+    Route::get('/edit-profile', function () {
+        return view('auth.pages.profile');  // Custom profile view
+    })->middleware('auth');  // Protect profile page with 'auth' middleware
+
+    Route::resource('users', UserController::class);
+
+    Route::post('/auth/logout', [UserController::class, 'logout'])->name('logout');
+
+
+});
 
 
 // ******************************** mettre toute les urls de front ici  **********************************
@@ -48,6 +84,12 @@ Route::prefix('/')->group(function () {
     Route::delete('/ressource/{ressource}', [RessourceController::class, 'destroy'])->name('Ressources.destroy');
 
     Route::get('/ressourceUser',  [RessourceController::class, 'index'])->name('frontend.ressources.Ressources');
+    Route::get('/ressourcesPartage',  [RessourcesPartageController::class, 'index'])->name('frontend.ressources.RessourcesPartage');
+    Route::post('/ressources-partages/{id}/accepter', [RessourcesPartageController::class, 'accepter'])->name('frontend.ressources.RessourcesPartage.accepter');
+    Route::post('/ressources/{ressource}/quantite-restante', [RessourcesPartageController::class, 'getQuantiteRestante'])->name('frontend.ressources.RessourcesPartage.getQuantiteRestante');;
+    Route::post('/ressources-partages/{id}/refuser', [RessourcesPartageController::class, 'refuser'])->name('frontend.ressources.RessourcesPartage.refuser');
+    Route::post('/ressources-partages/demande', [RessourcesPartageController::class, 'store'])->name('frontend.ressources.RessourcesPartage.store');
+
     Route::get('/ressourcesList',  [RessourceController::class, 'show'])->name('frontend.ressources.RessourcesList');
     Route::get('/jardins',  [JardinsController::class, 'index'])->name('frontend.jardin.jardin');
     // ********************************conseil**********************************
@@ -57,9 +99,12 @@ Route::prefix('/')->group(function () {
 
 });
 
-// ******************************** mettre toute les urls de back ici  **********************************
+    // ***********************************************************************
+    // ********************************admin**********************************
+    // ***********************************************************************
 
-Route::prefix('/admin')->group(function () {
+//admin part
+Route::prefix('/admin')->middleware(['auth'])->group(function () {
 
     Route::get('/',  [backendController::class, 'index']);
 
@@ -72,6 +117,9 @@ Route::prefix('/admin')->group(function () {
     Route::get('/jardin',  [JardinController::class, 'index'])->name('backend.jardin.jardin');
     Route::get('/jardin/create',  [JardinController::class, 'create',])->name('admin.jardin.create');
     Route::post('/jardin', [JardinController::class, 'store'])->name('backend.jardin.formJardin');
+    // Route::get('/jardin',  [JardinController::class, 'index']);
+    // Route::get('/jardin/edit',  [JardinController::class, 'edit'])->name('backend.jardin.formJardin');
+    // Route::resource('/jardin/edit',  JardinController::class);
 
     Route::get('/jardin/{jardin}/edit', [JardinController::class, 'edit'])->name('admin.jardin.edit');
     Route::put('/jardin/{jardin}', [JardinController::class, 'update'])->name('jardin.update');
@@ -79,13 +127,14 @@ Route::prefix('/admin')->group(function () {
 
     // ********************************conseil**********************************
 
+    //conseil part
     Route::middleware('web')->prefix('/')->group(function () {
         Route::resource('/conseil-categorie', ConseilCategorieController::class);
         Route::resource('/conseil', ConseilController::class);
         Route::get('/conseil/category/{id}', action: [ConseilController::class, 'categoryShow'])->name('conseil.categoryShow');
 
     });
-    // ********************************evenements  **********************************
+    //conseil part
     Route::get('/evenement',  [EvenementController::class, 'index'])->name('backend.evenement.index');
     Route::get('/evenement/create', [EvenementController::class, 'create'])->name('backend.evenement.create'); // Route pour le formulaire de création
     Route::post('/evenement', [EvenementController::class, 'store'])->name('backend.evenement.store'); // Route pour stocker l'événement
@@ -106,14 +155,19 @@ Route::prefix('/admin')->group(function () {
 
     Route::delete('/classification/{id}', [ClassificationController::class, 'destroy'])->name('backend.classification.destroy');
 
-Route::prefix('front')->group(function () {
-    Route::get('/',  [frontendController::class, 'index']);
-    Route::get('/contact', function () {
-        return view('frontend.pages.contact');
+    //frontEvent
+    //Route::get('/evenementsfront', [EvenementFrontController::class, 'index'])->name('frontend.evenement.index');
+    //Route::get('/evenements/{id}', [EvenementFrontController::class, 'show'])->name('frontend.evenement.show');
+
+    // Routes pour les événements dans le front-end
+    Route::prefix('front')->group(function () {
+        Route::get('/',  [frontendController::class, 'index']);
+        Route::get('/contact', function () {
+            return view('frontend.pages.contact');
+        });
+
+        Route::get('/evenement', action: [EvenementFrontController::class, 'index'])->name('frontend.evenement.index');
     });
-    Route::get('/evenement', action: [EvenementFrontController::class, 'index'])->name('frontend.evenement.index');
-});
-    // ********************************Plante **********************************
 
     Route::get('/plant', [PlantController::class, 'index'])->name('backend.plant.index');
 
@@ -142,28 +196,28 @@ Route::prefix('front')->group(function () {
         // ********************************ressource  **********************************
 
     Route::get('/ressource',  [RessourcesController::class, 'index'])->name('backend.ressource.ressource');
+    Route::get('/ressourcespartage',  [RessourcesPartagesController::class, 'index'])->name('backend.ressource.ressourcesPartage');
 
     Route::post('/ressource', [RessourceController::class, 'store'])->name('frontend.ressources.RessourcesForm');
+
+    // Route::get('/ressource',  [RessourceController::class, 'index'])->name('frontend.ressources.RessourcesForm');
+
+
+    // Route::get('/ressource/{ressource}/edit', [RessourceController::class, 'edit'])->name('admin.ressource.edit');
+
+    // Route::put('/ressource/{ressource}', [RessourceController::class, 'update'])->name('RessourcesForm.update');
+
+
+
+
 });
 
-
-
-
-
-//auth part
-Route::prefix('auth')->group(function () {
-    Route::get('/signin', function () {
-        return view('auth.pages.Signin');
-    });
-
-    Route::get('/signup', function () {
-        return view('auth.pages.Signup');
-    });
-
-    Route::get('/forgot-password', function () {
-        return view('auth.pages.ForgotPassword');
-    });
-    Route::get('/edit-profile', function () {
-        return view('auth.pages.profile');
-    });
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified'
+])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
 });

@@ -120,7 +120,7 @@
                                 </li>
 
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">Demande&nbsp;Ressource</a>
+                                    <a class="nav-link" href={{ route('backend.ressource.ressourcesPartage') }}>Demande&nbsp;Ressource</a>
                                 </li>
                             </ul>
                         </div>
@@ -367,9 +367,10 @@
                                                 <img alt="avatar" src="../../assets/images/avatar/images.png" class="rounded-circle" />
                                             </div>
                                             <div class="ms-3 lh-1">
-                                                <h5 class="mb-1">Annette Black</h5>
-                                                <p class="mb-0">annette@geeksui.com</p>
+                                                <h5 class="mb-1">{{ Auth::user()->nameUser }}</h5>
+                                                <p class="mb-0">{{ Auth::user()->email }}</p>
                                             </div>
+
                                         </div>
                                     </div>
                                     <div class="dropdown-divider"></div>
@@ -428,12 +429,18 @@
                                     <div class="dropdown-divider"></div>
                                     <ul class="list-unstyled">
                                         <li>
-                                            <a class="dropdown-item" href="../../index.html">
+                                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                                @csrf
+                                            </form>
+
+                                            <a class="dropdown-item" href="#"
+                                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                                 <i class="fe fe-power me-2"></i>
                                                 Sign Out
                                             </a>
                                         </li>
                                     </ul>
+
                                 </div>
                             </li>
                         </ul>

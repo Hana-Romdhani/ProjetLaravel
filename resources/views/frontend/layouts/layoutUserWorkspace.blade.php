@@ -85,15 +85,32 @@
                                 </ul>
                             </div>
                         </div>
-                        <a href="#langaugeModal" class="text-inherit me-2" data-bs-toggle="modal">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
-                                class="bi bi-globe text-gray-500" viewBox="0 0 16 16">
-                                <path
-                                    d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m7.5-6.923c-.67.204-1.335.82-1.887 1.855A8 8 0 0 0 5.145 4H7.5zM4.09 4a9.3 9.3 0 0 1 .64-1.539 7 7 0 0 1 .597-.933A7.03 7.03 0 0 0 2.255 4zm-.582 3.5c.03-.877.138-1.718.312-2.5H1.674a7 7 0 0 0-.656 2.5zM4.847 5a12.5 12.5 0 0 0-.338 2.5H7.5V5zM8.5 5v2.5h2.99a12.5 12.5 0 0 0-.337-2.5zM4.51 8.5a12.5 12.5 0 0 0 .337 2.5H7.5V8.5zm3.99 0V11h2.653c.187-.765.306-1.608.338-2.5zM5.145 12q.208.58.468 1.068c.552 1.035 1.218 1.65 1.887 1.855V12zm.182 2.472a7 7 0 0 1-.597-.933A9.3 9.3 0 0 1 4.09 12H2.255a7 7 0 0 0 3.072 2.472M3.82 11a13.7 13.7 0 0 1-.312-2.5h-2.49c.062.89.291 1.733.656 2.5zm6.853 3.472A7 7 0 0 0 13.745 12H11.91a9.3 9.3 0 0 1-.64 1.539 7 7 0 0 1-.597.933M8.5 12v2.923c.67-.204 1.335-.82 1.887-1.855q.26-.487.468-1.068zm3.68-1h2.146c.365-.767.594-1.61.656-2.5h-2.49a13.7 13.7 0 0 1-.312 2.5m2.802-3.5a7 7 0 0 0-.656-2.5H12.18c.174.782.282 1.623.312 2.5zM11.27 2.461c.247.464.462.98.64 1.539h1.835a7 7 0 0 0-3.072-2.472c.218.284.418.598.597.933M10.855 4a8 8 0 0 0-.468-1.068C9.835 1.897 9.17 1.282 8.5 1.077V4z" />
-                            </svg>
+                         <!-- Conditional User Profile and Buttons -->
+                        <!-- Icône de profil pour les utilisateurs connectés -->
+                        @auth
+                            <a href="/ressourceUser" id="profileIcon" class="text-inherit me-2 rounded-circle border">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+                                    <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                                    <path fill-rule="evenodd" d="M8 9a5 5 0 0 0-5 5v1h10v-1a5 5 0 0 0-5-5z"/>
+                                </svg>
+                            </a>
+                        <!-- Formulaire de déconnexion caché -->
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
+
+                        <!-- Bouton de déconnexion -->
+                        <a href="#" id="logoutBtn" class="btn btn-outline-dark" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            Logout
                         </a>
-                        <a href="pages/sign-in.html" class="btn btn-outline-dark">Login</a>
-                        <a href="pages/sign-up.html" class="btn btn-dark d-none d-md-block">Join Now</a>
+                        @endauth
+
+                        <!-- Boutons pour les visiteurs non connectés -->
+                        @guest
+                            <a href="auth/signin" id="loginBtn" class="btn btn-outline-dark">Login</a>
+                            <a href="auth/register" id="joinNowBtn" class="btn btn-dark d-none d-md-block">Join Now</a>
+                        @endguest
+
                     </div>
                 </div>
                  <div>
@@ -122,8 +139,10 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarRessources" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Ressources</a>
                     <ul class="dropdown-menu dropdown-menu-arrow" aria-labelledby="navbarRessources">
-                        <li><a class="dropdown-item" href="#">Ressource</a></li>
-                        <li><a class="dropdown-item" href="#">Demande Ressource</a></li>
+                    <li><a class="dropdown-item" href={{ route('frontend.ressources.RessourcesList')}}>Liste des Ressources</a></li>
+                        <li><a class="dropdown-item" href={{ route('frontend.ressources.Ressources')}}>Mes Ressource</a></li>
+                        <li><a class="dropdown-item" href={{ route('frontend.ressources.RessourcesPartage')}}>Mes Demandes de Ressource</a></li>
+
                     </ul>
                 </li>
 
@@ -182,20 +201,10 @@
                                     </div>
                                     <div class="lh-1">
                                         <h2 class="mb-0">
-                                            Stella Flores
-                                            <a href="#" data-bs-toggle="tooltip" data-placement="top" title="Beginner">
-                                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <rect x="3" y="8" width="2" height="6" rx="1" fill="#754FFE"></rect>
-                                                    <rect x="7" y="5" width="2" height="9" rx="1" fill="#DBD8E9"></rect>
-                                                    <rect x="11" y="2" width="2" height="12" rx="1" fill="#DBD8E9"></rect>
-                                                </svg>
-                                            </a>
+                                            {{ auth()->user()->nameUser }} 
                                         </h2>
-                                        <p class="mb-0 d-block">@stellaflores</p>
+                                        <p class="mb-0 d-block">{{ auth()->user()->email }}</p> 
                                     </div>
-                                </div>
-                                <div>
-                                    <a href="profile-edit.html" class="btn btn-primary btn-sm d-none d-md-block">Account Setting</a>
                                 </div>
                             </div>
                         </div>
@@ -228,11 +237,18 @@
                                         </li>
 
                                         <!-- Kinza (Resource Management) -->
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="">
-                                                <i class="fe fe-box nav-icon"></i> My Resources
+                                        <li class="nav-item {{ request()->routeIs('frontend.ressources.Ressources') ? 'active' : '' }}">
+                                            <a class="nav-link" href="{{ route('frontend.ressources.Ressources') }}">
+                                                <i class="fe fe-box nav-icon"></i> Mes Ressources
                                             </a>
                                         </li>
+                                        <!-- Kinza (Resource Management) -->
+                                        <li class="nav-item {{ request()->routeIs('frontend.ressources.RessourcesPartage') ? 'active' : '' }}">
+                                            <a class="nav-link" href="{{ route('frontend.ressources.RessourcesPartage') }}">
+                                                <i class="fe fe-file nav-icon"></i> Mes demandes de Ressources
+                                            </a>
+                                        </li>
+
 
                                         <!-- Hana (Advice Module) -->
                                         <li class="nav-item">
@@ -258,7 +274,7 @@
                                         <span class="navbar-header">Account Settings</span>
                                         <!-- List -->
                                         <ul class="list-unstyled ms-n2 mb-0">
-                                            <li class="nav-item active">
+                                            <li class="nav-item ">
                                                 <a class="nav-link" href="profile-edit.html">
                                                     <i class="fe fe-settings nav-icon"></i> Edit Profile
                                                 </a>
@@ -319,6 +335,32 @@
     </div>
 
     <!-- Scripts -->
+     <!-- JavaScript for Conditional Display -->
+     <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Simulation du statut de connexion (à remplacer par une variable réelle du backend)
+        const isLoggedIn = {{ Auth::check() ? 'true' : 'false' }};
+        
+        // Obtenez les éléments HTML
+        const loginBtn = document.querySelector('a[href="auth/signin"]');
+        const joinNowBtn = document.getElementById('joinNowBtn'); // Utiliser l'ID ici
+        const profileIcon = document.getElementById('profileIcon');
+        const logoutBtn = document.getElementById('logoutBtn');
+        
+        // Affiche/masque les éléments en fonction de la connexion
+        if (isLoggedIn) {
+            loginBtn.style.display = "none";
+            joinNowBtn.style.display = "none";
+            profileIcon.classList.remove("d-none");
+            logoutBtn.classList.remove("d-none");
+        } else {
+            loginBtn.style.display = "block";
+            joinNowBtn.style.display = "block";
+            profileIcon.classList.add("d-none");
+            logoutBtn.classList.add("d-none");
+        }
+    });
+</script>
     <!-- Libs JS -->
     <script src="../../assets/libs/%40popperjs/core/dist/umd/popper.min.js"></script>
     <script src="../../assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -331,6 +373,8 @@
     <script src="../../assets/js/vendors/tnsSlider.js"></script>
     <script src="../../assets/libs/glightbox/dist/js/glightbox.min.js"></script>
     <script src="../../assets/js/vendors/glight.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
 </body>
 
 <!-- Mirrored from geeksui.codescandy.com/geeks/pages/landings/landing-abroad.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 10:11:31 GMT -->

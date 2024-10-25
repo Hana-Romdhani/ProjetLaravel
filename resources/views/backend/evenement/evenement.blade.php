@@ -20,9 +20,20 @@
                         </ol>
                     </nav>
                 </div>
-                <div>
+                    <!-- Sort and Add Event Button -->
+                    <div class="d-flex gap-3 align-items-center">
+                    <form method="GET" action="{{ route('backend.evenement.index') }}" class="d-flex align-items-center gap-2">
+                        <select name="sort_by" class="form-select form-select-sm" style="width: auto;">
+                            <option value="location" {{ request('sort_by') == 'location' ? 'selected' : '' }}>Location</option>
+                            <option value="date" {{ request('sort_by') == 'date' ? 'selected' : '' }}>Date</option>
+                        </select>
+                        <select name="sort_direction" class="form-select form-select-sm" style="width: auto;">
+                            <option value="asc" {{ request('sort_direction') == 'asc' ? 'selected' : '' }}>Ascending</option>
+                            <option value="desc" {{ request('sort_direction') == 'desc' ? 'selected' : '' }}>Descending</option>
+                        </select>
+                        <button type="submit" class="btn btn-secondary btn-sm">Sort</button>
+                    </form>
                     <a href="{{ route('backend.evenement.create') }}" class="btn btn-primary">Add New Event</a>
-
                 </div>
             </div>
         </div>

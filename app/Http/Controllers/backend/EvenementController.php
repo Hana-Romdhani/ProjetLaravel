@@ -20,6 +20,9 @@ class EvenementController extends Controller
     {
        // Récupérer le terme de recherche
     $search = $request->input('search');
+    // Récupérer les paramètres de tri avec des valeurs par défaut
+    $sort_by = $request->input('sort_by', 'date'); // Par défaut, tri par date
+    $sort_direction = $request->input('sort_direction', 'asc'); // Par défaut, ordre croissant
 
     // Récupérer les événements avec une recherche par titre
     // $evenements = Evenement::when($search, function ($query) use ($search) {
@@ -28,7 +31,8 @@ class EvenementController extends Controller
     $evenements = Evenement::with('adminUser') // Inclure la relation adminUser
     ->when($search, function ($query) use ($search) {
         return $query->where('title', 'like', '%' . $search . '%');
-    })->paginate(3);
+    })->orderBy($sort_by, $sort_direction)
+    ->paginate(3);
         $classifications = Classification::all(); // Assurez-vous d'avoir ce code pour récupérer les classifications
 
     return view('backend.evenement.evenement', compact('evenements', 'classifications'));

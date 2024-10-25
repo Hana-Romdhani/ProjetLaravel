@@ -4,14 +4,27 @@
 
 <section class="py-lg-8 py-7">
     <div class="container my-lg-8">
-        <div class="row">
-            <div class="offset-md-2 col-md-8 col-12">
-                <div class="mb-8">
-                <h1 class="display-3 fw-semibold mb-4 text-center" style="color: blue;">Liste Des Evénements </h1>
-                </div>
+              <!-- Titre et formulaire de filtrage sur la même ligne -->
+              <div class="row mb-4 align-items-center">
+            <!-- Titre centré -->
+            <div class="col-md-8 text-md-start text-center">
+                <h1 class="display-3 fw-semibold mb-4" style="color: blue;">Liste Des Événements</h1>
+            </div>
+            <!-- Formulaire de filtrage à droite -->
+            <div class="col-md-4 text-md-end text-center">
+                <form method="GET" action="{{ route('frontend.evenement.index') }}" class="d-inline-flex">
+                    <select name="classification_id" class="form-select me-2" style="max-width: 250px;" onchange="this.form.submit()">
+                        <option value="">Filtrer Par</option>
+                        @foreach($classifications as $classification)
+                            <option value="{{ $classification->id }}" {{ request('classification_id') == $classification->id ? 'selected' : '' }}>
+                                {{ $classification->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    <a href="{{ route('frontend.evenement.index') }}" class="btn btn-secondary">Afficher Tout</a>
+                </form>
             </div>
         </div>
-        
         <!-- Display list of jardins -->
         <div class="row g-6">
             @if($evenements->isEmpty())

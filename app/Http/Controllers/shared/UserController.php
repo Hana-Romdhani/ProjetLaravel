@@ -18,24 +18,37 @@ class UserController extends Controller
     }
 
     public function authenticate(Request $request)
-    {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
-        ]);
+{
+    $credentials = $request->validate([
+        'email' => ['required', 'email'],
+        'password' => ['required'],
+    ]);
 
-        if (Auth::attempt($credentials)) {
-            // If authentication is successful, redirect to the intended page
-            $request->session()->regenerate();
+    if (Auth::attempt($credentials)) {
+        // Si l'authentification réussit, régénérez la session
+        $request->session()->regenerate();
 
-            return redirect()->intended('/admin');  // Redirect to admin/dashboard after login
+        // Récupérez l'utilisateur connecté
+        $user = Auth::user();
+
+        // Debug: Affichez le rôle de l'utilisateur
+        \Log::info('User role: ' . $user->role); // Ajoutez cette ligne pour le debug
+
+        // Redirection en fonction du rôle
+        if ($user->role === 'editor' || $user->role === 'user') {
+            return redirect()->intended('/');  // Rediriger vers /
+        } else {
+            return redirect()->intended('/admin');  // Rediriger vers /
         }
-
-        // If authentication fails, return back to login with error message
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ])->onlyInput('email');
     }
+
+    // Si l'authentification échoue, revenez à la connexion avec un message d'erreur
+    return back()->withErrors([
+        'email' => 'The provided credentials do not match our records.',
+    ])->onlyInput('email');
+}
+
+
 
     public function logout(Request $request)
     {

@@ -61,6 +61,7 @@
                                     <thead class="table-light">
                                         <tr>
                                             <th>Title</th>
+                                            <th>User Name</th>
                                             <th>Location</th>
                                             <th>Description</th>
                                             <th>Date</th>
@@ -88,6 +89,13 @@
                                                 </div>
                                             </td>
                                             <td>
+                                                
+                                                <div class="d-flex flex-column gap-2">
+                                                    <p>{{ $evenement->adminUser->nameUser }}</p> <!-- Displaying the description here -->
+                                                </div>
+                                            </td>
+                                            <td>
+
                                                 <div class="d-flex flex-column gap-2">
                                                     <p>{{ $evenement->location }}</p> <!-- Displaying the description here -->
                                                 </div>

@@ -6,6 +6,8 @@ use App\Models\Classification;
 use Illuminate\Http\Request;
 use App\Models\Evenement;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth; // Ajouté pour l'authentification
+
 
 class EvenementController extends Controller
 {
@@ -20,7 +22,11 @@ class EvenementController extends Controller
     $search = $request->input('search');
 
     // Récupérer les événements avec une recherche par titre
-    $evenements = Evenement::when($search, function ($query) use ($search) {
+    // $evenements = Evenement::when($search, function ($query) use ($search) {
+    //     return $query->where('title', 'like', '%' . $search . '%');
+    // })->paginate(3);
+    $evenements = Evenement::with('adminUser') // Inclure la relation adminUser
+    ->when($search, function ($query) use ($search) {
         return $query->where('title', 'like', '%' . $search . '%');
     })->paginate(3);
         $classifications = Classification::all(); // Assurez-vous d'avoir ce code pour récupérer les classifications
@@ -63,7 +69,7 @@ class EvenementController extends Controller
             'description' => 'required|string',
             'date' => 'required',
             'classification_id' => 'required|exists:classifications,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Ajoutez la validation pour l'image
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Ajoutez la validation pour l'image
         ]);
 
         // Créez un nouveau Jardin instance et sauvegardez dans la base de données
@@ -77,7 +83,10 @@ class EvenementController extends Controller
 
         // Create a new Jardin instance and save to the database
         //Evenement::create($request->post())
+          // Associez l'utilisateur admin à l'événement
+        $data['admin_user_id'] = auth()->id();
         Evenement::create($data);
+       
 
         return redirect()->route('backend.evenement.index')->with('success', 'Event created successfully.');
     }

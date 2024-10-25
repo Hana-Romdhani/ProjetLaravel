@@ -9,6 +9,8 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Evenement;
+
 
 class User extends Authenticatable
 {
@@ -28,6 +30,11 @@ class User extends Authenticatable
         'email',
         'password',
     ];
+    // Relation avec les événements administrés
+    public function evenementsAdministres()
+    {
+        return $this->hasMany(Evenement::class, 'admin_user_id'); // Utiliser 'admin_user_id' comme clé étrangère
+    }
 
     /**
      * The attributes that should be hidden for serialization.

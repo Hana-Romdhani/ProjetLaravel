@@ -97,6 +97,7 @@ Route::prefix('/')->group(function () {
     Route::get('/conseil', action: [ConseilController::class, 'indexfront'])->name('frontend.conseil.index');
     Route::get('/conseil/{id}', [ConseilController::class, 'showfront'])->name('frontend.conseil.details');
     Route::post('/conseils/{id}/rate', [ConseilController::class, 'rate'])->name('conseils.rate');
+    Route::get('/profiljardinier', [ConseilController::class, 'jardinierfront'])->name('frontend.conseil.profiljardinier');
 
 });
 

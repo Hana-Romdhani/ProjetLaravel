@@ -201,9 +201,9 @@
                                     </div>
                                     <div class="lh-1">
                                         <h2 class="mb-0">
-                                            {{ auth()->user()->nameUser }} 
+                                            {{ auth()->user()->nameUser }}
                                         </h2>
-                                        <p class="mb-0 d-block">{{ auth()->user()->email }}</p> 
+                                        <p class="mb-0 d-block">{{ auth()->user()->email }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -252,8 +252,9 @@
 
                                         <!-- Hana (Advice Module) -->
                                         <li class="nav-item">
-                                            <a class="nav-link" href="">
-                                                <i class="fe fe-book nav-icon"></i> Advice
+                                            <a class="nav-link" href="{{ route('frontend.conseil.profiljardinier')}}">
+                                                <i class="fe fe-star nav-icon text-danger font-weight-bold"></i>
+                                                évaluation par publications
                                             </a>
                                         </li>
 
@@ -340,13 +341,13 @@
     document.addEventListener("DOMContentLoaded", function() {
         // Simulation du statut de connexion (à remplacer par une variable réelle du backend)
         const isLoggedIn = {{ Auth::check() ? 'true' : 'false' }};
-        
+
         // Obtenez les éléments HTML
         const loginBtn = document.querySelector('a[href="auth/signin"]');
         const joinNowBtn = document.getElementById('joinNowBtn'); // Utiliser l'ID ici
         const profileIcon = document.getElementById('profileIcon');
         const logoutBtn = document.getElementById('logoutBtn');
-        
+
         // Affiche/masque les éléments en fonction de la connexion
         if (isLoggedIn) {
             loginBtn.style.display = "none";

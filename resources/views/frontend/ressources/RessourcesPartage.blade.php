@@ -45,7 +45,7 @@
                                                         <img src="{{ asset('path/to/default/image.jpg') }}" alt="Default Image" class="img-fluid rounded" style="width: 100px; height: 100px;">
                                                     @endif
                                                 </div>
-                                            </td>                                           
+                                            </td>
 
                                             <!-- Quantité -->
                                             <td>

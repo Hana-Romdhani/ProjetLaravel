@@ -245,7 +245,13 @@ class ConseilController extends Controller
 
         return view('frontend.conseil.details', compact('conseil'));
     }
+    public function jardinierfront()
+    {
+        // Récupérer tous les conseils
+        $conseils = Conseils::all();
 
+        return view('frontend.conseil.profiljardinier', compact('conseils'));
+    }
 
     public function rate(Request $request, $id)
     {
@@ -282,7 +288,7 @@ class ConseilController extends Controller
 
         return redirect()->back()->with('success', 'Note ajoutée avec succès!');
     }
-    
+
 
 
 }

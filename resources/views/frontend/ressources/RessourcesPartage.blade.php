@@ -21,7 +21,7 @@
                                             <th>Quantité</th>
                                             <th>Date de Partage</th>
                                             <th>Statut</th>
-                                            <th>Action</th>
+                                            <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>

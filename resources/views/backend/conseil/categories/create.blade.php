@@ -40,7 +40,7 @@
             <label class="form-label" for="categorieconseilname">Category Name</label>
             <input type="text" id="categorieconseilname" name="name"
                 class="form-control @error('name') is-invalid @enderror"
-                value="{{ old('name') }}" required>
+                value="{{ old('name') }}" >
 
             @error('name')
             <div class="invalid-feedback">{{ $message }}</div>

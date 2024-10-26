@@ -53,7 +53,7 @@
                     </div>
                     <div class="d-flex flex-column gap-2">
                         <h4 class="mb-0">Contenu</h4>
-                        <p class="mb-0">{{ $conseil->contenus }}</p>
+                        <p class="mb-0">{!! $conseil->contenus !!}</p>
                     </div>
 
 
@@ -71,11 +71,10 @@
                     <div class="card-body py-3">
                         <h4 class="card-title">Assigné à</h4>
                         <div class="d-flex align-items-center flex-row gap-3">
-                            <img src="../../assets/images/avatar/avatar-1.jpg" alt="" class="avatar-md avatar rounded-circle" />
+                            <img src="../../assets/images/avatar/avatar-2.jpg" alt="" class="avatar-md avatar rounded-circle" />
                             <div class="">
                                 <h4 class="mb-0">
-                                    Marvin McKinney
-                                    <small>(Owner)</small>
+                                    {{ $conseil->user->nameUser ?? 'Utilisateur inconnu' }}
                                 </h4>
                             </div>
                         </div>
@@ -84,14 +83,23 @@
                 <div class="card">
                     <!-- card body  -->
                     <div class="card-body py-3">
-                    <h4 class="mb-0">Vidéo</h4>
+                        <h4 class="mb-0">Vidéo</h4>
                         @if($conseil->video_url)
                         <?php
-                                $videoId = explode('v=', $conseil->video_url)[1];
-                                $embedUrl = 'https://www.youtube.com/embed/' . $videoId;
-                                ?>
-                                <iframe width="100%" height="400" src="{{ $embedUrl }}" frameborder="0" allowfullscreen></iframe>
+                        $videoId = null;
+                        // Vérifiez si l'URL est au format standard
+                        if (preg_match('/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^&\n]{11})/', $conseil->video_url, $matches)) {
+                            $videoId = $matches[1];
+                        }
 
+                        $embedUrl = $videoId ? 'https://www.youtube.com/embed/' . $videoId : null;
+                        ?>
+
+                        @if($embedUrl)
+                        <iframe width="100%" height="400" src="{{ $embedUrl }}" frameborder="0" allowfullscreen></iframe>
+                        @else
+                        <p>URL de vidéo non valide.</p>
+                        @endif
                         @else
                         <p>Aucune vidéo disponible.</p>
                         @endif
@@ -111,18 +119,27 @@
                                     <path d="M8 16a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm3.5-9.5a.5.5 0 0 1 0 1h-6a.5.5 0 0 1 0-1h6zM8 11a.5.5 0 0 1 0-1h1a.5.5 0 0 1 0 1H8z" />
                                 </svg>
                                 <div class="">
-                                    <h5 class="mb-0 text-body">Statut : Approuvé</h5>
+                                    <h5 class="mb-0 text-body">Naviguer vers les conseils par catégorie </h5>
                                 </div>
                             </div>
                             <div>
                                 <div>
-                                    <button class="btn btn-outline-success btn-sm d-inline-block me-2" >Partager</button>
-                                    <a href="{{ route('conseil.index') }}" class="btn btn-secondary">Back</a>
+
+                                    @if($conseil->category)
+                                    <a href="{{ route('conseil.categoryShow', ['id' => $conseil->category->id]) }}" class="btn btn-secondary">Aller</a>
+                                    @else
+                                    <span class="text-muted">Pas de catégorie</span>
+                                    @endif
+
+                                    <a href="{{ route('conseil.index') }}" class="btn btn-secondary">back</a>
 
                                 </div>
                             </div>
                         </div>
                     </div>
+
+
+
                 </div>
             </div>
         </div>

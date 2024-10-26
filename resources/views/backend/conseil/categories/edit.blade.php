@@ -35,7 +35,7 @@
 
         <div class="mb-3 col-12 col-md-6">
             <label class="form-label" for="categorieconseilname">Category Name</label>
-            <input type="text" id="categorieconseilname" name="name"  class="form-control @error('name') is-invalid @enderror" value="{{ $categorie_conseil->name ?? '' }}" placeholder="Create a category for your advice" required />
+            <input type="text" id="categorieconseilname" name="name"  class="form-control @error('name') is-invalid @enderror" value="{{ $categorie_conseil->name ?? '' }}" placeholder="Create a category for your advice"  />
             @error('name')
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror

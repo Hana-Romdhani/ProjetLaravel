@@ -30,7 +30,7 @@
     </div>
     @endif
 
-    <form id="save-content-form" action="{{ route('conseil.store') }}" method="POST" enctype="multipart/form-data">
+    <form id="save-content-form" action="{{ route('conseil.store') }}" method="POST" enctype="multipart/form-data" novalidate>
         @csrf
         @method('POST')
 
@@ -39,7 +39,7 @@
             <label class="form-label" for="categorieconseilname">Conseil Title</label>
             <input type="text" id="categorieconseilname" name="titre"
                 class="form-control @error('titre') is-invalid @enderror"
-                value="{{ old('titre') }}" required>
+                value="{{ old('titre') }}" >
             <!-- Add this div for the error message -->
             <div class="invalid-feedback">
         @error('titre') {{ $message }} @enderror
@@ -52,39 +52,27 @@
             <label class="form-label" for="question">Question</label>
             <input type="text" id="question" name="question"
                 class="form-control @error('question') is-invalid @enderror"
-                value="{{ old('question') }}" required>
+                value="{{ old('question') }}" >
 
-            @error('question')
-            <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
+
+            <div class="invalid-feedback">
+            @error('question') {{ $message }} @enderror
+            </div>
         </div>
         <!-- Content Textarea (TinyMCE) -->
         <!-- Content Textarea (TinyMCE) -->
         <div class="mb-3 col-12 col-md-6">
             <label for="contenus" class="form-label">Contenus</label>
             <textarea class="form-control @error('contenus') is-invalid @enderror" id="tinymce" name="contenus">{{ old('contenus') }}</textarea>
-            @error('contenus')
-            <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
+
+            <div class="invalid-feedback"> @error('contenus'){{ $message }}@enderror
+
+            </div>
+
         </div>
 
 
 
-        <!-- User ID Input -->
-        <!-- User ID Input -->
-        <div class="mb-3 col-12 col-md-6">
-            <label class="form-label" for="user_id">User ID</label>
-            <input type="number" id="user_id" name="user_id"
-                class="form-control @error('user_id') is-invalid @enderror"
-                value="{{ old('user_id') }}" required
-                min="1"
-                step="1"
-                placeholder="Enter User ID" /> <!-- Placeholder for user guidance -->
-
-            @error('user_id')
-            <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-        </div>
 
 
         <!-- Category ID Input -->
@@ -92,7 +80,7 @@
         <div class="mb-3 col-12 col-md-6">
             <label class="form-label" for="category_id">Category</label>
             <select id="category_id" name="category_id"
-                class="form-control @error('category_id') is-invalid @enderror" required>
+                class="form-control @error('category_id') is-invalid @enderror" >
                 <option value="">Select Category</option>
                 @foreach ($categories as $category)
                 <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
@@ -101,9 +89,12 @@
                 @endforeach
             </select>
 
-            @error('category_id')
-            <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
+
+            <div class="invalid-feedback">
+                 @error('category_id'){{ $message }}   @enderror
+
+            </div>
+
         </div>
 
 
@@ -115,9 +106,12 @@
             <input type="file" id="image_url" name="image_url"
                 class="form-control @error('image_url') is-invalid @enderror" accept="image/*" />
 
-            @error('image_url')
-            <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
+
+            <div class="invalid-feedback">
+                 @error('image_url'){{ $message }}  @enderror
+
+            </div>
+
         </div>
 
 
@@ -129,9 +123,11 @@
                 class="form-control @error('video_url') is-invalid @enderror"
                 placeholder="Enter video URL" />
 
-            @error('video_url')
-            <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
+
+            <div class="invalid-feedback"> @error('video_url'){{ $message }} @enderror
+
+            </div>
+
 
         </div>
 
@@ -176,7 +172,9 @@
                 success: function(response) {
                     // Only redirect if the response is successful (no validation errors)
                     if (response.success) {
-                        window.location = "{{ route('conseil.index') }}"; // Redirect on success
+
+
+                        window.location = "{{ route('conseil.index') }}?success=cree avec success";  // Redirect on success
                     } else {
                         // Handle validation errors returned from the server (if any)
                         if (response.errors) {
@@ -214,6 +212,18 @@
         inputElement.next('.invalid-feedback').text(errorMessage);
     }
 }
+function displaySuccessMessage(message) {
+            // Create a success alert
+            var successAlert = $('<div class="alert alert-success" id="success-alert">' + message + '</div>');
+            $(formId).prepend(successAlert); // Add the alert to the form
+
+            // Automatically remove the alert after a few seconds
+            setTimeout(function() {
+                successAlert.fadeOut(500, function() {
+                    $(this).remove(); // Remove the alert from DOM after fading out
+                });
+            }, 3000); // Display for 3 seconds
+        }
 
     });
 </script>

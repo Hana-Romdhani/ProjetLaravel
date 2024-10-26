@@ -136,16 +136,31 @@ class ConseilCategorieController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    // public function destroy($id)
+    // {
+    //     $categorie_conseil = CategorieConseil::findOrFail($id);
+    //     $categorie_conseil->delete();
+
+    //     return redirect()->route('conseil-categorie.index')->with('success', 'Category deleted successfully.');
+    // }
+
     public function destroy($id)
     {
-        $categorie_conseil = CategorieConseil::findOrFail($id);
-        $categorie_conseil->delete();
+        $categorie_conseil = CategorieConseil::find($id);
 
-        return redirect()->route('conseil-categorie.index')->with('success', 'Category deleted successfully.');
+        // Check if the category has related conseils
+        if ($categorie_conseil->conseils()->count() > 0) {
+            return redirect()->route('conseil-categorie.index')
+                             ->with('error', 'Cette catégorie contient des conseils et ne peut pas être supprimée.');
+        }
+
+        // If no related conseils, delete the category
+        $categorie_conseil->delete();
+        return redirect()->route('conseil-categorie.index')
+                         ->with('success', 'Catégorie supprimée avec succès.');
     }
 
 
- 
 
 
 }

@@ -27,12 +27,16 @@
 
         <div class="row">
             <div class="col-lg-12 col-md-12 col-12">
-                @if ($message = Session::get('success'))
+                @if ($message = Session::get('success') ?? request()->query('success'))
                 <div class="alert alert-success" id="success-alert">
                     <p>{{ $message }}</p>
                 </div>
                 @endif
-
+                @if ($message = Session::get('error')?? request()->query('error'))
+                <div class="alert alert-danger" id="error-alert">
+                    <p>{{ $message }}</p>
+                </div>
+                @endif
                 <!-- Card -->
                 <div class="card-body d-flex flex-column gap-4">
                     <div class="d-flex flex-column gap-2">
@@ -89,7 +93,7 @@
                                                 <th>titre</th>
                                                 <th>Catégorie</th>
                                                 <th>Date de création</th>
-                                                <th>Status</th>
+                                                <th>poster par </th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -113,19 +117,31 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <div class="d-flex flex-column gap-2">
-                                                        <span class="badge bg-success-soft">Approve</span>
+                                                    <div class="d-flex align-items-center gap-2">
+                                                        <div class="me-2">
+                                                            <img src="../assets/images/avatar/avatar-1.jpg"
+                                                                alt="avatar"
+                                                                class="rounded-circle"
+                                                                width="40"
+                                                                height="40" />
+                                                        </div>
+                                                        <span class="badge bg-success-soft">{{ $conseil->user->nameUser  ?? 'Utilisateur inconnu' }}</span>
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <a href="{{ route('conseil.show',$conseil->id) }}" class="btn btn-outline-success btn-sm d-inline-block me-2">Partager</a>
-                                                    <form action="{{ route('conseil.destroy', $conseil->id) }}" method="POST" class="d-inline-block">
+                                                    <a href="{{ route('conseil.show',$conseil->id) }}" class="btn btn-outline-success btn-sm d-inline-block me-2">details</a>
+                                                    <!-- <form action="{{ route('conseil.destroy', $conseil->id) }}" method="POST" class="d-inline-block">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
+                                                    </form> -->
+                                                    <form action="{{ route('conseil.destroy', $conseil->id) }}" method="POST" class="d-inline-block" onsubmit="return confirmDelete(event)">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
                                                     </form>
+
                                                     <a href="{{ route('conseil.edit', parameters: $conseil->id) }}" class="btn btn-outline-secondary btn-sm ms-2">Edit</a>
-                                                    <a href="" class="btn btn-outline-success btn-sm d-inline-block me-2">Demande d'approbation</a>
 
                                                 </td>
                                             </tr>
@@ -135,7 +151,7 @@
                                 </div>
                             </div>
                         </div>
-                     @endif <!-- Move the closing endif here -->
+                        @endif <!-- Move the closing endif here -->
                     </div>
                     <!-- Card Footer -->
                 </div>
@@ -179,7 +195,29 @@
             }
             return true; // Allow form submission if input is not empty
         }
+
+        function confirmDelete(event) {
+            event.preventDefault(); // Prevent form submission
+            const form = event.target; // Get the form element
+
+            // Show SweetAlert confirmation dialog
+            Swal.fire({
+                title: 'Êtes-vous sûr ?',
+                text: "Vous ne pourrez pas revenir en arrière !",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Oui, supprimez-le !'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit(); // Submit the form if confirmed
+                }
+            });
+        }
     </script>
+
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </section>
 @endsection

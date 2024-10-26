@@ -33,6 +33,11 @@
                 </div>
                 @endif
 
+                @if ($message = Session::get('error'))
+                <div class="alert alert-danger" id="error-alert">
+                    <p>{{ $message }}</p>
+                </div>
+                @endif
                 <!-- Card -->
                 <div class="card-body d-flex flex-column gap-4">
                     <div class="d-flex flex-column gap-2">
@@ -102,13 +107,14 @@
                                                         Conseil Related
                                                     </a>
 
-                                                    <form action="{{ route('conseil-categorie.destroy',$categorie_conseil->id) }}" method="Post" class="d-inline-block">
+                                                    <form action="{{ route('conseil-categorie.destroy',$categorie_conseil->id) }}" method="Post" class="d-inline-block" onsubmit="return confirmDelete(event)">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
                                                     </form>
+
                                                     <a href="{{ route('conseil-categorie.edit', parameters: $categorie_conseil->id) }}" class="btn btn-outline-secondary btn-sm ms-2">Edit</a>
-                                                      
+
                                                 </td>
                                             </tr>
                                             @empty
@@ -139,9 +145,15 @@
             const table = document.getElementById('categoryTable');
             const rows = table.getElementsByTagName('tr');
             const successAlert = document.getElementById('success-alert');
+            const errorAlert = document.getElementById('error-alert');
             if (successAlert) {
                 setTimeout(function() {
                     successAlert.style.display = 'none';
+                }, 2000);
+            }
+            if (errorAlert) {
+                setTimeout(function() {
+                    errorAlert.style.display = 'none';
                 }, 2000);
             }
             searchInput.addEventListener('keyup', function() {
@@ -168,6 +180,27 @@
                 return false; // Prevent form submission
             }
             return true; // Allow form submission if input is not empty
+        }
+
+
+        function confirmDelete(event) {
+            event.preventDefault(); // Prevent form submission
+            const form = event.target; // Get the form element
+
+            // Show SweetAlert confirmation dialog
+            Swal.fire({
+                title: 'Êtes-vous sûr ?',
+                text: "Vous ne pourrez pas revenir en arrière !",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Oui, supprimez-le !'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit(); // Submit the form if confirmed
+                }
+            });
         }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

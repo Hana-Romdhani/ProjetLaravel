@@ -14,16 +14,16 @@
                         <span class="fs-5">({{ $conseils->total() }})</span>
                     </h1>
                     <nav aria-label="breadcrumb" class="d-flex align-items-center">
-    <ol class="breadcrumb mb-0">
-        <li class="breadcrumb-item">
-            <a href="/admin">Dashboard</a>
-        </li>
-        <li class="breadcrumb-item"><a href="#">Conseil Category</a></li>
-        <li class="breadcrumb-item active" aria-current="page">{{ $categorie_conseil->name }}</li>
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item">
+                                <a href="/admin">Dashboard</a>
+                            </li>
+                            <li class="breadcrumb-item"><a href="#">Conseil Category</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">{{ $categorie_conseil->name }}</li>
 
-    </ol>
+                        </ol>
 
-</nav>
+                    </nav>
 
 
                 </div>
@@ -35,12 +35,12 @@
         <div class="col-lg-12 col-md-12 col-12">
 
             <!-- Search Form -->
-            <form method="GET" action="{{ route('conseil.categoryShow', $categorie_conseil->id) }}"  onsubmit="return checkSearchInput()">
+            <form method="GET" action="{{ route('conseil.categoryShow', $categorie_conseil->id) }}" onsubmit="return checkSearchInput()">
                 <div class="mb-4">
                     <input type="search" name="search" id="searchInput" class="form-control" placeholder="Search Advice by title" value="{{ request('search') }}" />
                 </div>
             </form>
-            <a href="{{ route(name: 'conseil.index') }}" class="btn btn-secondary float-end">back</a>
+            <a href="{{ route(name: 'conseil-categorie.index') }}" class="btn btn-secondary float-end">back</a>
 
             <div class="row gy-4" id="adviceList">
                 <div class="row gy-4" id="adviceList">
@@ -51,20 +51,41 @@
                                 <div class="text-center d-flex flex-column align-items-center gap-3">
                                     <div>
                                         <h4 class="mb-0">{{ $advice->titre }}</h4>
-                                        <p class="mb-0">Author: {{ $advice->user->name ?? 'Unknown' }}</p>
-                                        <p class="mb-0">Status : Approuver</p>
+                                        <p class="mb-0">Auteur : {{ $advice->user->nameUser  ?? 'Utilisateur inconnu' }} </p>
+                                        <p class="mb-0">Total des évaluations : <span class="font-weight-bold">{{ $advice->rating_count }}</span></p>
+                                        <p class="mb-0">Total des points : <span class="font-weight-bold">{{ $advice->total_rating }}</span></p>
+                                        <p class="mb-0">Note :
+                                            <span class="font-weight-bold">
+                                                {{ $advice->rating_count > 0 ? number_format($advice->total_rating / $advice->rating_count, 2) : 'Pas encore d\'évaluation' }}
+                                            </span>
+                                        </p>
                                     </div>
                                 </div>
+
+
                                 @if($advice->video_url)
                                 <?php
-                                $videoId = explode('v=', $advice->video_url)[1];
-                                $embedUrl = 'https://www.youtube.com/embed/' . $videoId;
+                                $videoId = null;
+                                // Vérifiez si l'URL est au format standard
+                                if (preg_match('/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^&\n]{11})/', $advice->video_url, $matches)) {
+                                    $videoId = $matches[1];
+                                }
+
+                                $embedUrl = $videoId ? 'https://www.youtube.com/embed/' . $videoId : null;
                                 ?>
-                                <iframe width="100%" height="200" src="{{ $embedUrl }}" frameborder="0" allowfullscreen></iframe>
+
+                                @if($embedUrl)
+                                <iframe width="100%" height="400" src="{{ $embedUrl }}" frameborder="0" allowfullscreen></iframe>
+                                @else
+                                <p>URL de vidéo non valide.</p>
                                 @endif
+                                @else
+                                <p>Aucune vidéo disponible.</p>
+                                @endif
+
+
                                 <div>
                                     <a href="{{ route('conseil.show', $advice->id) }}" class="btn btn-primary">View Conseil</a>
-                                    <a href="" class="btn btn-danger">Approuver</a>
 
                                 </div>
 
@@ -82,7 +103,7 @@
                 <!-- Pagination Links with Search Query Appended and Bootstrap 4 Design -->
                 <div class="d-flex justify-content-center">
                     <nav>
-{{ $conseils->appends(['search' => request('search')])->links('pagination::bootstrap-4') }}
+                        {{ $conseils->appends(['search' => request('search')])->links('pagination::bootstrap-4') }}
                     </nav>
                 </div>
             </div>

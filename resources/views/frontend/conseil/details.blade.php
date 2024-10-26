@@ -4,11 +4,47 @@
 <section class="py-7 py-lg-8">
     <div class="container mb-4">
         <div class="row justify-content-center">
-            <h1>Vous pouvez partager vos commentaires ici. </h1>
+            <h1>Accéder au conseil et le noter  </h1>
         </div>
     </div>
+    @if ($message = Session::get('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert" id="success-alert">
+        <strong>Succès!</strong> {{ $message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+@endif
+
+@if ($message = Session::get('error') ?? request()->query('error'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" id="error-alert">
+        <strong>Erreur!</strong> {{ $message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+@endif
 
     <div class="row gy-4  px-2 w-80 mx-auto ">
+    <div class="card">
+            <div class="card-body py-3">
+                <h4 class="mb-0">Évaluer ce conseil</h4>
+                <form action="{{ route('conseils.rate', $conseil->id) }}" method="POST">
+                    @csrf
+                    <div class="mb-2">
+                        <select name="rating" class="form-select">
+                            <option value="" disabled selected>Sélectionnez une note</option>
+                            @for($i = 1; $i <= 5; $i++)
+                                <option value="{{ $i }}">{{ $i }}</option>
+                                @endfor
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Soumettre la note</button>
+                </form>
+
+
+            </div>
+        </div>
         <div class="col-xl-6 col-8">
             <!-- card  -->
             <div class="card ">
@@ -39,9 +75,35 @@
                     </div>
 
                     <div class="d-flex flex-column gap-2">
-                        <p class="mb-0">{{ $conseil->contenus }}</p>
+                        <p class="mb-0">{!! $conseil->contenus !!}</p>
                     </div>
+                    <div class="d-flex flex-column gap-2">
+                        @if($conseil->rating_count > 0)
 
+                        <div>
+                            @php
+                            $rating = number_format($conseil->total_rating / $conseil->rating_count, 2);
+                            $fullStars = floor($rating); // Nombre d'étoiles pleines
+                            $halfStar = ($rating - $fullStars) >= 0.5 ? true : false; // Vérifie si une étoile est à moitié pleine
+                            $emptyStars = 5 - $fullStars - ($halfStar ? 1 : 0); // Nombre d'étoiles vides
+                            @endphp
+
+                            @for($i = 0; $i < $fullStars; $i++)
+                                <i class="bi bi-star-fill text-warning"></i>
+                                @endfor
+
+                                @if($halfStar)
+                                <i class="bi bi-star-half text-warning"></i>
+                                @endif
+
+                                @for($i = 0; $i < $emptyStars; $i++)
+                                    <i class="bi bi-star text-warning"></i>
+                                    @endfor
+                        </div>
+                        @else
+                        <p>Pas encore d'évaluation.</p>
+                        @endif
+                    </div>
 
                     @else
                     <p>No advice available.</p>
@@ -62,8 +124,8 @@
                             <img src="../../assets/images/avatar/avatar-1.jpg" alt="" class="avatar-md avatar rounded-circle" />
                             <div class="">
                                 <h4 class="mb-0">
-                                    Marvin McKinney
-                                    <small>(Owner)</small>
+                                    {{ $conseil->user->nameUser ?? 'Utilisateur inconnu' }}
+
                                 </h4>
                             </div>
                         </div>
@@ -72,45 +134,58 @@
                 <div class="card">
                     <!-- card body  -->
                     <div class="card-body py-3">
-                        <h4 class="mb-0">Vidéo selon le question : {{ $conseil->question }}  </h4>
+                        <h4 class="mb-0">Vidéo selon le question : {{ $conseil->question }} </h4>
+
 
                         @if($conseil)
-                        <iframe width="100%" height="400" src="{{ $conseil->video_url ? 'https://www.youtube.com/embed/' . explode('v=', $conseil->video_url)[1] : '' }}" frameborder="0" allowfullscreen></iframe>
+                        @php
+                        $videoId = null;
+
+                        // Vérifiez si l'URL est au format standard
+                        if (preg_match('/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^&\n]{11})/', $conseil->video_url, $matches)) {
+                        $videoId = $matches[1];
+                        }
+
+                        $embedUrl = $videoId ? 'https://www.youtube.com/embed/' . $videoId : null;
+                        @endphp
+
+                        @if($embedUrl)
+                        <iframe width="100%" height="400" src="{{ $embedUrl }}" frameborder="0" allowfullscreen></iframe>
+                        @else
+                        <p>URL de vidéo non valide.</p>
+                        @endif
                         @else
                         <p>Aucune vidéo disponible.</p>
                         @endif
 
-
                     </div>
                 </div>
-                <!-- card  -->
-                <div class="card">
-                    <!-- card body  -->
-                    <div class="card-body border-top py-3">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="d-flex align-items-center flex-row gap-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle text-success" viewBox="0 0 16 16">
-                                    <path d="M8 16a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm3.5-9.5a.5.5 0 0 1 0 1h-6a.5.5 0 0 1 0-1h6zM8 11a.5.5 0 0 1 0-1h1a.5.5 0 0 1 0 1H8z" />
-                                </svg>
-                                <div class="">
-                                    <h5 class="mb-0 text-body">Commenter</h5>
-                                </div>
-                            </div>
-                            <div>
-                                <div>
-                                    <button class="btn btn-outline-success btn-sm d-inline-block me-2">Commenter</button>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
-
-
             </div>
         </div>
+
+
+      
+
     </div>
+    <script>
+    // Automatically dismiss success alerts after 5 seconds
+    setTimeout(function() {
+        var successAlert = document.getElementById('success-alert');
+        if (successAlert) {
+            successAlert.classList.remove('show');
+            successAlert.classList.add('fade');
+        }
+    }, 2000); // Change 5000 to the desired duration in milliseconds
+
+    // Automatically dismiss error alerts after 5 seconds
+    setTimeout(function() {
+        var errorAlert = document.getElementById('error-alert');
+        if (errorAlert) {
+            errorAlert.classList.remove('show');
+            errorAlert.classList.add('fade');
+        }
+    }, 2000); // Change 5000 to the desired duration in milliseconds
+</script>
 
 </section>
 @endsection

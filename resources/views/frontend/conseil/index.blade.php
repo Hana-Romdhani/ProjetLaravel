@@ -64,7 +64,7 @@
                     </div>
 
                     <div class="d-flex flex-column gap-2">
-                        <p class="mb-0">{{ $firstAdvice->contenus }}</p>
+                        <p class="mb-0">{!! $firstAdvice->contenus !!}</p>
                     </div>
 
 
@@ -87,7 +87,7 @@
                             <img src="../../assets/images/avatar/avatar-1.jpg" alt="" class="avatar-md avatar rounded-circle" />
                             <div class="">
                                 <h4 class="mb-0">
-                                    Marvin McKinney
+                                {{ $firstAdvice->user->nameUser ?? 'Utilisateur inconnu' }}
                                     <small>(Owner)</small>
                                 </h4>
                             </div>
@@ -100,11 +100,28 @@
                         @if($firstAdvice)
                         <h4 class="mb-0">Vidéo selon la question : {{ $firstAdvice->question }} </h4>
 
+
                         @if($firstAdvice->video_url)
-                        <iframe width="100%" height="400" src="https://www.youtube.com/embed/{{ explode('v=', $firstAdvice->video_url)[1] }}" frameborder="0" allowfullscreen></iframe>
+                        @php
+                        $videoId = null;
+
+                        // Vérifiez si l'URL est au format standard
+                        if (preg_match('/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^&\n]{11})/', $firstAdvice->video_url, $matches)) {
+                        $videoId = $matches[1];
+                        }
+
+                        $embedUrl = $videoId ? 'https://www.youtube.com/embed/' . $videoId : null;
+                        @endphp
+
+                        @if($embedUrl)
+                        <iframe width="100%" height="400" src="{{ $embedUrl }}" frameborder="0" allowfullscreen></iframe>
+                        @else
+                        <p>URL de vidéo non valide.</p>
+                        @endif
                         @else
                         <p>Aucune vidéo disponible.</p>
                         @endif
+
                         @else
                         <p>Aucune donnée disponible pour cette question.</p>
                         @endif
@@ -123,18 +140,25 @@
                                 <h2>Autre conseil liee aux catégorie choisie</h2>
                             </div>
                         </div>
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-12 px-2">
-
-                            <form id="searchForm" class="mt-3 mt-lg-0 ms-lg-3 d-flex align-items-center w-75 gap-4">
-                                <span class="position-absolute ps-3 search-icon">
-                                    <i class="fe fe-search"></i>
-                                </span>
-                                <label for="search" class="visually-hidden"></label>
-                                <input type="search" id="searchInput" name="search" class="form-control ps-6" placeholder="Search by Question" />
+                        <!-- Search Section -->
+                        <div class="col-12 mb-5">
+                            <form id="searchForm" class="mt-3 mt-lg-0 ms-lg-3 d-flex align-items-center w-75">
+                                <div class="position-relative w-100">
+                                    <span class="position-absolute top-50 start-0 translate-middle-y ps-3 text-secondary">
+                                        <i class="fe fe-search"></i>
+                                    </span>
+                                    <label for="search" class="visually-hidden">Search</label>
+                                    <input type="search"
+                                        id="searchInput"
+                                        name="search"
+                                        class="form-control form-control-lg ps-5 rounded-3 border-secondary-subtle shadow-sm"
+                                        placeholder="Search by Question" />
+                                </div>
                             </form>
-
-
                         </div>
+
+
+
 
                         <div id="relatedPostCarousel" class="carousel slide  gap-4" data-bs-ride="carousel">
                             <!-- Flèches de navigation -->
@@ -153,26 +177,49 @@
                                 @foreach($adviceList as $index => $advice)
                                 <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
                                     <div class="col-xl-4 col-lg-4 col-md-6 col-12 mx-auto">
-                                        <div class="card mb-4 shadow-lg card-lift">
-                                            <a>
-                                                <img src="{{ asset($advice->image_url ?? 'path_to_default_image') }}" class="card-img-top" alt="{{ $advice->titre }}" />
-                                            </a>
-                                            <div class="card-body">
-                                                <a href="#" class="fs-5 fw-semibold d-block mb-3 text-primary">{{ $firstCategory->name }}</a>
-                                                <a>
-                                                    <h3>{{ $advice->question }}</h3>
+                                        <div class="card h-100 shadow-lg hover-lift-up">
+                                            <!-- Image Container -->
+                                            <div class="card-img-top position-relative" style="height: 200px;">
+                                                <img src="{{ asset($advice->image_url ?? 'path_to_default_image') }}"
+                                                    class="img-fluid w-100 h-100 object-fit-cover"
+                                                    alt="{{ $advice->titre }}" />
+                                            </div>
+
+                                            <!-- Card Content -->
+                                            <div class="card-body d-flex flex-column">
+                                                <!-- Category -->
+                                                <a href="#" class="badge bg-light-primary text-primary mb-2">
+                                                    {{ $firstCategory->name }}
                                                 </a>
-                                                <div class="row align-items-center g-0 mt-4">
-                                                    <div class="col-auto">
-                                                        <img src="../assets/images/avatar/avatar-1.jpg" alt="avatar" class="rounded-circle avatar-sm me-2" />
+
+                                                <!-- Title -->
+                                                <a href="#" class="text-decoration-none">
+                                                    <h3 class="card-title h5 text-dark mb-3">{{ $advice->question }}</h3>
+                                                </a>
+
+                                                <!-- Author Info -->
+                                                <div class="d-flex align-items-center mb-3">
+                                                    <div class="me-2">
+                                                        <img src="../assets/images/avatar/avatar-1.jpg"
+                                                            alt="avatar"
+                                                            class="rounded-circle"
+                                                            width="40"
+                                                            height="40" />
                                                     </div>
-                                                    <div class="col lh-1">
-                                                        <h5 class="mb-1">{{ $advice->auteur }}</h5>
-                                                        <p class="fs-6 mb-0">{{ $advice->created_at->format('F d, Y') }}</p>
+                                                    <div>
+                                                        <h6 class="mb-0">
+                                                                               {{ $advice->user->nameUser ?? 'Utilisateur inconnu' }}
+                                                        </h6>
+                                                        <small class="text-muted">{{ $advice->created_at->format('F d, Y') }}</small>
                                                     </div>
                                                 </div>
-                                                <div class="text-center mt-4">
-                                                    <a href="{{ route('frontend.conseil.details', ['id' => $advice->id]) }}" class="btn btn-primary">Voir plus de conseils</a>
+
+                                                <!-- Button -->
+                                                <div class="mt-auto text-center">
+                                                    <a href="{{ route('frontend.conseil.details', ['id' => $advice->id]) }}"
+                                                        class="btn btn-primary btn-sm">
+                                                        Voir plus
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>

@@ -39,7 +39,7 @@
             <label class="form-label" for="categorieconseilname">Conseil Title</label>
             <input type="text" id="categorieconseilname" name="titre"
                 class="form-control @error('titre') is-invalid @enderror"
-                value="{{ old('titre', $conseil->titre) }}" required>
+                value="{{ old('titre', $conseil->titre) }}" >
 
             @error('titre')
             <div class="invalid-feedback">{{ $message }}</div>
@@ -51,7 +51,7 @@
             <label class="form-label" for="question">Question</label>
             <input type="text" id="question" name="question"
                 class="form-control @error('question') is-invalid @enderror"
-                value="{{ old('question', $conseil->question) }}" required>
+                value="{{ old('question', $conseil->question) }}" >
 
             @error('question')
             <div class="invalid-feedback">{{ $message }}</div>
@@ -64,23 +64,9 @@
             <label class="form-label" for="contenus">Contents</label>
             <textarea id="contenus" name="contenus" rows="4"
                 class="form-control @error('contenus') is-invalid @enderror"
-                required>{{ old('contenus',$conseil->contenus) }}</textarea>
+                >{{ old('contenus',$conseil->contenus) }}</textarea>
 
             @error('contenus')
-            <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-        </div>
-        <!-- User ID Input -->
-        <div class="mb-3 col-12 col-md-6">
-            <label class="form-label" for="user_id">User ID</label>
-            <input type="number" id="user_id" name="user_id"
-                class="form-control @error('user_id') is-invalid @enderror"
-                value="{{ old('user_id', $conseil->user_id) }}" required
-                min="1"
-                step="1"
-                placeholder="Enter User ID">
-
-            @error('user_id')
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
@@ -89,7 +75,7 @@
         <div class="mb-3 col-12 col-md-6">
             <label class="form-label" for="category_id">Category</label>
             <select id="category_id" name="category_id"
-                class="form-control @error('category_id') is-invalid @enderror" required>
+                class="form-control @error('category_id') is-invalid @enderror" >
                 <option value="">Select Category</option>
                 @foreach ($categories as $category)
                 <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>

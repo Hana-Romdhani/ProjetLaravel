@@ -8,7 +8,7 @@ use App\Models\Conseils;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-
+use Illuminate\Support\Facades\Auth;
 class ConseilController extends Controller
 {
     /**
@@ -49,110 +49,30 @@ class ConseilController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    // public function store(Request $request)
-    // {
-    //     try {
-    //         // Validate input data
-    //         $request->validate([
-    //             'titre' => 'required|string|max:255|unique:conseils,titre', // Make title unique
-    //             'question' => 'required|string|unique:conseils,question',
-    //             'contenus' => 'required|string',
-    //             'user_id' => 'required|integer',
-    //             'category_id' => 'required|exists:categorie_conseils,id',
-    //             'image_url' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Image validation
-    //             'video_url' => 'nullable|url', // Ensure video URL is optional but correctly formatted
-    //         ]);
-
-    //         // Prepare data excluding image
-    //         $data = $request->except('image_url');
-
-    //         // Handle image upload if provided
-    //         if ($request->hasFile('image_url')) {
-    //             $image = $request->file('image_url');
-    //             $imageName = time() . '.' . $image->getClientOriginalExtension();
-    //             $image->move(public_path('images'), $imageName);
-    //             $data['image_url'] = 'images/' . $imageName;
-    //         }
-
-    //         // Ensure the 'contenus' field (from TinyMCE) is stored correctly
-    //         $data['contenus'] = $request->input('contenus');
-
-    //         // Save conseil data in database
-    //         Conseils::create($data);
-
-    //         // Redirect on success
-    //         return redirect()->route('conseil.index')->with('success', 'Conseil created successfully.');
-    //     } catch (\Exception $e) {
-    //         // Handle error and redirect back with error message
-    //         return redirect()->back()->with('error', 'An error occurred while creating the conseil.');
-    //     }
-    // }
-
-
-
-    // public function store(Request $request)
-    // {
-    //     try {
-    //         // Validate input data
-    //         $request->validate([
-    //             'titre' => 'required|string|max:255|unique:conseils,titre', // Make title unique
-    //             'question' => 'required|string|unique:conseils,question',
-    //             'contenus' => 'required|string',
-    //             'user_id' => 'required|integer',
-    //             'category_id' => 'required|exists:categorie_conseils,id',
-    //             'image_url' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Image validation
-    //             'video_url' => 'nullable|url', // Ensure video URL is optional but correctly formatted
-    //         ]);
-
-    //         // Prepare data excluding image
-    //         $data = $request->except('image_url');
-
-    //         // Handle image upload if provided
-    //         if ($request->hasFile('image_url')) {
-    //             $image = $request->file('image_url');
-    //             $imageName = time() . '.' . $image->getClientOriginalExtension();
-    //             $image->move(public_path('images'), $imageName);
-    //             $data['image_url'] = 'images/' . $imageName;
-    //         }
-
-    //         // Ensure the 'contenus' field (from TinyMCE) is stored correctly
-    //         $data['contenus'] = $request->input('contenus');
-
-    //         // Save conseil data in database
-    //         Conseils::create($data);
-
-    //         // Redirect on success
-    //         return redirect()->route('conseil.index')->with('success', 'Conseil created successfully.');
-    //     } catch (\Exception $e) {
-    //         // Handle error and redirect back with error message
-    //         return redirect()->back()->withInput()->withErrors(['error' => 'An error occurred while creating the conseil.']);
-
-    //     }
-    // }
-    public function store(Request $request)
+     public function store(Request $request)
     {
         try {
-            // Validate input data with a validator instance
+            // Validate input data
             $validator = validator::make($request->all(), [
                 'titre' => 'required|string|max:255|unique:conseils,titre', // Make title unique
                 'question' => 'required|string|unique:conseils,question',
                 'contenus' => 'required|string',
-                'user_id' => 'required|integer',
                 'category_id' => 'required|exists:categorie_conseils,id',
                 'image_url' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Image validation
-                'video_url' => 'nullable|url', // Ensure video URL is optional but correctly formatted
+                'video_url' => ['nullable',  new \App\Rules\YouTubeUrl()], // Ensure video URL is optional but correctly formatted
             ]);
 
             // Check if the validation fails
             if ($validator->fails()) {
                 return response()->json([
                     'errors' => $validator->errors(),
-                ], 422); // Return a JSON response with validation errors and status code 422
+                ], 422); // Return JSON response with validation errors and status code 422
             }
 
-            // Prepare data excluding image
-            $data = $request->except('image_url');
-
+            // Prepare data, setting the 'user_id' to the authenticated user's ID
+            $data = $request->except(['image_url']);
+            $data['user_id'] = Auth::id();
+            $data['role'] = 'editor';
             // Handle image upload if provided
             if ($request->hasFile('image_url')) {
                 $image = $request->file('image_url');
@@ -164,7 +84,7 @@ class ConseilController extends Controller
             // Ensure the 'contenus' field (from TinyMCE) is stored correctly
             $data['contenus'] = $request->input('contenus');
 
-            // Save conseil data in database
+            // Save conseil data in the database
             Conseils::create($data);
 
             // Return success response for AJAX
@@ -172,16 +92,11 @@ class ConseilController extends Controller
                 'success' => true,
                 'message' => 'Conseil created successfully.'
             ]);
-            return redirect()->route('conseil.index')->with('success', 'Conseil created successfully.');
-
-
         } catch (\Exception $e) {
             // Handle general errors
             return response()->json([
                 'error' => 'An error occurred while creating the conseil.',
-            ], 500);
-            return redirect()->route('conseil.index')->with('success', 'Conseil created successfully.');
-            // Return a JSON response with an error and status code 500
+            ], 500); // Return JSON response with an error and status code 500
         }
     }
 
@@ -198,6 +113,8 @@ class ConseilController extends Controller
 
         return view('backend.conseil.detail', compact('conseil'));
     }
+
+
     public function categoryShow($id)
     {
         $categorie_conseil = CategorieConseil::findOrFail($id);
@@ -244,36 +161,40 @@ class ConseilController extends Controller
         $request->validate([
             'titre' => 'required|string|max:255',
             'question' => 'required|string',
-            'contenus' => 'required|string|max:1000',
-            'user_id' => 'required',
+            'contenus' => 'required|string',
             'category_id' => 'required|exists:categorie_conseils,id',
             'image_url' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // Handle validation failures
-        // if ($validator->fails()) {
-        //     return redirect()->back()->withErrors($validator)->withInput();
-        // }
-
         $conseil = Conseils::findOrFail($id);
 
-        $conseilData = $request->only(['titre', 'question', 'contenus', 'user_id', 'category_id']);
+        // Récupérer les données sans l'image
+        $conseilData = $request->only(['titre', 'question', 'contenus',  'category_id']);
 
+        // Vérifiez si une nouvelle image est téléchargée
         if ($request->hasFile('image_url')) {
+            // Supprimer l'ancienne image si elle existe
             if ($conseil->image_url) {
-                Storage::delete($conseil->image_url);
+                $oldImagePath = public_path($conseil->image_url); // Chemin absolu pour la suppression
+                if (file_exists($oldImagePath)) {
+                    unlink($oldImagePath); // Supprimer le fichier
+                }
             }
 
-
-            $path = $request->file('image_url')->store('images', 'public');
-            $conseilData['image_url'] = $path;
+            // Stocker la nouvelle image dans le même dossier que `store`
+            $image = $request->file('image_url');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images'), $imageName); // Dossier de destination
+            $conseilData['image_url'] = 'images/' . $imageName; // Enregistrer le chemin relatif
         }
 
-
+        // Mettre à jour les données
         $conseil->update($conseilData);
 
         return redirect()->route('conseil.index')->with('success', 'Conseil mis à jour avec succès.');
     }
+
+
 
 
 
@@ -324,4 +245,44 @@ class ConseilController extends Controller
 
         return view('frontend.conseil.details', compact('conseil'));
     }
+
+
+    public function rate(Request $request, $id)
+    {
+        // Fetch the current authenticated user
+        $user = auth()->user();
+
+        // Check if the user has the 'user' role
+        if ($user->role !== 'user') {
+            return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à noter ce conseil.');
+        }
+
+        // Fetch the conseil
+        $conseil = Conseils::findOrFail($id);
+
+        // Check if the user has already rated this conseil
+        // You will need to implement your logic to track user ratings
+        // For example, you could store user IDs in a JSON column or use a session to track ratings temporarily
+        $ratedByUsers = json_decode($conseil->rated_by_users ?? '[]', true); // Assuming you have a field to track rated users
+
+        if (in_array($user->id, $ratedByUsers)) {
+            return redirect()->back()->with('error', 'Vous avez déjà noté ce conseil.');
+        }
+
+        // Proceed with rating
+        $newRating = $request->input('rating');
+
+        // Update the total rating and count
+        $conseil->total_rating += $newRating; // Add the new rating to the total
+        $conseil->rating_count += 1; // Increment the count of ratings
+
+        // Save the changes
+        $conseil->rated_by_users = json_encode(array_merge($ratedByUsers, [$user->id])); // Track the user who rated
+        $conseil->save();
+
+        return redirect()->back()->with('success', 'Note ajoutée avec succès!');
+    }
+    
+
+
 }

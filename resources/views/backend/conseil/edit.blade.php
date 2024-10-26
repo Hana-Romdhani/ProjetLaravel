@@ -39,7 +39,7 @@
             <label class="form-label" for="categorieconseilname">Conseil Title</label>
             <input type="text" id="categorieconseilname" name="titre"
                 class="form-control @error('titre') is-invalid @enderror"
-                value="{{ old('titre', $conseil->titre) }}" required>
+                value="{{ old('titre', $conseil->titre) }}" >
 
             @error('titre')
             <div class="invalid-feedback">{{ $message }}</div>
@@ -51,7 +51,7 @@
             <label class="form-label" for="question">Question</label>
             <input type="text" id="question" name="question"
                 class="form-control @error('question') is-invalid @enderror"
-                value="{{ old('question', $conseil->question) }}" required>
+                value="{{ old('question', $conseil->question) }}" >
 
             @error('question')
             <div class="invalid-feedback">{{ $message }}</div>
@@ -59,41 +59,30 @@
         </div>
 
         <!-- Content Textarea -->
+
         <div class="mb-3 col-12 col-md-6">
             <label class="form-label" for="contenus">Contents</label>
             <textarea id="contenus" name="contenus" rows="4"
                 class="form-control @error('contenus') is-invalid @enderror"
-                required>{{ old('contenus', $conseil->contenus) }}</textarea>
+                >{{ old('contenus',$conseil->contenus) }}</textarea>
 
             @error('contenus')
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
 
-        <!-- User ID Input -->
-        <div class="mb-3 col-12 col-md-6">
-            <label class="form-label" for="user_id">User ID</label>
-            <input type="number" id="user_id" name="user_id"
-                class="form-control @error('user_id') is-invalid @enderror"
-                value="{{ old('user_id', $conseil->user_id) }}" required
-                min="1"
-                step="1"
-                placeholder="Enter User ID">
-
-            @error('user_id')
-            <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-        </div>
-
         <!-- Category ID Input -->
         <div class="mb-3 col-12 col-md-6">
-            <label class="form-label" for="category_id">Category ID</label>
-            <input type="number" id="category_id" name="category_id"
-                class="form-control @error('category_id') is-invalid @enderror"
-                value="{{ old('category_id', $conseil->category_id) }}" required
-                min="1"
-                step="1"
-                placeholder="Enter Category ID">
+            <label class="form-label" for="category_id">Category</label>
+            <select id="category_id" name="category_id"
+                class="form-control @error('category_id') is-invalid @enderror" >
+                <option value="">Select Category</option>
+                @foreach ($categories as $category)
+                <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                    {{ $category->name }}
+                </option>
+                @endforeach
+            </select>
 
             @error('category_id')
             <div class="invalid-feedback">{{ $message }}</div>
@@ -132,4 +121,27 @@
     </form>
 
 </section>
+
+<!-- Include TinyMCE with your API key -->
+<script src="https://cdn.tiny.cloud/1/{{ env('TINYMC_KEY') }}/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+
+<script>
+  tinymce.init({
+    selector: 'textarea',
+    plugins: [
+
+      'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'image', 'link', 'lists', 'media', 'searchreplace', 'table', 'visualblocks', 'wordcount',
+      'checklist', 'mediaembed', 'casechange', 'export', 'formatpainter', 'pageembed', 'a11ychecker', 'tinymcespellchecker', 'permanentpen', 'powerpaste', 'advtable', 'advcode', 'editimage', 'advtemplate', 'ai', 'mentions', 'tinycomments', 'tableofcontents', 'footnotes', 'mergetags', 'autocorrect', 'typography', 'inlinecss', 'markdown',
+    ],
+    toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+    tinycomments_mode: 'embedded',
+    tinycomments_author: 'Author name',
+    mergetags_list: [
+      { value: 'First.Name', title: 'First Name' },
+      { value: 'Email', title: 'Email' },
+    ],
+    ai_request: (request, respondWith) => respondWith.string(() => Promise.reject('See docs to implement AI Assistant')),
+  });
+</script>
+
 @endsection

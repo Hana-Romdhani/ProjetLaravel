@@ -16,16 +16,19 @@ class ConseilCategorieController extends Controller
     public function index(Request $request)
     {
 
-        $search = $request->get('name');
 
-        if ($search) {
-            $categorie_conseils = CategorieConseil::where('name', 'like', '%' . $search . '%')->paginate(2);
-            $categorie_conseils->appends(['name' => $search]);
-        } else {
-            $categorie_conseils = CategorieConseil::paginate(2);
-        }
+            $search = $request->get('name');
 
-        return view('backend.conseil.categories.index', compact('categorie_conseils'));
+            if ($search) {
+                $categorie_conseils = CategorieConseil::where('name', 'like', '%' . $search . '%')->paginate(2);
+                $categorie_conseils->appends(['name' => $search]);
+            } else {
+                $categorie_conseils = CategorieConseil::paginate(2);
+            }
+
+            return view('backend.conseil.categories.index', compact('categorie_conseils', 'search'));
+
+
     }
 
 
@@ -48,21 +51,18 @@ class ConseilCategorieController extends Controller
       // Store a newly created resource in storage
       public function store(Request $request)
       {
-          // Validate the request
           $request->validate([
               'name' => [
-                  'required',                 // Field must be present and not empty
-                  'string',                   // Field must be a string
-                  'max:255',                  // Field must not exceed 255 characters
-                  'regex:/^[a-zA-Z\s]+$/',    // Field must contain only letters and spaces
-                  'unique:categorie_conseils,name',  // Field must be unique in the 'categorie_conseils' table
+                  'required',
+                  'string',
+                  'max:255',
+                  'regex:/^[a-zA-Z\s]+$/',
+                  'unique:categorie_conseils,name',
               ],
           ]);
 
-          // Create the new category
           $categorie = CategorieConseil::create($request->post());
 
-          // Check if creation was successful
           if ($categorie) {
               return redirect()->route('conseil-categorie.index')->with('success', 'Category created successfully.');
           } else {
@@ -104,30 +104,27 @@ class ConseilCategorieController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Validate the incoming request data
+
         $request->validate([
             'name' => [
-                'required',                 // Field must be present and not empty
-                'string',                   // Field must be a string
-                'max:255',                  // Field must not exceed 255 characters
-                'regex:/^[a-zA-Z\s]+$/',    // Field must contain only letters and spaces
-                'unique:categorie_conseils,name',  // Field must be unique in the 'categorie_conseils' table
+                'required',
+                'string',
+                'max:255',
+                'regex:/^[a-zA-Z\s]+$/',
+                'unique:categorie_conseils,name',
             ],
         ]);
 
-        // Find the category or fail if not found
+
         $categorie_conseil = CategorieConseil::findOrFail($id);
 
-        // Update the category
         $success = $categorie_conseil->update($request->all());
 
-        // Check if the update was successful
         if ($success) {
             return redirect()->route('conseil-categorie.index')->with('success', 'Category updated successfully.');
         } else {
-            // If the update failed, redirect back to the edit form with the input
             return redirect()->route('conseil-categorie.edit', $id)
-                             ->withInput() // retain the input values
+                             ->withInput()
                              ->with('error', 'Failed to update the category. Please try again.');
         }
     }
@@ -139,11 +136,31 @@ class ConseilCategorieController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    // public function destroy($id)
+    // {
+    //     $categorie_conseil = CategorieConseil::findOrFail($id);
+    //     $categorie_conseil->delete();
+
+    //     return redirect()->route('conseil-categorie.index')->with('success', 'Category deleted successfully.');
+    // }
+
     public function destroy($id)
     {
-        $categorie_conseil = CategorieConseil::findOrFail($id);
-        $categorie_conseil->delete();
+        $categorie_conseil = CategorieConseil::find($id);
 
-        return redirect()->route('conseil-categorie.index')->with('success', 'Category deleted successfully.');
+        // Check if the category has related conseils
+        if ($categorie_conseil->conseils()->count() > 0) {
+            return redirect()->route('conseil-categorie.index')
+                             ->with('error', 'Cette catégorie contient des conseils et ne peut pas être supprimée.');
+        }
+
+        // If no related conseils, delete the category
+        $categorie_conseil->delete();
+        return redirect()->route('conseil-categorie.index')
+                         ->with('success', 'Catégorie supprimée avec succès.');
     }
+
+
+
+
 }

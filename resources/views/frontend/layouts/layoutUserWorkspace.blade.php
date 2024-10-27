@@ -147,12 +147,8 @@
                 </li>
 
                 <!-- Module de Conseils -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarConseils" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Conseils</a>
-                    <ul class="dropdown-menu dropdown-menu-arrow" aria-labelledby="navbarConseils">
-                        <li><a class="dropdown-item" href="#">Conseil</a></li>
-                        <li><a class="dropdown-item" href="#">Catégorie Conseil</a></li>
-                    </ul>
+                <li class="nav-item">
+                            <a class="nav-link" href="{{ route('frontend.conseil.index') }}" id="navbarConseils">Conseils</a>
                 </li>
 
                 <!-- Module de Gestion des Événements -->

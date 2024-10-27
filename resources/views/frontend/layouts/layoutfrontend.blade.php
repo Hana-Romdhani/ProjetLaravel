@@ -147,12 +147,8 @@
                 </li>
 
                 <!-- Module de Conseils -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarConseils" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Conseils</a>
-                    <ul class="dropdown-menu dropdown-menu-arrow" aria-labelledby="navbarConseils">
-                        <li><a class="dropdown-item" href="#">Conseil</a></li>
-                        <li><a class="dropdown-item" href="#">Catégorie Conseil</a></li>
-                    </ul>
+                <li class="nav-item">
+                            <a class="nav-link" href="{{ route('frontend.conseil.index') }}" id="navbarConseils">Conseils</a>
                 </li>
 
                 <!-- Module de Gestion des Événements -->
@@ -380,13 +376,13 @@
     document.addEventListener("DOMContentLoaded", function() {
         // Simulation du statut de connexion (à remplacer par une variable réelle du backend)
         const isLoggedIn = {{ Auth::check() ? 'true' : 'false' }};
-        
+
         // Obtenez les éléments HTML
         const loginBtn = document.querySelector('a[href="auth/signin"]');
         const joinNowBtn = document.getElementById('joinNowBtn'); // Utiliser l'ID ici
         const profileIcon = document.getElementById('profileIcon');
         const logoutBtn = document.getElementById('logoutBtn');
-        
+
         // Affiche/masque les éléments en fonction de la connexion
         if (isLoggedIn) {
             loginBtn.style.display = "none";

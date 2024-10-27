@@ -51,32 +51,6 @@
                 <!-- card body  -->
                 <div class="card-body d-flex flex-column gap-4">
                     @if($conseil)
-
-                    <div class="d-flex flex-column gap-2">
-                        <h4 class="mb-0">Catégorie: {{$conseil->category ? $conseil->category->name : 'Pas de catégorie'}}</h4>
-                    </div>
-
-                    <div class="d-flex flex-column gap-2">
-                        <h4 class="mb-0"> Titre: {{ $conseil->titre }}</h4>
-
-                        <div class="mb-0 center d-flex align-items-center">
-                            @if($conseil->image_url)
-                            <img src="{{ asset($conseil->image_url) }}" alt="Image du conseil" class="me-2 mw-40 mh-40">
-                            @else
-                            <p>Aucune image disponible.</p>
-                            @endif
-                        </div>
-                    </div>
-
-
-                    <div class="d-flex flex-column gap-2">
-                        <h4 class="mb-0">Question: {{ $conseil->question }}</h4>
-                        <p></p>
-                    </div>
-
-                    <div class="d-flex flex-column gap-2">
-                        <p class="mb-0">{!! $conseil->contenus !!}</p>
-                    </div>
                     <div class="d-flex flex-column gap-2">
                         @if($conseil->rating_count > 0)
 
@@ -104,6 +78,32 @@
                         <p>Pas encore d'évaluation.</p>
                         @endif
                     </div>
+                    <div class="d-flex flex-column gap-2">
+                        <h4 class="mb-0">Catégorie: {{$conseil->category ? $conseil->category->name : 'Pas de catégorie'}}</h4>
+                    </div>
+
+                    <div class="d-flex flex-column gap-2">
+                        <h4 class="mb-0"> Titre: {{ $conseil->titre }}</h4>
+
+                        <div class="mb-0 center d-flex align-items-center">
+                            @if($conseil->image_url)
+                            <img src="{{ asset($conseil->image_url) }}" alt="Image du conseil" class="me-2 mw-40 mh-40">
+                            @else
+                            <p>Aucune image disponible.</p>
+                            @endif
+                        </div>
+                    </div>
+
+
+                    <div class="d-flex flex-column gap-2">
+                        <h4 class="mb-0">Question: {{ $conseil->question }}</h4>
+                        <p></p>
+                    </div>
+
+                    <div class="d-flex flex-column gap-2">
+                        <p class="mb-0">{!! $conseil->contenus !!}</p>
+                    </div>
+
 
                     @else
                     <p>No advice available.</p>

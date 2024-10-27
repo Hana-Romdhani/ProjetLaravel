@@ -78,6 +78,9 @@ Route::prefix('/')->group(function () {
     Route::get('/plants',  [PlantFrontController::class, 'index']);
     // Display a specific plant by ID
     Route::get('/plant/{id}', [PlantFrontController::class, 'show'])->name('frontend.plant.show');
+    Route::get('/wishlist', function () {
+        return view('frontend.plant.wishlist');
+    })->name('wishlist');
     Route::get('/ressource/create',  [RessourceController::class, 'create',])->name('frontend.ressources.RessourcesForm.create');
     Route::get('/ressource/{ressource}/edit', [RessourceController::class, 'edit'])->name('frontend.ressources.RessourcesForm.edit');
     Route::put('/ressource/{ressource}', [RessourceController::class, 'update'])->name('ressource.update');

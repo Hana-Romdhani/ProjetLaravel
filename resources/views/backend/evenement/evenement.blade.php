@@ -14,15 +14,31 @@
                                 <a href="admin-dashboard.html">Dashboard</a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="#">Jardins</a>
+                                <a href="#">Evenements</a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">All</li>
                         </ol>
                     </nav>
                 </div>
-                <div>
+                    <!-- Sort and Add Event Button -->
+                    <div class="d-flex gap-3 align-items-center">
+                    <form method="GET" action="{{ route('backend.evenement.index') }}" class="d-flex align-items-center gap-2">
+                        <select name="sort_by" class="form-select form-select-sm" style="width: auto;">
+                            <option value="location" {{ request('sort_by') == 'location' ? 'selected' : '' }}>Location</option>
+                            <option value="date" {{ request('sort_by') == 'date' ? 'selected' : '' }}>Date</option>
+                        </select>
+                        <select name="sort_direction" class="form-select form-select-sm" style="width: auto;">
+                            <option value="asc" {{ request('sort_direction') == 'asc' ? 'selected' : '' }}>Ascending</option>
+                            <option value="desc" {{ request('sort_direction') == 'desc' ? 'selected' : '' }}>Descending</option>
+                        </select>
+                        <button type="submit" class="btn btn-secondary btn-sm">Sort</button>
+                    </form>
+                    <!-- Export Button -->
+    <form action="{{ route('backend.evenement.export') }}" method="GET">
+        @csrf
+        <button type="submit" class="btn btn-success">CSV</button>
+    </form>
                     <a href="{{ route('backend.evenement.create') }}" class="btn btn-primary">Add New Event</a>
-
                 </div>
             </div>
         </div>
@@ -44,10 +60,12 @@
                 </div>
                 <div class="p-4 row">
                     <!-- Form -->
-                    <form class="d-flex align-items-center col-12 col-md-12 col-lg-12">
-                        <span class="position-absolute ps-3 search-icon"><i class="fe fe-search"></i></span>
-                        <input type="search" class="form-control ps-6" placeholder="Search Event" />
-                    </form>
+                    <!-- Form for Searching Events -->
+<form class="d-flex align-items-center col-12 col-md-12 col-lg-12" method="GET" action="{{ route('backend.evenement.index') }}">
+    <span class="position-absolute ps-3 search-icon"><i class="fe fe-search"></i></span>
+    <input type="search" name="search" class="form-control ps-6" placeholder="Search Event" value="{{ request()->get('search') }}" />
+    <button type="submit" class="btn btn-primary ms-2">Search</button>
+</form>
                 </div>
                 <div>
                     <!-- Table -->
@@ -59,9 +77,11 @@
                                     <thead class="table-light">
                                         <tr>
                                             <th>Title</th>
+                                            <th>User Name</th>
                                             <th>Location</th>
                                             <th>Description</th>
                                             <th>Date</th>
+                                            <th>Type</th>
 
                                             <th>Action</th>
 
@@ -85,6 +105,13 @@
                                                 </div>
                                             </td>
                                             <td>
+                                                
+                                                <div class="d-flex flex-column gap-2">
+                                                    <p>{{ $evenement->adminUser->nameUser }}</p> <!-- Displaying the description here -->
+                                                </div>
+                                            </td>
+                                            <td>
+
                                                 <div class="d-flex flex-column gap-2">
                                                     <p>{{ $evenement->location }}</p> <!-- Displaying the description here -->
                                                 </div>
@@ -100,8 +127,12 @@
                                                     <p>{{ $evenement->date }}</p> <!-- Displaying the description here -->
                                                 </div>
                                             </td>
-
-                                    
+                                            <td>
+                                            <div class="d-flex flex-column gap-2">
+                                           <p>{{ $evenement->classification->name }}</p> 
+                                            </div>
+                                            </td>
+                                           
                                             
                                             <td>
                                                 <div class="d-flex justify-content-center gap-2">
@@ -151,6 +182,20 @@
                                                                     <label for="date" class="form-label">Date</label>
                                                                     <input type="date" class="form-control" name="date" value="{{ $evenement->date }}" required>
                                                                 </div>
+
+                                                                 <!-- Event Classification Field -->
+                                                                <div class="mb-3">
+                                                                    <label for="classification_id">Classification</label>
+                                                                    <select name="classification_id" id="classification_id" class="form-control">
+    @foreach($classifications as $classification)
+        <option value="{{ $classification->id }}" {{ $evenement->classification_id == $classification->id ? 'selected' : '' }}>
+            {{ $classification->name }}
+        </option>
+    @endforeach
+</select>
+                                                                </div>
+
+
                                                                 <!-- Event Image Field -->
                                                                 <div class="mb-3">
                                                                     <label for="image" class="form-label">Image</label>
@@ -206,31 +251,60 @@
                 <!-- Card Footer -->
                 <div class="card-footer">
                     <nav>
-                        <ul class="pagination justify-content-center mb-0">
-                            <li class="page-item disabled">
-                                <a class="page-link mx-1 rounded" href="#">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
-                                        <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"></path>
-                                    </svg>
-                                </a>
-                            </li>
-                            <li class="page-item active">
-                                <a class="page-link mx-1 rounded" href="#">1</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link mx-1 rounded" href="#">2</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link mx-1 rounded" href="#">3</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link mx-1 rounded" href="#">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
-                                        <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"></path>
-                                    </svg>
-                                </a>
-                            </li>
-                        </ul>
+                    <ul class="pagination justify-content-center mb-0">
+        <!-- Previous Button -->
+        @if ($evenements->onFirstPage())
+            <li class="page-item disabled">
+                <a class="page-link mx-1 rounded" href="#">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"></path>
+                    </svg>
+                </a>
+            </li>
+        @else
+            <li class="page-item">
+                <a class="page-link mx-1 rounded" href="{{ $evenements->previousPageUrl() }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"></path>
+                    </svg>
+                </a>
+            </li>
+        @endif
+
+        <!-- Page Numbers -->
+        @for ($i = 1; $i <= $evenements->lastPage(); $i++)
+            @if ($i == $evenements->currentPage())
+                <li class="page-item active">
+                    <a class="page-link mx-1 rounded" href="#">{{ $i }}</a>
+                </li>
+            @else
+                <li class="page-item">
+                    <a class="page-link mx-1 rounded" href="{{ $evenements->url($i) }}">{{ $i }}</a>
+                </li>
+            @endif
+        @endfor
+
+        <!-- Next Button -->
+        @if ($evenements->hasMorePages())
+            <li class="page-item">
+                <a class="page-link mx-1 rounded" href="{{ $evenements->nextPageUrl() }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"></path>
+                    </svg>
+                </a>
+            </li>
+        @else
+            <li class="page-item disabled">
+                <a class="page-link mx-1 rounded" href="#">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"></path>
+                    </svg>
+                </a>
+            </li>
+            <!-- <a href="{{ route('backend.evenement.export') }}">Exporter les événements</a> -->
+        @endif
+    </ul>
+                        
                     </nav>
                 </div>
             </div>

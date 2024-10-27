@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers\backend;
 use App\Http\Controllers\Controller;
-
+use App\Models\Classification;
 use Illuminate\Http\Request;
 use App\Models\Evenement;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth; // Ajouté pour l'authentification
+use App\Exports\EvenementsExport;
+use Maatwebsite\Excel\Facades\Excel;
+
+
 
 class EvenementController extends Controller
 {
@@ -14,10 +19,27 @@ class EvenementController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $evenements = Evenement::all();
-        return view('backend.evenement.evenement', compact('evenements')); // Passing 'jardins' to the correct blade file
+       // Récupérer le terme de recherche
+    $search = $request->input('search');
+    // Récupérer les paramètres de tri avec des valeurs par défaut
+    $sort_by = $request->input('sort_by', 'date'); // Par défaut, tri par date
+    $sort_direction = $request->input('sort_direction', 'asc'); // Par défaut, ordre croissant
+
+    // Récupérer les événements avec une recherche par titre
+    // $evenements = Evenement::when($search, function ($query) use ($search) {
+    //     return $query->where('title', 'like', '%' . $search . '%');
+    // })->paginate(3);
+    $evenements = Evenement::with('adminUser') // Inclure la relation adminUser
+    ->when($search, function ($query) use ($search) {
+        return $query->where('title', 'like', '%' . $search . '%');
+    })->orderBy($sort_by, $sort_direction)
+    ->paginate(3);
+        $classifications = Classification::all(); // Assurez-vous d'avoir ce code pour récupérer les classifications
+
+    return view('backend.evenement.evenement', compact('evenements', 'classifications'));
+        //return view('backend.evenement.evenement', compact('evenements')); // Passing 'jardins' to the correct blade file
     }
 
     
@@ -28,13 +50,17 @@ class EvenementController extends Controller
      */
     public function create()
     {
-        return view('backend.evenement.formEvenement');
+
+    // Récupérer toutes les classifications pour les afficher dans la liste déroulante
+    $classifications = Classification::all();
+    return view('backend.evenement.formEvenement', compact('classifications'));
+       // return view('backend.evenement.formEvenement');
     }
 
-    public function edit()
-    {
-        return view('backend.evenement.formEvenement');
-    }
+    // public function edit()
+    // {
+    //     return view('backend.evenement.formEvenement');
+    // }
 
     /**
      * Store a newly created resource in storage.
@@ -49,8 +75,20 @@ class EvenementController extends Controller
             'location' => 'required|string|max:255',
             'description' => 'required|string',
             'date' => 'required',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Ajoutez la validation pour l'image
-        ]);
+            'classification_id' => 'required|exists:classifications,id',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Ajoutez la validation pour l'image
+        ], [
+            'title.required' => 'Title is required',
+            'location.required' => 'Location is required',
+            'description.required' => 'Description is required',
+            'date.required' => 'Date is required',
+            'classification_id.required' => 'Classification is required',
+            'image.required' => 'Image is required',
+            'image.image' => 'The file should be an image.',
+            'image.mimes' => 'The image should be of type jpeg, png, jpg, or gif.',
+    
+    
+    ]);
 
         // Créez un nouveau Jardin instance et sauvegardez dans la base de données
         $data = $request->except('image');
@@ -63,7 +101,10 @@ class EvenementController extends Controller
 
         // Create a new Jardin instance and save to the database
         //Evenement::create($request->post())
+          // Associez l'utilisateur admin à l'événement
+        $data['admin_user_id'] = auth()->id();
         Evenement::create($data);
+       
 
         return redirect()->route('backend.evenement.index')->with('success', 'Event created successfully.');
     }
@@ -90,7 +131,16 @@ class EvenementController extends Controller
     // {
     //     return view('backend.evenement.formEvenement');
     // }
-
+    public function edit($id)
+    {
+        // Récupérer l'événement spécifique avec son ID
+        $evenement = Evenement::findOrFail($id);
+        // Récupérer les classifications pour la liste déroulante
+        $classifications = Classification::all();
+        
+        // Passer l'événement et les classifications à la vue
+        return view('backend.evenement.formEvenement', compact('evenement', 'classifications'));
+    }
 
 
     /**
@@ -108,6 +158,7 @@ class EvenementController extends Controller
         'description' => 'required|string',
         'location' => 'required|string|max:255',
         'date' => 'required|date',
+        'classification_id' => 'required|exists:classifications,id',
         'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Ajoutez la validation pour l'image
     ]);
 
@@ -121,6 +172,7 @@ class EvenementController extends Controller
     $evenement->description = $request->description;
     $evenement->location = $request->location;
     $evenement->date = $request->date;
+    $evenement->classification_id = $request->classification_id;
 
     // Vérifiez si une nouvelle image a été téléchargée
     if ($request->hasFile('image')) {
@@ -154,5 +206,9 @@ class EvenementController extends Controller
         $evenement->delete(); // Supprimer l'événement
     
         return redirect()->route('backend.evenement.index');
+    }
+    public function export()
+    {
+        return Excel::download(new EvenementsExport, 'evenements_' . date('Y_m_d') . '.xlsx');
     }
 }

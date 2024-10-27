@@ -5,6 +5,7 @@ namespace App\Http\Controllers\frontend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Evenement;
+use App\Models\Classification;
 
 
 class EvenementFrontController extends Controller
@@ -14,11 +15,21 @@ class EvenementFrontController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
      
-        $evenements = Evenement::all();
-        return view('frontend.evenement.index', compact('evenements'));
+       // $evenements = Evenement::all();
+        $classifications = Classification::all();
+
+        // Récupérer le filtre de classification
+        $classificationId = $request->input('classification_id');
+
+        // Récupérer les événements selon la classification filtrée
+        $evenements = Evenement::when($classificationId, function ($query) use ($classificationId) {
+            return $query->where('classification_id', $classificationId);
+        })->get();
+
+        return view('frontend.evenement.index', compact('evenements','classifications'));
 
     }
 

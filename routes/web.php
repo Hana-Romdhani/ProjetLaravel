@@ -160,6 +160,7 @@ Route::prefix('/admin')->middleware(['auth'])->group(function () {
     Route::put('/evenement/{id}', [EvenementController::class, 'update'])->name('backend.evenement.update');    // Route pour mettre à jour l'événement
 
     Route::delete('/evenement/{id}', [EvenementController::class, 'destroy'])->name('backend.evenement.destroy');
+    Route::get('/export-evenements', [EvenementController::class, 'export'])->name('backend.evenement.export');
 
 
     //Classification

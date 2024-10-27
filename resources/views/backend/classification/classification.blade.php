@@ -14,7 +14,7 @@
                                 <a href="admin-dashboard.html">Dashboard</a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="#">Jardins</a>
+                                <a href="#">Classifications</a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">All</li>
                         </ol>
@@ -44,10 +44,12 @@
                 </div>
                 <div class="p-4 row">
                     <!-- Form -->
-                    <form class="d-flex align-items-center col-12 col-md-12 col-lg-12">
-                        <span class="position-absolute ps-3 search-icon"><i class="fe fe-search"></i></span>
-                        <input type="search" class="form-control ps-6" placeholder="Search Classification" />
-                    </form>
+                    <form method="GET" action="{{ route('backend.classification.index') }}" class="d-flex align-items-center col-12 col-md-12 col-lg-12">
+    <span class="position-absolute ps-3 search-icon"><i class="fe fe-search"></i></span>
+    <input type="search" name="search" class="form-control ps-6" placeholder="Search Classification" value="{{ request('search') }}" />
+    <button type="submit" class="btn btn-primary ms-2">Search</button>
+</form>
+
                 </div>
                 <div>
                     <!-- Table -->
@@ -60,7 +62,7 @@
                                         <tr>
                                             <th>Name</th>
                                            
-                                            <th>Action</th>
+                                            <th>Actions</th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -167,13 +169,7 @@
                                                         aria-expanded="false">
                                                         <i class="fe fe-more-vertical"></i>
                                                     </a>
-                                                    <span class="dropdown-menu" aria-labelledby="jardinDropdown{{ $classification->id }}">
-                                                        <span class="dropdown-header">Settings</span>
-                                                        <a class="dropdown-item" href="#">
-                                                            <i class="fe fe-x-circle dropdown-item-icon"></i>
-                                                            Reject with Feedback
-                                                        </a>
-                                                    </span>
+                                                   
                                                 </span>
                                             </td>
                                         </tr>

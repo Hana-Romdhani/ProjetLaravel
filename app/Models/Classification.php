@@ -11,4 +11,8 @@ class Classification extends Model
     protected  $fillable=[
         'name'
     ];
+    public function evenements()
+    {
+        return $this->hasMany(Evenement::class);
+    }
 }

@@ -79,7 +79,7 @@
 
 
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">Plantation</a>
+                                    <a class="nav-link" href={{ route('backend.plantation.plantation') }}>Plantation</a>
                                 </li>
                             </ul>
                         </div>
@@ -165,7 +165,14 @@
                             </ul>
                         </div>
                     </li>
-
+                   
+                    <li class="nav-item">
+                      <a class="nav-link" href="{{ route('backend.plantation.agenda') }}" >
+                      <i class="nav-icon fe fe-calendar me-2"></i>
+                      Agenda
+                     </a>
+                    </li>
+                    
 
                 </ul>
             </div>

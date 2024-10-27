@@ -11,6 +11,7 @@ use App\Http\Controllers\backend\ClassificationController;
 use App\Http\Controllers\frontend\EvenementFrontController;
 use App\Http\Controllers\frontend\PlantFrontController;
 use App\Http\Controllers\backend\PlantController;
+use App\Http\Controllers\backend\PlantationController;
 use App\Http\Controllers\backend\CategoryPlanteController;
 use App\Models\CategoriePlante;
 use App\Http\Controllers\backend\RessourcesController;
@@ -104,6 +105,11 @@ Route::prefix('/')->group(function () {
     // ***********************************************************************
     // ********************************admin**********************************
     // ***********************************************************************
+//jardinier part
+Route::prefix('/jardinier')->middleware(['auth'])->group(function () {
+    Route::get('/agenda', [PlantationController::class, 'agenda'])->middleware('auth')->name('backend.plantation.agenda');
+
+});
 
 //admin part
 Route::prefix('/admin')->middleware(['auth'])->group(function () {
@@ -117,8 +123,15 @@ Route::prefix('/admin')->middleware(['auth'])->group(function () {
     // ********************************jardin**********************************
 
     Route::get('/jardin',  [JardinController::class, 'index'])->name('backend.jardin.jardin');
+    Route::get('/plantation',  [PlantationController::class, 'index'])->name('backend.plantation.plantation');
+
+    // Display the form to create a new jardin
     Route::get('/jardin/create',  [JardinController::class, 'create',])->name('admin.jardin.create');
+    Route::get('/plantation/create',  [PlantationController::class, 'create',])->name('admin.plantation.create');
+    // Handle form submission for creating a new jardin
     Route::post('/jardin', [JardinController::class, 'store'])->name('backend.jardin.formJardin');
+    Route::post('/plantation', [PlantationController::class, 'store'])->name('backend.plantation.formPlantation');
+
     // Route::get('/jardin',  [JardinController::class, 'index']);
     // Route::get('/jardin/edit',  [JardinController::class, 'edit'])->name('backend.jardin.formJardin');
     // Route::resource('/jardin/edit',  JardinController::class);
@@ -126,8 +139,10 @@ Route::prefix('/admin')->middleware(['auth'])->group(function () {
     Route::get('/jardin/{jardin}/edit', [JardinController::class, 'edit'])->name('admin.jardin.edit');
     Route::put('/jardin/{jardin}', [JardinController::class, 'update'])->name('jardin.update');
     Route::delete('/jardin/{jardin}', [JardinController::class, 'destroy'])->name('jardin.destroy');
-
     // ********************************conseil**********************************
+    Route::get('/plantation/{plantation}/edit', [PlantationController::class, 'edit'])->name('admin.plantation.edit');
+    // Handle form submission for updating an existing jardin
+    Route::put('/plantation/{plantation}', [PlantationController::class, 'update'])->name('plantation.update');
 
     //conseil part
     Route::middleware('web')->prefix('/')->group(function () {
@@ -171,6 +186,16 @@ Route::prefix('/admin')->middleware(['auth'])->group(function () {
         Route::get('/evenement', action: [EvenementFrontController::class, 'index'])->name('frontend.evenement.index');
     });
 
+    //Route::get('/evenement/edit',  [EvenementController::class, 'edit'])->name('backend.evenement.formEvenement');
+    //Route::get('/evenement/edit/{id}', [EvenementController::class, 'edit'])->name('backend.evenement.formEvenement');
+
+    // Handle deletion of a jardin
+    Route::delete('/jardin/{jardin}', [JardinController::class, 'destroy'])->name('jardin.destroy');
+    Route::delete('/plantation/{plantation}', [PlantationController::class, 'destroy'])->name('plantation.destroy');
+
+    // ********************************conseil**********************************
+    // ********************************plants**********************************
+    // Display a list of plants
     Route::get('/plant', [PlantController::class, 'index'])->name('backend.plant.index');
 
     Route::get('/plant/create', [PlantController::class, 'create'])->name('backend.plant.create');

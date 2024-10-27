@@ -15,19 +15,36 @@ class PlantationController extends Controller
     // List all plantations
     public function index(Request $request)
     {
-        $plantations = Plantation::with('user', 'jardin', 'plantes')->get();
-        $search = $request->input('search');
-        $sort = $request->input('sort', 'date_plantation'); // default sort field
-        $order = $request->input('order', 'asc'); // default order
+        // $plantations = Plantation::with('user', 'jardin', 'plantes')->get();
+        // $search = $request->input('search');
+        // $sort = $request->input('sort', 'date_plantation'); // default sort field
+        // $order = $request->input('order', 'asc'); // default order
 
-        // Query to fetch plantations with search and sorting
-        $plantations = Plantation::with(['user', 'jardin', 'plantes'])
-            ->when($search, function ($query) use ($search) {
-                return $query->where('nom', 'LIKE', "%{$search}%");
-            })
-            ->orderBy($sort, $order)
-            ->paginate(4); // Adjust the number of items per page as needed
+        // // Query to fetch plantations with search and sorting
+        // $plantations = Plantation::with(['user', 'jardin', 'plantes'])
+        //     ->when($search, function ($query) use ($search) {
+        //         return $query->where('nom', 'LIKE', "%{$search}%");
+        //     })
+        //     ->orderBy($sort, $order)
+        //     ->paginate(4); // Adjust the number of items per page as needed
 
+        // return view('backend.plantation.plantation', compact('plantations'));
+        $query = Plantation::query();
+
+        if ($request->filled('search')) {
+            $query->where('nom', 'like', '%' . $request->search . '%');
+        }
+    
+        if ($request->filled('sort')) {
+            $query->orderBy($request->sort, $request->order == 'asc' ? 'asc' : 'desc');
+        }
+    
+        $plantations = $query->paginate(10);
+    
+        if ($request->ajax()) {
+            return view('backend.plantation.partials.table', compact('plantations'));
+        }
+    
         return view('backend.plantation.plantation', compact('plantations'));
     }
 
@@ -124,6 +141,13 @@ class PlantationController extends Controller
 
 //     return view('backend.plantation.agenda', compact('plantations'));
 // }
+
+
+
+
+
+
+
 
 public function agenda()
 {

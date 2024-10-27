@@ -39,14 +39,26 @@ class JardinController extends Controller
     // Store a new jardin
     public function store(Request $request)
     {
-        // Validate the request
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'location' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'size' => 'nullable|integer',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Validate the image
-        ]);
+        
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'location' => 'required|string|max:255',
+                'size' => 'required|integer|min:1',
+                'description' => 'required|string|max:500',
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            ], [
+                'name.required' => 'You should fill in the Jardin Name field.',
+                'location.required' => 'You should fill in the Location field.',
+                'size.required' => 'You should specify the Size of the jardin (in sq meters).',
+                'description.required' => 'Please provide a description for the jardin.',
+                'image.required' => 'An image is required for the jardin.',
+                'image.image' => 'The uploaded file must be an image.',
+                'image.mimes' => 'The image should be of type jpeg, png, jpg, or gif.',
+            ]);
+        
+            // Code to store jardin data
+        
+        
     
         // Handle the image upload
         if ($request->hasFile('image')) {

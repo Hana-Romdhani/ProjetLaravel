@@ -32,7 +32,7 @@
 
     <nav class="navbar navbar-expand-lg">
         <div class="container px-0">
-            <a class="navbar-brand" href="/admin">
+            <a class="navbar-brand"  href={{ route('conseil.index') }}>
                 <div class="d-flex align-items-center mb-0">
                     <img src="../assets/images/brand/logo/icons8-protea-flower-64.png" class="d-inline" alt="logo-icon" />
                     <div class="ms-2">
@@ -94,9 +94,9 @@
                                 <path fill-rule="evenodd" d="M8 9a5 5 0 0 0-5 5v1h10v-1a5 5 0 0 0-5-5z" />
                             </svg>
                         </a>
+
                         <a href="/wishlist" class="text-inherit me-2" title="View Wishlist">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
-                                class="bi bi-heart text-gray-500" viewBox="0 0 16 16">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#FF0000" class="bi bi-heart" viewBox="0 0 16 16">
                                 <path d="M8 15s-7-4.334-7-8a4 4 0 0 1 8 0 4 4 0 0 1 8 0c0 3.666-7 8-7 8zM3.053 3.053A3.993 3.993 0 0 0 0 7c0 3.159 3.826 6.348 6.566 7.92.206.123.434.19.667.19.233 0 .46-.067.666-.19C12.174 13.348 16 10.159 16 7a3.993 3.993 0 0 0-3.053-3.947c-.594-.123-1.282.208-1.558.65a2.086 2.086 0 0 1-3.778 0c-.276-.442-.964-.773-1.558-.65z" />
                             </svg>
                         </a>
@@ -112,7 +112,7 @@
                         <!-- Boutons pour les visiteurs non connectés -->
                         @guest
                         <a href="auth/signin" id="loginBtn" class="btn btn-outline-dark">Login</a>
-                        <a href="auth/register" id="joinNowBtn" class="btn btn-dark d-none d-md-block">Join Now</a>
+                        <a href="auth/register" id="joinNowBtn" class="btn btn-dark d-none d-md-block">S'inscrire</a>
                         @endguest
                     </div>
                 </div>
@@ -128,13 +128,10 @@
                 </div>
                 <!-- Collapse -->
                 <div class="collapse navbar-collapse" id="navbar-default">
-<ul class="navbar-nav mt-3 mt-lg-0 mx-xxl-auto">
+                    <ul class="navbar-nav mt-3 mt-lg-0 mx-xxl-auto">
                         <!-- Module de Gestion des Jardins Urbains -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarJardinUrbain" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Jardins</a>
-                            <ul class="dropdown-menu dropdown-menu-arrow" aria-labelledby="navbarJardinUrbain">
-                                <li><a class="dropdown-item" href={{ route('frontend.jardin.jardin') }}>>Jardin</a></li>
-                            </ul>
+                        <li class="nav-item">
+                                <a class="nav-link" href={{ route('frontend.jardin.jardin') }}>Jardin</a>
                         </li>
                         <!-- Module de Gestion des Ressources -->
                         <li class="nav-item dropdown">
@@ -150,19 +147,19 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('frontend.conseil.index') }}" id="navbarConseils">Conseils</a>
                         </li>
-                            <!-- Module de Gestion des Événements -->
-                            <li class="nav-item dropdown">
-                            <li><a class="dropdown-item" href="{{ route('frontend.evenement.index') }}" id="navbarEvenements" aria-haspopup="true" aria-expanded="false">Evénements</a></li>
-                            <!-- <ul class="dropdown-menu dropdown-menu-arrow" aria-labelledby="navbarEvenements">
+                        <!-- Module de Gestion des Événements -->
+                        <li class="nav-item dropdown">
+                        <li><a class="dropdown-item" href="{{ route('frontend.evenement.index') }}" id="navbarEvenements" aria-haspopup="true" aria-expanded="false">Evénements</a></li>
+                        <!-- <ul class="dropdown-menu dropdown-menu-arrow" aria-labelledby="navbarEvenements">
                         <li><a class="dropdown-item" href="{{ route('frontend.evenement.index') }}">Events</a></li>
                         <li><a class="dropdown-item" href="#">Classification</a></li>
                     </ul> -->
-                            </li>
-                            <!-- Module Catalogue des Plantes -->
-                            <li class="nav-item">
-                                <a class="nav-link" href="/plants" id="navbarCataloguePlantes">Catalogue des Plantes</a>
-                            </li>
-                        </ul>
+                        </li>
+                        <!-- Module Catalogue des Plantes -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="/plants" id="navbarCataloguePlantes">Catalogue des Plantes</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
     </nav>
@@ -367,7 +364,7 @@
 
 
     <!-- Scripts -->
-<!-- JavaScript for Conditional Display -->
+    <!-- JavaScript for Conditional Display -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             // Simulation du statut de connexion (à remplacer par une variable réelle du backend)

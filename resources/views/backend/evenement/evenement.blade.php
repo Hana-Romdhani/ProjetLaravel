@@ -33,6 +33,11 @@
                         </select>
                         <button type="submit" class="btn btn-secondary btn-sm">Sort</button>
                     </form>
+                    <!-- Export Button -->
+    <form action="{{ route('backend.evenement.export') }}" method="GET">
+        @csrf
+        <button type="submit" class="btn btn-success">CSV</button>
+    </form>
                     <a href="{{ route('backend.evenement.create') }}" class="btn btn-primary">Add New Event</a>
                 </div>
             </div>
@@ -296,33 +301,10 @@
                     </svg>
                 </a>
             </li>
+            <!-- <a href="{{ route('backend.evenement.export') }}">Exporter les événements</a> -->
         @endif
     </ul>
-                        <!-- <ul class="pagination justify-content-center mb-0">
-                            <li class="page-item disabled">
-                                <a class="page-link mx-1 rounded" href="#">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
-                                        <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"></path>
-                                    </svg>
-                                </a>
-                            </li>
-                            <li class="page-item active">
-                                <a class="page-link mx-1 rounded" href="#">1</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link mx-1 rounded" href="#">2</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link mx-1 rounded" href="#">3</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link mx-1 rounded" href="#">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
-                                        <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"></path>
-                                    </svg>
-                                </a>
-                            </li>
-                        </ul> -->
+                        
                     </nav>
                 </div>
             </div>

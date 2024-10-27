@@ -14,9 +14,12 @@ class ClassificationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $classifications = Classification::all();
+        $search = $request->input('search');
+        $classifications = Classification::when($search, function ($query, $search) {
+            return $query->where('name', 'like', '%' . $search . '%');
+        })->get();
         return view('backend.classification.classification', compact('classifications')); // Passing 'jardins' to the correct blade file
     }
 
@@ -46,7 +49,9 @@ class ClassificationController extends Controller
         $request->validate([
             'name' => 'required|string|max:255'
             // Add more fields as per your needs
-        ]);
+        ], [
+            'name.required' => 'Name is required',
+   ] );
 
         // Create a new Jardin instance and save to the database
         Classification::create($request->post());

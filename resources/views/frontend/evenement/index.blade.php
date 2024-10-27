@@ -41,9 +41,9 @@
                                                         <img src="{{ asset('path/to/default/image.jpg') }}" alt="" class="img-fluid w-100"/>
                                                         @endif
                             <!-- Caption -->
-                            <div class="caption">
+                            <!-- <div class="caption">
                                 <a href="#" class="btn btn-white">View Details</a>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <div class="mt-4 text">
@@ -56,17 +56,31 @@
                                     <p><strong>Description:</strong></p>
                                     <p><strong>Date:</strong></p>
                                     <p><strong>Classification:</strong></p>
+                              
                                 </div>
                                 <div class="text-start">
                                     <p>{{ $evenement->location }}</p>
                                     <p>{{ $evenement->description }}</p>
                                     <p>{{ $evenement->date }}</p>
                                     <p>{{ $evenement->classification->name }}</p>
+                                    
                                 </div>
                             </div>
                             
-                            </div>
-                        
+                            <!-- Champ d'opinion -->
+                            <!-- <p class="mt-3"><strong>Satifaction:</strong> <span id="selected-opinion-{{ $evenement->id }}" class="selected-opinion"></span></p> -->
+                            <!-- Sélecteur d'emoji personnalisé -->
+                         <div class="emoji-selector mt-2">
+                             <p class="mt-3"><strong>Satisfaction:</strong>
+                                <span class="emoji-option" onclick="selectEmoji('{{ $evenement->id }}', '😊')">😊</span>
+                                <span class="emoji-option" onclick="selectEmoji('{{ $evenement->id }}', '😐')">😐</span>
+                                <span class="emoji-option" onclick="selectEmoji('{{ $evenement->id }}', '🌟')">🌟</span>
+                                <span class="emoji-option" onclick="selectEmoji('{{ $evenement->id }}', '❤️')">❤️</span>
+                                <span class="emoji-option" onclick="selectEmoji('{{ $evenement->id }}', '😞')">😞</span>
+                                <span id="selected-emoji-{{ $evenement->id }}" class="ms-2" style="font-size: 35px;"></span>
+                            </div> 
+                           
+                        </div>
                     </div>
                 </div>
                 @endforeach
@@ -75,5 +89,14 @@
     </div>
 </section>
 
+<script>
+    function selectEmoji(eventId, emoji) {
+        // Afficher l'emoji sélectionné
+        document.getElementById(`selected-emoji-${eventId}`).innerText = emoji;
+
+        // Mettre à jour le champ d'opinion
+        document.getElementById(`selected-opinion-${eventId}`).innerText = emoji;
+    }
+</script>
 
 @endsection

@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Models\Evenement;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth; // Ajouté pour l'authentification
+use App\Exports\EvenementsExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 
 class EvenementController extends Controller
@@ -74,7 +77,18 @@ class EvenementController extends Controller
             'date' => 'required',
             'classification_id' => 'required|exists:classifications,id',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Ajoutez la validation pour l'image
-        ]);
+        ], [
+            'title.required' => 'Title is required',
+            'location.required' => 'Location is required',
+            'description.required' => 'Description is required',
+            'date.required' => 'Date is required',
+            'classification_id.required' => 'Classification is required',
+            'image.required' => 'Image is required',
+            'image.image' => 'The file should be an image.',
+            'image.mimes' => 'The image should be of type jpeg, png, jpg, or gif.',
+    
+    
+    ]);
 
         // Créez un nouveau Jardin instance et sauvegardez dans la base de données
         $data = $request->except('image');
@@ -192,5 +206,9 @@ class EvenementController extends Controller
         $evenement->delete(); // Supprimer l'événement
     
         return redirect()->route('backend.evenement.index');
+    }
+    public function export()
+    {
+        return Excel::download(new EvenementsExport, 'evenements_' . date('Y_m_d') . '.xlsx');
     }
 }

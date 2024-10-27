@@ -29,6 +29,7 @@ class User extends Authenticatable
         'nameUser',
         'email',
         'password',
+        'role',
     ];
     // Relation avec les événements administrés
     public function evenementsAdministres()

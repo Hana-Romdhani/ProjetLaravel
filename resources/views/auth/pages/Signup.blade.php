@@ -65,6 +65,24 @@
                             <input type="password" id="signUpPasswordConfirm" class="form-control" name="password_confirmation" placeholder="**************" required />
                             <div class="invalid-feedback">Please confirm your password.</div>
                         </div>
+
+
+                          <!-- Role Selection -->
+                          <div class="mb-3">
+                            <label class="form-label">Role</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="role" id="roleUser" value="user" {{ old('role') == 'user' ? 'checked' : '' }} required>
+                                <label class="form-check-label" for="roleUser">User</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="role" id="roleEditor" value="editor" {{ old('role') == 'editor' ? 'checked' : '' }} required>
+                                <label class="form-check-label" for="roleEditor">Editor</label>
+                            </div>
+                            <div class="invalid-feedback">Please select a role.</div>
+                            @error('role')
+                            <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
                         <!-- Submit Button -->
                         <div class="d-grid">
                             <button type="submit" class="btn btn-primary">Create Free Account</button>

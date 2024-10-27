@@ -75,21 +75,41 @@ class UserController extends Controller
         $validated = $request->validate([
             'nameUser' => 'required',   // Username field
             'email' => 'required|email|unique:users',
-            'password' => 'required|min:6',
+            'password' => 'required|min:6|confirmed',
+            'role' => 'required'  // Ensure role is selected
         ]);
+
+        // Determine the role value based on the selected option
+        $roleValue = ($validated['role'] === 'editor') ? 2 : 3;
 
         // Create the user
         $user = User::create([
-            'nameUser' => $validated['nameUser'],  // Ensure the 'nameUser' is correctly passed
+            'nameUser' => $validated['nameUser'],
             'email' => $validated['email'],
             'password' => bcrypt($validated['password']),  // Hash the password
+            'role' => $roleValue,
         ]);
 
-        // Redirect to login page with success message
+        // Redirect to login page with a success message
         return redirect()->route('login')->with('success', 'User created successfully. Please log in.');
     }
 
+    public function createAdmin()
+    {
+        // Create an admin user only if there isn't one already
+        if (!User::where('role', 'admin')->exists()) {
+            User::create([
+                'nameUser' => 'AdminUser',   // Change as needed
+                'email' => 'admin@gmail.com',  // Set a secure email
+                'password' => bcrypt('admin@gmail.com'),  // Set a secure password
+                'role' => 'admin',
+            ]);
 
+            return 'Admin user created successfully.';
+        }
+
+        return 'Admin user already exists.';
+    }
 
     // Add other methods for updating and deleting
 }

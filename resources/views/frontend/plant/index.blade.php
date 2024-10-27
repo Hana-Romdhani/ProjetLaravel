@@ -51,7 +51,8 @@
                     @forelse($plants as $plant)
                     <div class="col-xl-4 col-md-6 col-12">
                         <div class="card card-lift">
-                            <a href="#!">
+                            <a href="{{ url('plant/' . $plant->id) }}">
+
                                 <!-- <img src="{{ $plant->image_url ? asset('storage/' . $plant->image_url) : asset('/assets/images/inconnu.png') }}" alt="{{ $plant->nom }}" class="card-img-top img-fluid w-100" /> -->
                                 <!-- <img src="{{ $plant->image_url ? asset('storage/' . $plant->image_url) : asset('/assets/images/inconnu.png') }}" alt="{{ $plant->nom }}" class="card-img-top img-fluid w-100" /> -->
                                 <img src="{{ $plant->image_url ? asset('assets/images/course/' . $plant->image_url) : asset('assets/images/inconnu.png') }}" alt="{{ $plant->nom }}" class="card-img-top img-fluid w-100">

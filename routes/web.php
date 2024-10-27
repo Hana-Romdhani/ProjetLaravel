@@ -61,8 +61,6 @@ Route::prefix('auth')->group(function () {
     Route::resource('users', UserController::class);
 
     Route::post('/auth/logout', [UserController::class, 'logout'])->name('logout');
-
-
 });
 
 
@@ -78,6 +76,8 @@ Route::prefix('/')->group(function () {
     // ********************************plants**********************************
     // Route::get('/plantsss', [plantFrontController::class, 'index'])->name('frontend.plant.index');
     Route::get('/plants',  [PlantFrontController::class, 'index']);
+    // Display a specific plant by ID
+    Route::get('/plant/{id}', [PlantFrontController::class, 'show'])->name('frontend.plant.show');
     Route::get('/ressource/create',  [RessourceController::class, 'create',])->name('frontend.ressources.RessourcesForm.create');
     Route::get('/ressource/{ressource}/edit', [RessourceController::class, 'edit'])->name('frontend.ressources.RessourcesForm.edit');
     Route::put('/ressource/{ressource}', [RessourceController::class, 'update'])->name('ressource.update');
@@ -90,9 +90,9 @@ Route::prefix('/')->group(function () {
     Route::get('/jardins',  [JardinsController::class, 'index'])->name('frontend.jardin.jardin');
 });
 
-    // ***********************************************************************
-    // ********************************admin**********************************
-    // ***********************************************************************
+// ***********************************************************************
+// ********************************admin**********************************
+// ***********************************************************************
 
 //admin part
 Route::prefix('/admin')->middleware(['auth'])->group(function () {

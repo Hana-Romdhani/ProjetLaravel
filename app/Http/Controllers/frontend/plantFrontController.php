@@ -17,4 +17,13 @@ class PlantFrontController extends Controller
         // Make sure to pass both plants and categories to the view
         return view('frontend.plant.index', compact('plants', 'categories'));
     }
+
+    public function show($id)
+    {
+        // Retrieve plant by ID or return a 404 if not found
+        $plant = Plantes::findOrFail($id);
+
+        // Return the view with plant data
+        return view('frontend.plant.show', compact('plant'));
+    }
 }

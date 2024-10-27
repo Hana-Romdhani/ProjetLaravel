@@ -11,7 +11,7 @@
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="/">Home</a></li>
-                            <li class="breadcrumb-item" aria-current="page"><a href="/plants">Plantes</a></li>
+                            <li class="breadcrumb-item"><a href="/plants">Plantes</a></li>
                             <li class="breadcrumb-item active" aria-current="page">{{ $plant->nom }}</li>
                         </ol>
                     </nav>
@@ -21,7 +21,7 @@
                         <img src="{{ $plant->image_url ? asset('assets/images/course/' . $plant->image_url) : asset('assets/images/inconnu.png') }}"
                              alt="{{ $plant->nom }}"
                              class="img-fluid w-100 rounded-3 shadow-sm" />
-                        <button id="addToWishlistIcon" class="btn btn-outline-light position-absolute top-0 end-0 m-3"
+                        <button id="toggleWishlistIcon" class="btn btn-outline-light position-absolute top-0 end-0 m-3"
                                 data-bs-toggle="tooltip" title="Add to Wishlist">
                             <i class="bi bi-heart fs-4"></i>
                         </button>
@@ -38,7 +38,7 @@
 
                     <!-- Add to Wishlist Button (in text) -->
                     <div class="text-center mb-5">
-                        <button id="addToWishlistBtn" class="btn btn-danger btn-lg w-75">
+                        <button id="toggleWishlistBtn" class="btn btn-danger btn-lg w-75">
                             <i class="bi bi-heart me-2"></i> Add to Wishlist
                         </button>
                     </div>
@@ -67,8 +67,8 @@
 <!-- JavaScript for Wishlist functionality -->
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        const addToWishlistBtn = document.getElementById('addToWishlistBtn');
-        const addToWishlistIcon = document.getElementById('addToWishlistIcon');
+        const toggleWishlistBtn = document.getElementById('toggleWishlistBtn');
+        const toggleWishlistIcon = document.getElementById('toggleWishlistIcon');
 
         // Data for the plant
         const plantData = {
@@ -77,29 +77,64 @@
             image: "{{ $plant->image_url ? asset('assets/images/course/' . $plant->image_url) : asset('assets/images/inconnu.png') }}"
         };
 
-        // Function to add item to wishlist in local storage
-        function addToWishlist(item) {
+        // Add or remove plant from wishlist in local storage
+        function toggleWishlist(item) {
             let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+            const plantIndex = wishlist.findIndex(plant => plant.id === item.id);
 
-            // Check if the item is already in the wishlist
-            const exists = wishlist.some(plant => plant.id === item.id);
-            if (!exists) {
+            if (plantIndex === -1) {
+                // Plant is not in wishlist; add it
                 wishlist.push(item);
                 localStorage.setItem('wishlist', JSON.stringify(wishlist));
+                displayAddedState();
                 alert(`${item.name} has been added to your wishlist!`);
             } else {
-                alert(`${item.name} is already in your wishlist.`);
+                // Plant is already in wishlist; remove it
+                wishlist.splice(plantIndex, 1);
+                localStorage.setItem('wishlist', JSON.stringify(wishlist));
+                displayRemovedState();
+                alert(`${item.name} has been removed from your wishlist.`);
             }
         }
 
-        // Attach event listeners to the buttons
-        addToWishlistBtn.addEventListener('click', function () {
-            addToWishlist(plantData);
+        // Check if the plant is already in the wishlist on page load
+        function checkWishlistState() {
+            const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+            const isInWishlist = wishlist.some(plant => plant.id === plantData.id);
+            if (isInWishlist) {
+                displayAddedState();
+            } else {
+                displayRemovedState();
+            }
+        }
+
+        // Display "Added to Wishlist" state
+        function displayAddedState() {
+            toggleWishlistBtn.classList.replace('btn-danger', 'btn-secondary');
+            toggleWishlistBtn.innerHTML = `<i class="bi bi-heart-fill me-2"></i> Remove from Wishlist`;
+            toggleWishlistIcon.classList.replace('btn-outline-light', 'btn-outline-secondary');
+            toggleWishlistIcon.innerHTML = `<i class="bi bi-heart-fill fs-4"></i>`;
+        }
+
+        // Display "Add to Wishlist" state
+        function displayRemovedState() {
+            toggleWishlistBtn.classList.replace('btn-secondary', 'btn-danger');
+            toggleWishlistBtn.innerHTML = `<i class="bi bi-heart me-2"></i> Add to Wishlist`;
+            toggleWishlistIcon.classList.replace('btn-outline-secondary', 'btn-outline-light');
+            toggleWishlistIcon.innerHTML = `<i class="bi bi-heart fs-4"></i>`;
+        }
+
+        // Attach event listeners to both wishlist buttons
+        toggleWishlistBtn.addEventListener('click', function () {
+            toggleWishlist(plantData);
         });
 
-        addToWishlistIcon.addEventListener('click', function () {
-            addToWishlist(plantData);
+        toggleWishlistIcon.addEventListener('click', function () {
+            toggleWishlist(plantData);
         });
+
+        // Check wishlist state on page load
+        checkWishlistState();
     });
 </script>
 

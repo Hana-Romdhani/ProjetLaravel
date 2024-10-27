@@ -63,8 +63,6 @@ Route::prefix('auth')->group(function () {
     Route::resource('users', UserController::class);
 
     Route::post('/auth/logout', [UserController::class, 'logout'])->name('logout');
-
-
 });
 
 
@@ -79,6 +77,14 @@ Route::prefix('/')->group(function () {
     });
     // ********************************plants**********************************
     Route::get('/plants',  [PlantFrontController::class, 'index']);
+    // Display a specific plant by ID
+    Route::get('/plant/{id}', [PlantFrontController::class, 'show'])->name('frontend.plant.show');
+
+    Route::get('/plants/filter/{slug}', [PlantFrontController::class, 'filterByCategory'])->name('plants.filter');
+
+    Route::get('/wishlist', function () {
+        return view('frontend.plant.wishlist');
+    })->name('wishlist');
     Route::get('/ressource/create',  [RessourceController::class, 'create',])->name('frontend.ressources.RessourcesForm.create');
     Route::get('/ressource/{ressource}/edit', [RessourceController::class, 'edit'])->name('frontend.ressources.RessourcesForm.edit');
     Route::put('/ressource/{ressource}', [RessourceController::class, 'update'])->name('ressource.update');
@@ -174,7 +180,6 @@ Route::prefix('/admin')->middleware(['auth'])->group(function () {
 
     Route::delete('/classification/{id}', [ClassificationController::class, 'destroy'])->name('backend.classification.destroy');
 
-   
 
     //Route::get('/evenement/edit',  [EvenementController::class, 'edit'])->name('backend.evenement.formEvenement');
     //Route::get('/evenement/edit/{id}', [EvenementController::class, 'edit'])->name('backend.evenement.formEvenement');

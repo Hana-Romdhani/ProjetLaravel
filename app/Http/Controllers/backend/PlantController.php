@@ -13,14 +13,22 @@ use Illuminate\Support\Facades\Storage;
 class PlantController extends Controller
 {
     // Display a list of plants
-    public function index()
+    public function index(Request $request)
     {
-        // $plants = Plantes::all();
-        // return view('backend.plant.index', compact('plants'));
-        // Fetch plants with pagination
-        $plants = Plantes::paginate(10); // 10 plants per page
+        // Fetch search query
+        $search = $request->input('search');
+
+        // Query the plants based on search and apply pagination
+        $plants = Plantes::when($search, function ($query, $search) {
+                        return $query->where('nom', 'like', "%{$search}%")
+                                     ->orWhere('description', 'like', "%{$search}%");
+                    })
+                    ->paginate(5);
+
         return view('backend.plant.index', compact('plants'));
     }
+
+
 
     // Show the form to create a new plant
     public function create()
@@ -32,45 +40,47 @@ class PlantController extends Controller
     // Store the new plant in the database
     public function store(Request $request)
     {
-
         $validatedData = $request->validate([
             'nom' => 'required|string|max:255',
-            'nom_scientifique' => 'nullable|string|max:255',
+            'nom_scientifique' => 'required|string|max:255',
             'famille' => 'nullable|string|max:255',
             'origine' => 'nullable|string|max:255',
             'categorie_plante_id' => 'required|exists:categorie_plantes,id',
             'description' => 'nullable|string',
-            'image_url' => 'nullable|image|max:2048', // Max 2MB file size
+            'image_url' => 'nullable|image|max:2048', // Max 2MB
             'type' => 'nullable|string|max:255',
             'exposition' => 'nullable|string|max:255',
             'arrosage' => 'nullable|string|max:255',
             'type_sol' => 'nullable|string|max:255',
             'periode_plantation' => 'nullable|string|max:255',
             'periode_floraison' => 'nullable|string|max:255',
-            'hauteur_max' => 'nullable|numeric',
-            'largeur_max' => 'nullable|numeric',
+            'hauteur_max' => 'nullable|numeric|min:0|max:1000',
+            'largeur_max' => 'nullable|numeric|min:0|max:1000',
             'croissance' => 'nullable|string|max:255',
-            'besoins_speciaux' => 'nullable|string',
-            'utilisations' => 'nullable|string',
-            'conseils_entretien' => 'nullable|string',
+            'besoins_speciaux' => 'nullable|string|max:500',
+            'utilisations' => 'nullable|string|max:500',
+            'conseils_entretien' => 'nullable|string|max:500',
+        ], [
+            'nom.required' => 'Veuillez entrer le nom de la plante.',
+            'categorie_plante_id.required' => 'Veuillez sélectionner une catégorie pour la plante.',
+            'categorie_plante_id.exists' => 'La catégorie sélectionnée n\'existe pas.',
+            'image_url.image' => 'L\'image doit être un fichier de type image.',
+            'image_url.max' => 'L\'image ne peut pas dépasser 2MB.',
+            'hauteur_max.numeric' => 'La hauteur maximale doit être un nombre.',
+            'largeur_max.numeric' => 'La largeur maximale doit être un nombre.',
         ]);
 
-
         if ($request->hasFile('image_url')) {
-            // Store the file in the public directory (you can move it to the desired location if necessary)
             $file = $request->file('image_url');
-            $filename = $file->getClientOriginalName(); // Get the original filename
-            $file->move(public_path('assets/images/course'), $filename); // Move the file to the desired directory
-            $validatedData['image_url'] = $filename; // Store only the filename in the database
+            $filename = $file->getClientOriginalName();
+            $file->move(public_path('assets/images/course'), $filename);
+            $validatedData['image_url'] = $filename;
         }
 
-
-        // Plantes::create($request->all());
         Plantes::create($validatedData);
-
-
         return redirect()->route('backend.plant.index')->with('success', 'Plant added successfully!');
     }
+
 
 
     // Show the form to edit an existing plant

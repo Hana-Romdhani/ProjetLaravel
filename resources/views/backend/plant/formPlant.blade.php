@@ -2,6 +2,18 @@
 
 @section('contentadmin')
 <section class="container-fluid p-4">
+
+    <!-- Error Display -->
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
+
     <!-- Create or Edit Form -->
     <form action="{{ isset($plante) ? route('backend.plant.update', $plante->id) : route('backend.plant.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
@@ -12,32 +24,25 @@
         <!-- Plant Name -->
         <div class="mb-3 col-12 col-md-6">
             <label class="form-label" for="nom">Nom de la Plante</label>
-            <input type="text" id="nom" name="nom" class="form-control" value="{{ $plante->nom ?? old('nom') }}" required />
-            <div class="invalid-feedback">Veuillez entrer le nom de la plante.</div>
+            <input type="text" id="nom" name="nom" class="form-control" value="{{ $plante->nom ?? old('nom') }}" />
+            @error('nom')
+            <span class="text-danger">{{ $message }}</span>
+            @enderror
         </div>
 
         <!-- Scientific Name -->
         <div class="mb-3 col-12 col-md-6">
             <label class="form-label" for="nom_scientifique">Nom Scientifique</label>
             <input type="text" id="nom_scientifique" name="nom_scientifique" class="form-control" value="{{ $plante->nom_scientifique ?? old('nom_scientifique') }}" />
-        </div>
-
-        <!-- Plant Family -->
-        <div class="mb-3 col-12 col-md-6">
-            <label class="form-label" for="famille">Famille de la Plante</label>
-            <input type="text" id="famille" name="famille" class="form-control" value="{{ $plante->famille ?? old('famille') }}" />
-        </div>
-
-        <!-- Plant Origin -->
-        <div class="mb-3 col-12 col-md-6">
-            <label class="form-label" for="origine">Origine</label>
-            <input type="text" id="origine" name="origine" class="form-control" value="{{ $plante->origine ?? old('origine') }}" />
+            @error('nom_scientifique')
+            <span class="text-danger">{{ $message }}</span>
+            @enderror
         </div>
 
         <!-- Category -->
         <div class="mb-3 col-12 col-md-6">
             <label class="form-label" for="categorie_plante_id">Catégorie de Plante</label>
-            <select id="categorie_plante_id" name="categorie_plante_id" class="form-control" required>
+            <select id="categorie_plante_id" name="categorie_plante_id" class="form-control">
                 <option value="">Sélectionnez une catégorie</option>
                 @foreach($categories as $categorie)
                 <option value="{{ $categorie->id }}" {{ isset($plante) && $plante->categorie_plante_id == $categorie->id ? 'selected' : '' }}>
@@ -45,7 +50,11 @@
                 </option>
                 @endforeach
             </select>
+            @error('categorie_plante_id')
+            <span class="text-danger">{{ $message }}</span>
+            @enderror
         </div>
+
 
         <!-- Description -->
         <div class="mb-3 col-12">
@@ -82,6 +91,17 @@
 
 
 
+                        <!-- Plant Family -->
+                        <div class="mb-3 col-12 col-md-6">
+                            <label class="form-label" for="famille">Famille de la Plante</label>
+                            <input type="text" id="famille" name="famille" class="form-control" value="{{ $plante->famille ?? old('famille') }}" />
+                        </div>
+
+                        <!-- Plant Origin -->
+                        <div class="mb-3 col-12 col-md-6">
+                            <label class="form-label" for="origine">Origine</label>
+                            <input type="text" id="origine" name="origine" class="form-control" value="{{ $plante->origine ?? old('origine') }}" />
+                        </div>
 
                         <!-- Type -->
                         <div class="mb-3 col-12 col-md-6">

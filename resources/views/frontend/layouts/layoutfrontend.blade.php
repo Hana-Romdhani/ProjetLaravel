@@ -88,32 +88,35 @@
                         <!-- Conditional User Profile and Buttons -->
                         <!-- Icône de profil pour les utilisateurs connectés -->
                         @auth
-                            <a href="/ressourceUser" id="profileIcon" class="text-inherit me-2 rounded-circle border">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
-                                    <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-                                    <path fill-rule="evenodd" d="M8 9a5 5 0 0 0-5 5v1h10v-1a5 5 0 0 0-5-5z"/>
-                                </svg>
-                            </a>
+                        <a href="/ressourceUser" id="profileIcon" class="text-inherit me-2 rounded-circle border">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+                                <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+                                <path fill-rule="evenodd" d="M8 9a5 5 0 0 0-5 5v1h10v-1a5 5 0 0 0-5-5z" />
+                            </svg>
+                        </a>
+                        <a href="/wishlist" class="text-inherit me-2" title="View Wishlist">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
+                                class="bi bi-heart text-gray-500" viewBox="0 0 16 16">
+                                <path d="M8 15s-7-4.334-7-8a4 4 0 0 1 8 0 4 4 0 0 1 8 0c0 3.666-7 8-7 8zM3.053 3.053A3.993 3.993 0 0 0 0 7c0 3.159 3.826 6.348 6.566 7.92.206.123.434.19.667.19.233 0 .46-.067.666-.19C12.174 13.348 16 10.159 16 7a3.993 3.993 0 0 0-3.053-3.947c-.594-.123-1.282.208-1.558.65a2.086 2.086 0 0 1-3.778 0c-.276-.442-.964-.773-1.558-.65z" />
+                            </svg>
+                        </a>
                         <!-- Formulaire de déconnexion caché -->
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                             @csrf
                         </form>
-
                         <!-- Bouton de déconnexion -->
                         <a href="#" id="logoutBtn" class="btn btn-outline-dark" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                             Logout
                         </a>
                         @endauth
-
                         <!-- Boutons pour les visiteurs non connectés -->
                         @guest
-                            <a href="auth/signin" id="loginBtn" class="btn btn-outline-dark">Login</a>
-                            <a href="auth/register" id="joinNowBtn" class="btn btn-dark d-none d-md-block">Join Now</a>
+                        <a href="auth/signin" id="loginBtn" class="btn btn-outline-dark">Login</a>
+                        <a href="auth/register" id="joinNowBtn" class="btn btn-dark d-none d-md-block">Join Now</a>
                         @endguest
-
                     </div>
                 </div>
-                 <div>
+                <div>
                     <button class="navbar-toggler collapsed ms-2" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbar-default" aria-controls="navbar-default" aria-expanded="false"
                         aria-label="Toggle navigation">
@@ -125,47 +128,41 @@
                 </div>
                 <!-- Collapse -->
                 <div class="collapse navbar-collapse" id="navbar-default">
-                <ul class="navbar-nav mt-3 mt-lg-0 mx-xxl-auto">
-                <!-- Module de Gestion des Jardins Urbains -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarJardinUrbain" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Jardins</a>
-                    <ul class="dropdown-menu dropdown-menu-arrow" aria-labelledby="navbarJardinUrbain">
-                        <li><a class="dropdown-item" href={{ route('frontend.jardin.jardin') }}>>Jardin</a></li>
-                    </ul>
-                </li>
+<ul class="navbar-nav mt-3 mt-lg-0 mx-xxl-auto">
+                        <!-- Module de Gestion des Jardins Urbains -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarJardinUrbain" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Jardins</a>
+                            <ul class="dropdown-menu dropdown-menu-arrow" aria-labelledby="navbarJardinUrbain">
+                                <li><a class="dropdown-item" href={{ route('frontend.jardin.jardin') }}>>Jardin</a></li>
+                            </ul>
+                        </li>
+                        <!-- Module de Gestion des Ressources -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarRessources" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Ressources</a>
+                            <ul class="dropdown-menu dropdown-menu-arrow" aria-labelledby="navbarRessources">
+                                <li><a class="dropdown-item" href={{ route('frontend.ressources.RessourcesList')}}>Liste des Ressources</a></li>
+                                <li><a class="dropdown-item" href={{ route('frontend.ressources.Ressources')}}>Mes Ressource</a></li>
+                                <li><a class="dropdown-item" href={{ route('frontend.ressources.RessourcesPartage')}}>Mes Demandes de Ressource</a></li>
 
-                <!-- Module de Gestion des Ressources -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarRessources" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Ressources</a>
-                    <ul class="dropdown-menu dropdown-menu-arrow" aria-labelledby="navbarRessources">
-                    <li><a class="dropdown-item" href={{ route('frontend.ressources.RessourcesList')}}>Liste des Ressources</a></li>
-                        <li><a class="dropdown-item" href={{ route('frontend.ressources.Ressources')}}>Mes Ressource</a></li>
-                        <li><a class="dropdown-item" href={{ route('frontend.ressources.RessourcesPartage')}}>Mes Demandes de Ressource</a></li>
-
-                    </ul>
-                </li>
-
-                <!-- Module de Conseils -->
-                <li class="nav-item">
+                            </ul>
+                        </li>
+                        <!-- Module de Conseils -->
+                        <li class="nav-item">
                             <a class="nav-link" href="{{ route('frontend.conseil.index') }}" id="navbarConseils">Conseils</a>
-                </li>
-
-                <!-- Module de Gestion des Événements -->
-                <li class="nav-item dropdown">
-                    <li><a class="dropdown-item" href="{{ route('frontend.evenement.index') }}" id="navbarEvenements" aria-haspopup="true" aria-expanded="false">Evénements</a></li>
-                    <!-- <ul class="dropdown-menu dropdown-menu-arrow" aria-labelledby="navbarEvenements">
+                        </li>
+                            <!-- Module de Gestion des Événements -->
+                            <li class="nav-item dropdown">
+                            <li><a class="dropdown-item" href="{{ route('frontend.evenement.index') }}" id="navbarEvenements" aria-haspopup="true" aria-expanded="false">Evénements</a></li>
+                            <!-- <ul class="dropdown-menu dropdown-menu-arrow" aria-labelledby="navbarEvenements">
                         <li><a class="dropdown-item" href="{{ route('frontend.evenement.index') }}">Events</a></li>
                         <li><a class="dropdown-item" href="#">Classification</a></li>
                     </ul> -->
-                </li>
-
-                <!-- Module Catalogue des Plantes -->
-                <li class="nav-item">
-                    <a class="nav-link" href="/plants" id="navbarCataloguePlantes" >Catalogue des Plantes</a>
-                </li>
-
-            </ul>
-
+                            </li>
+                            <!-- Module Catalogue des Plantes -->
+                            <li class="nav-item">
+                                <a class="nav-link" href="/plants" id="navbarCataloguePlantes">Catalogue des Plantes</a>
+                            </li>
+                        </ul>
                 </div>
             </div>
     </nav>
@@ -233,20 +230,20 @@
             <div class="row gy-6 gy-xl-0 pb-8">
                 <div class="col-xl-3 col-lg-12 col-md-6 col-12">
                     <div class="d-flex flex-column gap-4">
-                    <div class="d-flex align-items-center mb-0">
-                    <img src="../assets/images/brand/logo/icons8-protea-flower-64.png" class="d-inline" alt="logo-icon" />
-                    <div class="ms-2">
-                        <h1 class="mb-0 fw-bold d-inline">
-                            <span class="mb-0 text-secondary">Green</span>
-                            <span class="mb-0 text-success">
-                                <span>Link</span>
-                            </span>
-                        </h1>
-                        <small class="fst-italic text-muted d-block">
-                            <i class="bi bi-hash text-success"></i>For a Green Life
-                        </small>
-                    </div>
-                </div>
+                        <div class="d-flex align-items-center mb-0">
+                            <img src="../assets/images/brand/logo/icons8-protea-flower-64.png" class="d-inline" alt="logo-icon" />
+                            <div class="ms-2">
+                                <h1 class="mb-0 fw-bold d-inline">
+                                    <span class="mb-0 text-secondary">Green</span>
+                                    <span class="mb-0 text-success">
+                                        <span>Link</span>
+                                    </span>
+                                </h1>
+                                <small class="fst-italic text-muted d-block">
+                                    <i class="bi bi-hash text-success"></i>For a Green Life
+                                </small>
+                            </div>
+                        </div>
                         <p class="mb-0">Nascetur nibh feugiat vulputate urna mauris tincidunt porttitor ultricies. Et dis augue praesent congue.</p>
                         <div class="d-flex gap-2">
                             <a href="#langaugeModal" class="btn btn-outline-secondary" data-bs-toggle="modal">
@@ -370,32 +367,36 @@
 
 
     <!-- Scripts -->
-      <!-- JavaScript for Conditional Display -->
-      <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Simulation du statut de connexion (à remplacer par une variable réelle du backend)
-        const isLoggedIn = {{ Auth::check() ? 'true' : 'false' }};
+<!-- JavaScript for Conditional Display -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Simulation du statut de connexion (à remplacer par une variable réelle du backend)
+            const isLoggedIn = {
+                {
+                    Auth::check() ? 'true' : 'false'
+                }
+            };
 
-        // Obtenez les éléments HTML
-        const loginBtn = document.querySelector('a[href="auth/signin"]');
-        const joinNowBtn = document.getElementById('joinNowBtn'); // Utiliser l'ID ici
-        const profileIcon = document.getElementById('profileIcon');
-        const logoutBtn = document.getElementById('logoutBtn');
+            // Obtenez les éléments HTML
+            const loginBtn = document.querySelector('a[href="auth/signin"]');
+            const joinNowBtn = document.getElementById('joinNowBtn'); // Utiliser l'ID ici
+            const profileIcon = document.getElementById('profileIcon');
+            const logoutBtn = document.getElementById('logoutBtn');
 
-        // Affiche/masque les éléments en fonction de la connexion
-        if (isLoggedIn) {
-            loginBtn.style.display = "none";
-            joinNowBtn.style.display = "none";
-            profileIcon.classList.remove("d-none");
-            logoutBtn.classList.remove("d-none");
-        } else {
-            loginBtn.style.display = "block";
-            joinNowBtn.style.display = "block";
-            profileIcon.classList.add("d-none");
-            logoutBtn.classList.add("d-none");
-        }
-    });
-</script>
+            // Affiche/masque les éléments en fonction de la connexion
+            if (isLoggedIn) {
+                loginBtn.style.display = "none";
+                joinNowBtn.style.display = "none";
+                profileIcon.classList.remove("d-none");
+                logoutBtn.classList.remove("d-none");
+            } else {
+                loginBtn.style.display = "block";
+                joinNowBtn.style.display = "block";
+                profileIcon.classList.add("d-none");
+                logoutBtn.classList.add("d-none");
+            }
+        });
+    </script>
 
 
 

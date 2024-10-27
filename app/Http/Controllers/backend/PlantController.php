@@ -13,14 +13,22 @@ use Illuminate\Support\Facades\Storage;
 class PlantController extends Controller
 {
     // Display a list of plants
-    public function index()
+    public function index(Request $request)
     {
-        // $plants = Plantes::all();
-        // return view('backend.plant.index', compact('plants'));
-        // Fetch plants with pagination
-        $plants = Plantes::paginate(10); // 10 plants per page
+        // Fetch search query
+        $search = $request->input('search');
+
+        // Query the plants based on search and apply pagination
+        $plants = Plantes::when($search, function ($query, $search) {
+                        return $query->where('nom', 'like', "%{$search}%")
+                                     ->orWhere('description', 'like', "%{$search}%");
+                    })
+                    ->paginate(5);
+
         return view('backend.plant.index', compact('plants'));
     }
+
+
 
     // Show the form to create a new plant
     public function create()

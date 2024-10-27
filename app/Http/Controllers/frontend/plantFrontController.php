@@ -11,7 +11,7 @@ class PlantFrontController extends Controller
     // Display a list of plants
     public function index()
     {
-        $plants = Plantes::paginate(10); // 10 plants per page
+        $plants = Plantes::paginate(10);
         $categories = CategoriePlante::paginate(10); // 10 categories per page
 
         // Make sure to pass both plants and categories to the view

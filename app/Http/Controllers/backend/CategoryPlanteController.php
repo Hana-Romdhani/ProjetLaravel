@@ -8,12 +8,22 @@ use Illuminate\Http\Request;
 
 class CategoryPlanteController extends Controller
 {
-    // Display a list of categories
-    public function index()
+
+    public function index(Request $request)
     {
-        $categories = CategoriePlante::paginate(10); // Paginate categories
+        // Fetch search query
+        $search = $request->input('search');
+
+        // Query the categories based on search and apply pagination
+        $categories = CategoriePlante::when($search, function ($query, $search) {
+            return $query->where('nom', 'like', "%{$search}%")
+                ->orWhere('description', 'like', "%{$search}%");
+        })
+            ->paginate(5);
+
         return view('backend.categoriePlante.index', compact('categories'));
     }
+
 
     // Show the form to create a new category
     public function create()
@@ -25,12 +35,20 @@ class CategoryPlanteController extends Controller
     // Store the new category in the database
     public function store(Request $request)
     {
+        // Validate the input data
         $validatedData = $request->validate([
-            'nom' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'image_url' => 'nullable|image|max:2048', // Max 2MB file size
-            'parent_id' => 'nullable|exists:categorie_plantes,id', // Ensure parent exists if selected
+            'nom' => 'required|string|max:255|unique:categorie_plantes,nom',
+            'description' => 'nullable|string|max:500',
+            'image_url' => 'nullable|image|max:2048', // 2MB max for image files
+            'parent_id' => 'nullable|exists:categorie_plantes,id', // Check if parent category exists
             'slug' => 'nullable|string|max:255|unique:categorie_plantes,slug',
+        ], [
+            'nom.required' => 'Veuillez entrer le nom de la catégorie.',
+            'nom.unique' => 'Ce nom de catégorie existe déjà.',
+            'image_url.image' => 'Le fichier doit être une image.',
+            'image_url.max' => 'L\'image ne doit pas dépasser 2MB.',
+            'parent_id.exists' => 'La catégorie parente sélectionnée n\'existe pas.',
+            'slug.unique' => 'Ce slug est déjà utilisé.',
         ]);
 
         if ($request->hasFile('image_url')) {
@@ -45,6 +63,7 @@ class CategoryPlanteController extends Controller
         return redirect()->route('backend.categoriePlante.index')->with('success', 'Category added successfully!');
     }
 
+
     // Show the form to edit an existing category
     public function edit(CategoriePlante $category)
     {
@@ -55,12 +74,20 @@ class CategoryPlanteController extends Controller
     // Update the category
     public function update(Request $request, CategoriePlante $category)
     {
+        // Validate the input data
         $validatedData = $request->validate([
-            'nom' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'image_url' => 'nullable|image|max:2048',
+            'nom' => 'required|string|max:255|unique:categorie_plantes,nom,' . $category->id,
+            'description' => 'nullable|string|max:500',
+            'image_url' => 'nullable|image|max:2048', // 2MB max for image files
             'parent_id' => 'nullable|exists:categorie_plantes,id',
             'slug' => 'nullable|string|max:255|unique:categorie_plantes,slug,' . $category->id,
+        ], [
+            'nom.required' => 'Veuillez entrer le nom de la catégorie.',
+            'nom.unique' => 'Ce nom de catégorie existe déjà.',
+            'image_url.image' => 'Le fichier doit être une image.',
+            'image_url.max' => 'L\'image ne doit pas dépasser 2MB.',
+            'parent_id.exists' => 'La catégorie parente sélectionnée n\'existe pas.',
+            'slug.unique' => 'Ce slug est déjà utilisé.',
         ]);
 
         if ($request->hasFile('image_url')) {
@@ -78,6 +105,7 @@ class CategoryPlanteController extends Controller
 
         return redirect()->route('backend.categoriePlante.index')->with('success', 'Category updated successfully!');
     }
+
 
     // Delete a category
     public function destroy(CategoriePlante $category)

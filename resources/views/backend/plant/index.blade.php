@@ -25,6 +25,18 @@
         </div>
     </div>
 
+    <!-- Search Form -->
+    <div class="row mb-3">
+        <div class="col-lg-6">
+            <form action="{{ route('backend.plant.index') }}" method="GET">
+                <div class="input-group">
+                    <input type="text" name="search" class="form-control" placeholder="Recherche par nom ou description" value="{{ request('search') }}">
+                    <button type="submit" class="btn btn-primary">Rechercher</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Plant Table -->
     <div class="row">
         <div class="col-lg-12 col-md-12 col-12">
@@ -37,7 +49,7 @@
                                 <tr>
                                     <th>Nom de la Plante</th>
                                     <th>Type</th>
-                                    <th>origine</th>
+                                    <th>Origine</th>
                                     <th>Description</th>
                                     <th>Actions</th>
                                 </tr>
@@ -45,15 +57,12 @@
                             <tbody>
                                 @forelse($plants as $plant)
                                 <tr>
-                                    <td>{{ $plant->nom }}</td> <!-- Changed from $plant->name -->
+                                    <td>{{ $plant->nom }}</td>
                                     <td>{{ $plant->type }}</td>
-                                    <!-- <td>{{ $plant->taille }} m²</td> If you have a taille field, change $plant->size to $plant->taille -->
-                                    <td>{{ $plant-> origine}} </td>
+                                    <td>{{ $plant->origine }}</td>
                                     <td>{{ \Illuminate\Support\Str::limit($plant->description, 50) }}</td>
                                     <td>
-                                        <!-- Action buttons: Edit and Delete -->
                                         <a href="{{ route('backend.plant.edit', $plant->id) }}" class="btn btn-sm btn-outline-secondary">Modifier</a>
-
                                         <form action="{{ route('backend.plant.destroy', $plant->id) }}" method="POST" class="d-inline">
                                             @csrf
                                             @method('DELETE')
@@ -72,7 +81,7 @@
                 </div>
                 <!-- Pagination -->
                 <div class="card-footer">
-                    {{ $plants->links() }} <!-- Assuming you're using Laravel's pagination -->
+                    {{ $plants->appends(['search' => request('search')])->links('pagination::bootstrap-4') }}
                 </div>
             </div>
         </div>

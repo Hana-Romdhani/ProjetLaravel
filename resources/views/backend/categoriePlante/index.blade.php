@@ -24,6 +24,18 @@
         </div>
     </div>
 
+    <!-- Search Form -->
+    <div class="row mb-3">
+        <div class="col-lg-6">
+            <form action="{{ route('backend.categoriePlante.index') }}" method="GET">
+                <div class="input-group">
+                    <input type="text" name="search" class="form-control" placeholder="Recherche par nom ou description" value="{{ request('search') }}">
+                    <button type="submit" class="btn btn-primary">Rechercher</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Category Table -->
     <div class="row">
         <div class="col-lg-12 col-md-12 col-12">
@@ -45,7 +57,6 @@
                                     <td>{{ \Illuminate\Support\Str::limit($category->description, 50) }}</td>
                                     <td>
                                         <a href="{{ route('backend.categoriePlante.edit', $category->id) }}" class="btn btn-sm btn-outline-secondary">Modifier</a>
-
                                         <form action="{{ route('backend.categoriePlante.destroy', $category->id) }}" method="POST" class="d-inline">
                                             @csrf
                                             @method('DELETE')
@@ -63,7 +74,7 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    {{ $categories->links() }} <!-- Pagination -->
+                    {{ $categories->appends(['search' => request('search')])->links('pagination::bootstrap-4') }}
                 </div>
             </div>
         </div>

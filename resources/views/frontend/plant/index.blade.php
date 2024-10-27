@@ -37,10 +37,12 @@
                         <ul class="list-unstyled">
                             @foreach($categories as $category)
                             <li>
-                                <a href="{{ url('plants/category/' . $category->slug) }}" class="d-block">{{ $category->nom }}</a>
+                                <a href="#" class="filter-category" data-slug="{{ $category->slug }}">{{ $category->nom }}</a>
                             </li>
                             @endforeach
                         </ul>
+
+
                     </div>
                 </div>
             </div>
@@ -90,7 +92,7 @@
 <!-- JavaScript for Wishlist functionality -->
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        // Initialize tooltip for wishlist icons
+        // Initialize tooltips for wishlist icons
         const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
         const tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl);
@@ -118,48 +120,87 @@
             }
         }
 
-        // Set wishlist state for all items on page load
-        document.querySelectorAll('.plant-card').forEach(card => {
-            const plantId = parseInt(card.getAttribute('data-id'), 10);
-            const icon = card.querySelector('.wishlist-icon i');
-            const wishlistButton = card.querySelector('.wishlist-icon');
+        // Function to initialize wishlist icons
+        function initializeWishlistIcons() {
+            document.querySelectorAll('.plant-card').forEach(card => {
+                const plantId = parseInt(card.getAttribute('data-id'), 10);
+                const icon = card.querySelector('.wishlist-icon i');
 
-            // Check if the plant is already in the wishlist
-            if (isPlantInWishlist(plantId)) {
-                icon.classList.replace('bi-heart', 'bi-heart-fill');
-                icon.style.color = 'red';
-            }
-
-            // Add hover event to manage tooltip visibility on the wishlist button
-            wishlistButton.addEventListener('mouseenter', function() {
-                bootstrap.Tooltip.getInstance(wishlistButton).show();
-            });
-
-            wishlistButton.addEventListener('mouseleave', function() {
-                bootstrap.Tooltip.getInstance(wishlistButton).hide();
-            });
-
-            // Add click event to the wishlist icon
-            wishlistButton.addEventListener('click', function(event) {
-                event.preventDefault();
-                const plant = {
-                    id: plantId,
-                    name: card.getAttribute('data-name'),
-                    image: card.getAttribute('data-image')
-                };
-
-                // Toggle wishlist and update icon
-                if (toggleWishlist(plant)) {
+                // Set initial wishlist state
+                if (isPlantInWishlist(plantId)) {
                     icon.classList.replace('bi-heart', 'bi-heart-fill');
                     icon.style.color = 'red';
-                } else {
-                    icon.classList.replace('bi-heart-fill', 'bi-heart');
-                    icon.style.color = '';
                 }
+
+                // Toggle wishlist on click
+                card.querySelector('.wishlist-icon').addEventListener('click', function(event) {
+                    event.preventDefault();
+                    const plant = {
+                        id: plantId,
+                        name: card.getAttribute('data-name'),
+                        image: card.getAttribute('data-image')
+                    };
+
+                    if (toggleWishlist(plant)) {
+                        icon.classList.replace('bi-heart', 'bi-heart-fill');
+                        icon.style.color = 'red';
+                    } else {
+                        icon.classList.replace('bi-heart-fill', 'bi-heart');
+                        icon.style.color = '';
+                    }
+                });
+            });
+        }
+
+        // Initialize wishlist icons on page load
+        initializeWishlistIcons();
+
+        // AJAX Filter functionality
+        document.querySelectorAll('.filter-category').forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                const slug = this.getAttribute('data-slug');
+
+                fetch(`/plants/filter/${slug}`)
+                    .then(response => response.json())
+                    .then(plants => {
+                        const plantContainer = document.querySelector('.row.gy-4');
+                        plantContainer.innerHTML = '';
+
+                        if (!plants.length) {
+                            plantContainer.innerHTML = '<p>No plants available.</p>';
+                        } else {
+                            plants.forEach(plant => {
+                                const plantCard = `
+                                    <div class="col-xl-4 col-md-6 col-12">
+                                        <div class="card card-lift position-relative plant-card" data-id="${plant.id}" data-name="${plant.nom}" data-image="${plant.image_url ? '/assets/images/course/' + plant.image_url : '/assets/images/inconnu.png'}">
+                                            <a href="/plant/${plant.id}">
+                                                <img src="${plant.image_url ? '/assets/images/course/' + plant.image_url : '/assets/images/inconnu.png'}" alt="${plant.nom}" class="card-img-top img-fluid w-100">
+                                            </a>
+                                            <div class="card-body d-flex flex-column gap-4">
+                                                <h3 class="mb-0 h4">
+                                                    <a href="/plant/${plant.id}" class="text-inherit">${plant.nom}</a>
+                                                </h3>
+                                                <small class="text-secondary">${plant.category ? plant.category.nom : ''}</small>
+                                            </div>
+                                            <button class="btn btn-light wishlist-icon position-absolute bottom-0 end-0 m-2" data-bs-toggle="tooltip" title="Add to Wishlist">
+                                                <i class="bi bi-heart fs-5"></i>
+                                            </button>
+                                        </div>
+                                    </div>`;
+                                plantContainer.insertAdjacentHTML('beforeend', plantCard);
+                            });
+                            initializeWishlistIcons(); // Reinitialize wishlist icons for newly added items
+                        }
+                    })
+                    .catch(error => console.error('Error loading plants:', error));
             });
         });
     });
 </script>
+
+
+
 
 
 @endsection

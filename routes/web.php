@@ -78,6 +78,9 @@ Route::prefix('/')->group(function () {
     Route::get('/plants',  [PlantFrontController::class, 'index']);
     // Display a specific plant by ID
     Route::get('/plant/{id}', [PlantFrontController::class, 'show'])->name('frontend.plant.show');
+
+    Route::get('/plants/filter/{slug}', [PlantFrontController::class, 'filterByCategory'])->name('plants.filter');
+
     Route::get('/wishlist', function () {
         return view('frontend.plant.wishlist');
     })->name('wishlist');

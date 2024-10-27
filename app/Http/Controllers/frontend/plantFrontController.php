@@ -26,4 +26,17 @@ class PlantFrontController extends Controller
         // Return the view with plant data
         return view('frontend.plant.show', compact('plant'));
     }
+
+    public function filterByCategory($slug)
+    {
+        $category = CategoriePlante::where('slug', $slug)->first();
+        if (!$category) {
+            return response()->json([]);
+        }
+
+        $plants = $category->plants()->with('category')->get(); // Remove paginate to simplify data format
+
+        return response()->json($plants);
+    }
+
 }

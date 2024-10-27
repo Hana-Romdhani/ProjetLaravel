@@ -196,14 +196,19 @@
     })
     .then(response => response.json())
     .then(data => {
-        if (data.success) {
-            $('#demanderRessourceModal').modal('hide');
-            // Optionnel : rafraîchir la page ou la liste des ressources
-        } else {
-            // Gérer les erreurs côté client ici
-            alert('Erreur : ' + (data.message || 'Un problème est survenu.'));
-        }
-    })
+    console.log(data); // Ajout pour débogage
+    if (data.success) {
+        console.log('Demande réussie, fermeture du modal.');
+        $('#demanderRessourceModal').modal('hide'); // Ferme le modal
+
+        // Actualise la page après une légère pause pour permettre la fermeture du modal
+        setTimeout(() => {
+            window.location.reload();
+        }, 500); // Délai optionnel pour une transition plus douce
+    } else {
+        alert('Erreur : ' + (data.message || 'Un problème est survenu.'));
+    }
+})
     .catch(error => {
         console.error('Erreur:', error);
         alert('Erreur serveur, veuillez réessayer plus tard.');

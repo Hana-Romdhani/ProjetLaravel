@@ -71,7 +71,7 @@
                     <div class="card-body py-3">
                         <h4 class="card-title">Assigné à</h4>
                         <div class="d-flex align-items-center flex-row gap-3">
-                            <img src="../../assets/images/avatar/avatar-2.jpg" alt="" class="avatar-md avatar rounded-circle" />
+                            <img  src="../../assets/images/avatar/images.png" alt="" class="avatar-md avatar rounded-circle" />
                             <div class="">
                                 <h4 class="mb-0">
                                     {{ $conseil->user->nameUser ?? 'Utilisateur inconnu' }}

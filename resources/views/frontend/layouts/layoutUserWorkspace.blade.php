@@ -130,10 +130,10 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarJardinUrbain" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Jardins</a>
                     <ul class="dropdown-menu dropdown-menu-arrow" aria-labelledby="navbarJardinUrbain">
-                        <li><a class="dropdown-item" href="#">Jardin</a></li>
-                        <li><a class="dropdown-item" href="#">Plantation</a></li>
+                        <li><a class="dropdown-item" href={{ route('frontend.jardin.jardin') }}>>Jardin</a></li>
                     </ul>
                 </li>
+
 
                 <!-- Module de Gestion des Ressources -->
                 <li class="nav-item dropdown">
@@ -153,20 +153,15 @@
 
                 <!-- Module de Gestion des Événements -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarEvenements" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Événements</a>
-                    <ul class="dropdown-menu dropdown-menu-arrow" aria-labelledby="navbarEvenements">
-                        <li><a class="dropdown-item" href="#">Événement</a></li>
+                    <li><a class="dropdown-item" href="{{ route('frontend.evenement.index') }}" id="navbarEvenements" aria-haspopup="true" aria-expanded="false">Evénements</a></li>
+                    <!-- <ul class="dropdown-menu dropdown-menu-arrow" aria-labelledby="navbarEvenements">
+                        <li><a class="dropdown-item" href="{{ route('frontend.evenement.index') }}">Events</a></li>
                         <li><a class="dropdown-item" href="#">Classification</a></li>
-                    </ul>
+                    </ul> -->
                 </li>
 
-                <!-- Module Catalogue des Plantes -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarCataloguePlantes" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Catalogue des Plantes</a>
-                    <ul class="dropdown-menu dropdown-menu-arrow" aria-labelledby="navbarCataloguePlantes">
-                        <li><a class="dropdown-item" href="#">Plante</a></li>
-                        <li><a class="dropdown-item" href="#">Catégorie Plante</a></li>
-                    </ul>
+                <li class="nav-item">
+                    <a class="nav-link" href="/plants" id="navbarCataloguePlantes" >Catalogue des Plantes</a>
                 </li>
 
             </ul>

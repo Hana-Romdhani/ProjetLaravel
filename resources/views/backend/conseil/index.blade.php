@@ -119,7 +119,7 @@
                                                 <td>
                                                     <div class="d-flex align-items-center gap-2">
                                                         <div class="me-2">
-                                                            <img src="../assets/images/avatar/avatar-1.jpg"
+                                                            <img src="../../assets/images/avatar/images.png"
                                                                 alt="avatar"
                                                                 class="rounded-circle"
                                                                 width="40"

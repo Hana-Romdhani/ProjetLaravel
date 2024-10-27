@@ -131,7 +131,6 @@
                     <a class="nav-link dropdown-toggle" href="#" id="navbarJardinUrbain" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Jardins</a>
                     <ul class="dropdown-menu dropdown-menu-arrow" aria-labelledby="navbarJardinUrbain">
                         <li><a class="dropdown-item" href={{ route('frontend.jardin.jardin') }}>>Jardin</a></li>
-                        <li><a class="dropdown-item" href="#">Plantation</a></li>
                     </ul>
                 </li>
 

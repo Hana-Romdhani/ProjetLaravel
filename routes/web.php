@@ -99,6 +99,7 @@ Route::prefix('/')->group(function () {
     Route::get('/conseil/{id}', [ConseilController::class, 'showfront'])->name('frontend.conseil.details');
     Route::post('/conseils/{id}/rate', [ConseilController::class, 'rate'])->name('conseils.rate');
     Route::get('/profiljardinier', [ConseilController::class, 'jardinierfront'])->name('frontend.conseil.profiljardinier');
+    Route::get('/evenement', action: [EvenementFrontController::class, 'index'])->name('frontend.evenement.index');
 
 });
 
@@ -173,19 +174,7 @@ Route::prefix('/admin')->middleware(['auth'])->group(function () {
 
     Route::delete('/classification/{id}', [ClassificationController::class, 'destroy'])->name('backend.classification.destroy');
 
-    //frontEvent
-    //Route::get('/evenementsfront', [EvenementFrontController::class, 'index'])->name('frontend.evenement.index');
-    //Route::get('/evenements/{id}', [EvenementFrontController::class, 'show'])->name('frontend.evenement.show');
-
-    // Routes pour les événements dans le front-end
-    Route::prefix('front')->group(function () {
-        Route::get('/',  [frontendController::class, 'index']);
-        Route::get('/contact', function () {
-            return view('frontend.pages.contact');
-        });
-
-        Route::get('/evenement', action: [EvenementFrontController::class, 'index'])->name('frontend.evenement.index');
-    });
+   
 
     //Route::get('/evenement/edit',  [EvenementController::class, 'edit'])->name('backend.evenement.formEvenement');
     //Route::get('/evenement/edit/{id}', [EvenementController::class, 'edit'])->name('backend.evenement.formEvenement');

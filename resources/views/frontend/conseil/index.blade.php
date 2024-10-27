@@ -84,7 +84,7 @@
                     <div class="card-body py-3">
                         <h4 class="card-title">Poster Par </h4>
                         <div class="d-flex align-items-center flex-row gap-3">
-                            <img src="../../assets/images/avatar/avatar-1.jpg" alt="" class="avatar-md avatar rounded-circle" />
+                            <img  src="../../assets/images/avatar/images.png" alt="" class="avatar-md avatar rounded-circle" />
                             <div class="">
                                 <h4 class="mb-0">
                                 {{ $firstAdvice->user->nameUser ?? 'Utilisateur inconnu' }}
@@ -200,7 +200,7 @@
                                                 <!-- Author Info -->
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="me-2">
-                                                        <img src="../assets/images/avatar/avatar-1.jpg"
+                                                        <img  src="../../assets/images/avatar/images.png"
                                                             alt="avatar"
                                                             class="rounded-circle"
                                                             width="40"

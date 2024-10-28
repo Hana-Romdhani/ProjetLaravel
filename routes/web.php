@@ -68,7 +68,7 @@ Route::prefix('auth')->group(function () {
 
 // ******************************** mettre toute les urls de front ici  **********************************
 Route::prefix('/')->group(function () {
-    Route::get('/',  [frontendController::class, 'index']);
+    Route::get('/',  [frontendController::class, 'index'])->name('home');
     Route::get('/contact', function () {
         return view('frontend.pages.contact');
     });
@@ -119,7 +119,7 @@ Route::prefix('/jardinier')->middleware(['auth'])->group(function () {
 });
 
 //admin part
-Route::prefix('/admin')->middleware(['auth'])->group(function () {
+Route::prefix('/admin')->middleware(['auth', 'role:admin,editor'])->group(function () {
 
     Route::get('/',  [backendController::class, 'index']);
 

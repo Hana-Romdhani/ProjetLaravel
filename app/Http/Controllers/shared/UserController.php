@@ -38,7 +38,7 @@ class UserController extends Controller
         if ($user->role === 'editor' || $user->role === 'user') {
             return redirect()->intended('/');  // Rediriger vers /
         } else {
-            return redirect()->intended('/admin');  // Rediriger vers /
+            return redirect()->intended('/admin/conseil');  // Rediriger vers /
         }
     }
 

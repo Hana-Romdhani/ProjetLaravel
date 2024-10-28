@@ -89,7 +89,9 @@ Route::prefix('/')->group(function () {
     Route::get('/ressource/{ressource}/edit', [RessourceController::class, 'edit'])->name('frontend.ressources.RessourcesForm.edit');
     Route::put('/ressource/{ressource}', [RessourceController::class, 'update'])->name('ressource.update');
     Route::delete('/ressource/{ressource}', [RessourceController::class, 'destroy'])->name('Ressources.destroy');
-
+    // Route::get('/ressourceUser', function () {
+    //     return view('frontend.ressources.Ressources');
+    // });
     Route::get('/ressourceUser',  [RessourceController::class, 'index'])->name('frontend.ressources.Ressources');
     Route::get('/ressourcesPartage',  [RessourcesPartageController::class, 'index'])->name('frontend.ressources.RessourcesPartage');
     Route::post('/ressources-partages/{id}/accepter', [RessourcesPartageController::class, 'accepter'])->name('frontend.ressources.RessourcesPartage.accepter');

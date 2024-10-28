@@ -146,7 +146,7 @@
                                                 </div>
                                             </td>
                                             <!-- Modal pour le formulaire d'édition -->
-                                            <div class="modal fade" id="editEventModal{{ $evenement->id }}" tabindex="-1" aria-labelledby="editEventModalLabel{{ $evenement->id }}" aria-hidden="true">
+                                            <div class="modal fade @if ($errors->any()) show @endif" id="editEventModal{{ $evenement->id }}" tabindex="-1" aria-labelledby="editEventModalLabel{{ $evenement->id }}" aria-hidden="true" style="@if($errors->any()) display: block; @endif">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
@@ -154,33 +154,44 @@
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <!-- Use the correct route for updating -->
                                                             <form action="{{ route('backend.evenement.update', $evenement->id) }}" method="POST" enctype="multipart/form-data">
                                                                 @csrf
-                                                                @method('PUT') <!-- Indicating that this is a PUT request -->
+                                                                @method('PUT')
 
                                                                 <!-- Event Title Field -->
                                                                 <div class="mb-3">
                                                                     <label for="title" class="form-label">Title</label>
-                                                                    <input type="text" class="form-control" name="title" value="{{ $evenement->title }}" required>
+                                                                    <input type="text" class="form-control" name="title" value="{{ old('title', $evenement->title) }}">
+                                                                    @error('title')
+                                                                    <div class="text-danger">{{ $message }}</div>
+                                                                    @enderror
                                                                 </div>
 
                                                                 <!-- Event Location Field -->
                                                                 <div class="mb-3">
                                                                     <label for="location" class="form-label">Location</label>
-                                                                    <input type="text" class="form-control" name="location" value="{{ $evenement->location }}" required>
+                                                                    <input type="text" class="form-control" name="location" value="{{ old('location', $evenement->location) }}">
+                                                                    @error('location')
+                                                                    <div class="text-danger">{{ $message }}</div>
+                                                                    @enderror
                                                                 </div>
 
                                                                 <!-- Event Description Field -->
                                                                 <div class="mb-3">
                                                                     <label for="description" class="form-label">Description</label>
-                                                                    <textarea class="form-control" name="description" rows="3" required>{{ $evenement->description }}</textarea>
+                                                                    <textarea class="form-control" name="description" rows="3">{{ old('description', $evenement->description) }}</textarea>
+                                                                    @error('description')
+                                                                    <div class="text-danger">{{ $message }}</div>
+                                                                    @enderror
                                                                 </div>
 
                                                                 <!-- Event Date Field -->
                                                                 <div class="mb-3">
                                                                     <label for="date" class="form-label">Date</label>
-                                                                    <input type="date" class="form-control" name="date" value="{{ $evenement->date }}" required>
+                                                                    <input type="date" class="form-control" name="date" value="{{ old('date', $evenement->date) }}">
+                                                                    @error('date')
+                                                                    <div class="text-danger">{{ $message }}</div>
+                                                                    @enderror
                                                                 </div>
 
                                                                 <!-- Event Classification Field -->
@@ -188,21 +199,25 @@
                                                                     <label for="classification_id">Classification</label>
                                                                     <select name="classification_id" id="classification_id" class="form-control">
                                                                         @foreach($classifications as $classification)
-                                                                        <option value="{{ $classification->id }}" {{ $evenement->classification_id == $classification->id ? 'selected' : '' }}>
+                                                                        <option value="{{ $classification->id }}" {{ old('classification_id', $evenement->classification_id) == $classification->id ? 'selected' : '' }}>
                                                                             {{ $classification->name }}
                                                                         </option>
                                                                         @endforeach
                                                                     </select>
+                                                                    @error('classification_id')
+                                                                    <div class="text-danger">{{ $message }}</div>
+                                                                    @enderror
                                                                 </div>
-
 
                                                                 <!-- Event Image Field -->
                                                                 <div class="mb-3">
                                                                     <label for="image" class="form-label">Image</label>
                                                                     <input type="file" class="form-control" name="image" accept="image/*">
                                                                     <small class="form-text text-muted">Leave blank if you don't want to change the image.</small>
+                                                                    @error('image')
+                                                                    <div class="text-danger">{{ $message }}</div>
+                                                                    @enderror
                                                                 </div>
-
 
                                                                 <!-- Submit Button -->
                                                                 <div class="modal-footer">
@@ -214,6 +229,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+
                                             <td>
 
 
@@ -322,9 +338,17 @@
             confirmButtonText: 'OK'
         });
     }
-    // Vérifie si une session de succès existe et déclenche l'alerte
+
     @if(session('success'))
-    showAlert(); // Appelle la fonction si la session contient 'success'
+    showAlert(); // Display SweetAlert if the session contains 'success'
+    @endif
+
+    @if($errors -> any())
+    // Ensure the modal remains open if there are validation errors
+    document.addEventListener("DOMContentLoaded", function() {
+        var modal = new bootstrap.Modal(document.getElementById('editEventModal{{ $evenement->id }}'));
+        modal.show();
+    });
     @endif
 </script>
 @endsection

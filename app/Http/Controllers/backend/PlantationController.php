@@ -34,17 +34,17 @@ class PlantationController extends Controller
         if ($request->filled('search')) {
             $query->where('nom', 'like', '%' . $request->search . '%');
         }
-    
+
         if ($request->filled('sort')) {
             $query->orderBy($request->sort, $request->order == 'asc' ? 'asc' : 'desc');
         }
-    
-        $plantations = $query->paginate(10);
-    
+
+        $plantations = $query->paginate(2);
+
         if ($request->ajax()) {
             return view('backend.plantation.partials.table', compact('plantations'));
         }
-    
+
         return view('backend.plantation.plantation', compact('plantations'));
     }
 

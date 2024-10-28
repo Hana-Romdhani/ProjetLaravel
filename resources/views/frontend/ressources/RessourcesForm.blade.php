@@ -6,12 +6,12 @@
 </div>
 
 <div class="card-body">
-    <form action="{{ isset($ressource) ? route('ressource.update', $ressource->id) : route('frontend.ressources.RessourcesForm') }}" 
-          method="POST" 
-          class="row gx-3 needs-validation" 
-          enctype="multipart/form-data" 
+    <form action="{{ isset($ressource) ? route('ressource.update', $ressource->id) : route('frontend.ressources.RessourcesForm') }}"
+          method="POST"
+          class="row gx-3 needs-validation"
+          enctype="multipart/form-data"
           novalidate> <!-- Désactive la validation HTML pour utiliser Bootstrap -->
-        
+
         @csrf
         @if(isset($ressource))
             @method('PUT')
